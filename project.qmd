@@ -20,7 +20,7 @@ editor: source
 # Load the medical data 
 
 ```{r}
-# Alternatives
+# Migraines after treatment -  time series data
 library(carData)
 data("KosteckiDillon")
 
