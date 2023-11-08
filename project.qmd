@@ -20,7 +20,9 @@ editor: source
 # Load the medical data 
 
 ```{r}
-install.packages("medicaldata")
-library(medicaldata)
-data(package = "medicaldata")
+# Alternatives
+library(carData)
+data("KosteckiDillon")
+
+head(KosteckiDillon)
 ```
