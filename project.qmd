@@ -26,3 +26,12 @@ data("KosteckiDillon")
 
 head(KosteckiDillon)
 ```
+
+```{r}
+# Liver transplant data
+install.packages("survival")
+library(survival)
+data(package = "survival")
+transplant <- survival::transplant
+head(transplant)
+```
