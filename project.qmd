@@ -31,7 +31,13 @@ head(KosteckiDillon)
 # Liver transplant data
 install.packages("survival")
 library(survival)
-data(package = "survival")
 transplant <- survival::transplant
 head(transplant)
+```
+
+```{r}
+install.packages("AER")
+library(AER)
+data(ResumeNames)
+ResumeNames
 ```
