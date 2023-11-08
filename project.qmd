@@ -1,6 +1,6 @@
 ---
 title: "BDA PROJECT"
-author: .
+author: Axel, Linnea, Elissa
 format: 
   html:
     toc: true
