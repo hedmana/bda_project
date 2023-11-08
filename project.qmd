@@ -36,6 +36,7 @@ head(transplant)
 ```
 
 ```{r}
+# Does Emily and Greg get employed more than Jamal and Shalissa?
 install.packages("AER")
 library(AER)
 data(ResumeNames)
