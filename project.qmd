@@ -19,22 +19,30 @@ editor: source
 
 # Set up
 
-## Loading the data
+## Loading the required packages
+
+```{r}
+library(carData)
+library(ggplot2)
+library(dplyr)
+```
+
+# Datasets
+
+## Migraine data
 
 ```{r}
 # Migraines after treatment -  time series data
-
-library(carData)
 data("KosteckiDillon")
-#head(KosteckiDillon)
+head(KosteckiDillon)
 
-#rename the data
+# rename the data
 migraine <- KosteckiDillon
+```
 
-library(ggplot2)
-library(dplyr)
+## Other datasets
 
-
+```{r}
 library(survival)
 data(transplant)
 head(transplant)
@@ -43,8 +51,11 @@ library(AER)
 data(ResumeNames)
 head(ResumeNames)
 
-nrow(ResumeNames)
+nrow(ResumeNames)}
+
 ```
+
+# Plot
 
 ```{r}
 ggplot(transplant, aes(x = event)) + geom_bar()
@@ -54,4 +65,10 @@ ggplot(transplant, aes(x = event)) + geom_bar()
 plt <- ggplot(data = migraine, aes(x = dos)) + 
   geom_histogram()
 plt
+```
+
+```{r}
+migraine %>%
+    group_by(id) %>%
+    ggplot(aes(x=time, y=, ))
 ```
