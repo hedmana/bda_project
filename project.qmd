@@ -26,15 +26,32 @@ editor: source
 
 library(carData)
 data("KosteckiDillon")
-head(KosteckiDillon)
+#head(KosteckiDillon)
 
 #rename the data
 migraine <- KosteckiDillon
 
 library(ggplot2)
+library(dplyr)
+
+
+library(survival)
+data(transplant)
+head(transplant)
+
+library(AER)
+data(ResumeNames)
+head(ResumeNames)
+
+nrow(ResumeNames)
 ```
 
 ```{r}
-
+ggplot(transplant, aes(x = event)) + geom_bar()
 ```
 
+```{r}
+plt <- ggplot(data = migraine, aes(x = dos)) + 
+  geom_histogram()
+plt
+```
