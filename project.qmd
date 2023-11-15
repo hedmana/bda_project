@@ -17,28 +17,24 @@ format:
 editor: source
 ---
 
-# Load the medical data 
+# Set up
+
+## Loading the data
 
 ```{r}
 # Migraines after treatment -  time series data
+
 library(carData)
 data("KosteckiDillon")
-
 head(KosteckiDillon)
+
+#rename the data
+migraine <- KosteckiDillon
+
+library(ggplot2)
 ```
 
 ```{r}
-# Liver transplant data
-install.packages("survival")
-library(survival)
-transplant <- survival::transplant
-head(transplant)
+
 ```
 
-```{r}
-# Does Emily and Greg get employed more than Jamal and Shalissa?
-install.packages("AER")
-library(AER)
-data(ResumeNames)
-ResumeNames
-```
