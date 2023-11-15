@@ -70,5 +70,46 @@ plt
 ```{r}
 migraine %>%
     group_by(id) %>%
-    ggplot(aes(x=time, y=, ))
+    # filter(dos < 200) %>%
+    ggplot(aes(x=dos, y=airq, group=id, color=headache)) + geom_line()
+
+migraine %>% filter(id == 2)
+```
+
+```{r}
+# head(migraine)
+migraine %>%
+    group_by(id) %>%
+    filter(time == min(time)) %>%
+    ungroup() %>%
+    ggplot(aes(x=headache, fill=medication)) + geom_bar(stat="count")
+```
+
+```{r}
+migraine %>%
+    group_by(id) %>%
+    filter(time == max(time)) %>%
+    ungroup() %>%
+    ggplot(aes(x=headache, fill=medication)) + geom_bar(stat="count")
+```
+
+```{r}
+migraine_freqs <- migraine %>%
+    select(time, headache) %>%
+    group_by(time) %>%
+    mutate(freqs_no = sum(headache == "no"),
+          freqs_yes = sum(headache == "yes"),
+          time = time,
+          freqs_total = freqs_no + freqs_yes,
+          freqs_frac_no = freqs_no / freqs_total,
+          freqs_frac_yes = freqs_yes / freqs_total) 
+migraine_freqs
+```
+
+```{r}
+migraine_freqs
+
+ggplot(migraine_freqs, aes(x=time, y=freqs_frac_no)) +
+    geom_line(color="deeppink") 
+    # geom_line(aes(y=freqs_frac_yes), color="seagreen")
 ```
