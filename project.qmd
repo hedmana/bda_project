@@ -51,7 +51,7 @@ library(AER)
 data(ResumeNames)
 head(ResumeNames)
 
-nrow(ResumeNames)}
+nrow(ResumeNames)
 
 ```
 
