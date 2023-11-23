@@ -64,3 +64,45 @@ ggplot(fractions, aes(x = days, y = death, group = blood_type, color = blood_typ
 ```
 
 SCALE DATA??? SCALE BASED ON NUM BLOOD TYPE? 
+
+# Model testing
+
+## Model 1. Simple Bayesian regression on modelling events 'death' and 'ltx', i.e. receiving a liver transplant
+
+```{r}
+head(transplant)
+transplant$id <- 1:nrow(transplant)
+transplant_filtered <- transplant %>%
+  filter(event %in% c("death", "ltx"))
+```
+
+On behalf of chatGPT:
+
+```{r}
+library(brms)
+
+# Assuming your data frame is named 'transplant_data'
+# 'Event' is your binary outcome variable (1 = event occurred, 0 = event did not occur)
+
+formula <- bf(event ~ year + age + sex + abo + (1|id), family = bernoulli())
+
+# Here, 'id' is a unique identifier for each person in your dataset.
+# The random effect (1|id) accounts for the potential correlation between repeated measurements on the same person.
+
+prior <- c(
+  prior(normal(0, 10), class = Intercept),
+  prior(normal(0, 10), class = b)
+)
+
+# You can adjust the prior distributions based on your knowledge or assumptions about the data.
+
+# Fit the model
+model <- brm(formula, data = transplant_filtered, prior = prior, family = bernoulli(), chains = 4, iter = 2000)
+
+```
+
+
+```{r}
+model
+summary(model)
+```
