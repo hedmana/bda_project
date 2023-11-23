@@ -19,48 +19,32 @@ editor: source
 
 # Set up
 
-## Loading the required packages
+## Loading the data
 
 ```{r}
-library(ggplot2)
-library(dplyr)
+# Alternatives
+library(carData)
 ```
 
-## Data
+```{r}
+# Treatment of migraine headaches	 
+data("KosteckiDillon")
+
+head(KosteckiDillon)
+```
 
 ```{r}
+# Liver transplant data
+install.packages("survival")
 library(survival)
-data(transplant)
-min(transplant$year)
-max(transplant$year)
+transplant <- survival::transplant
+head(transplant)
 ```
 
 ```{r}
-ggplot(transplant, aes(x = futime)) + geom_histogram()
+# Does Emily and Greg get employed more than Jamal and Shalissa?
+install.packages("AER")
+library(AER)
+data(ResumeNames)
+ResumeNames
 ```
-
-```{r}
-transplant <- transplant %>%
-                  filter(event != 'censored')
-
-bins <- c(0, 100, 200, 300, 400, 500, Inf)
-
-labels <- c('0-100', '101-200', '201-300', '301-400', '401-500', '>500')
-
-transplant <- transplant %>%
-  mutate(time_group = cut(futime, breaks = bins, labels = labels, include.lowest = TRUE, right = FALSE))
-  
-fractions <- transplant %>%
-      group_by(year, abo) %>%
-      summarise(sum(event == 'death'), .groups = 'drop')
-
-colnames(fractions) <- c("days", "blood_type", "death")
-
-fractions
-```
-
-```{r}
-ggplot(fractions, aes(x = days, y = death, group = blood_type, color = blood_type)) + geom_line()
-```
-
-SCALE DATA??? SCALE BASED ON NUM BLOOD TYPE? 
