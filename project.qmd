@@ -151,3 +151,98 @@ pp_check(model_2)
 
 # ppc_bars
 ```
+
+## Test: Estimating generalization error
+
+Define test and train data:
+
+```{r}
+transplant <- transplant %>%
+  filter(event != "censored")
+
+n = nrow(transplant)
+
+# Indexes
+death_idx <- which(transplant$event == "death")
+ltx_idx <- which(transplant$event == "ltx")
+withdraw_idx <- which(transplant$event == "withdraw")
+
+# Proportions
+death_prop <- length(death_idx)/n
+ltx_prop <- length(ltx_idx)/n
+withdraw_prop <- length(withdraw_idx)/n
+
+# Test and train data split
+test_size = 100
+death_idx_test <- sample(death_idx, size=round(test_size*death_prop), replace = FALSE)
+ltx_idx_test <- sample(ltx_idx, size=round(test_size*ltx_prop), replace = FALSE)
+withdraw_idx_test <- sample(withdraw_idx, size=round(test_size*withdraw_prop), replace = FALSE)
+
+death_idx_tr <- setdiff(death_idx, death_idx_test)
+ltx_idx_tr <- setdiff(ltx_idx, ltx_idx_test)
+withdraw_idx_tr <- setdiff(withdraw_idx, withdraw_idx_test)
+
+test_data <- transplant[c(death_idx_test, ltx_idx_test, withdraw_idx_test),]
+
+train_data <- transplant[c(death_idx_tr, ltx_idx_tr, withdraw_idx_tr),]
+
+# nrow(test_data)
+# nrow(train_data)
+
+# table(test_data$event)/nrow(test_data)
+# table(train_data$event)/nrow(train_data)
+```
+
+
+Defining the model:
+
+```{r}
+formula_3 <- bf(event ~ year + age + sex + abo + (1|id), family = categorical())
+
+prior_3 <- c(
+  prior(normal(0, 10), class = Intercept, dpar = multx),
+  prior(normal(0, 10), class = Intercept, dpar = muwithdraw),
+  prior(normal(0, 10), class = b, dpar = multx),
+  prior(normal(0, 10), class = b, dpar = muwithdraw)
+)
+
+# You can adjust the prior distributions based on your knowledge or assumptions about the data.
+
+# Fit the model
+model_3 <- brm(formula_3, data = train_data, prior = prior_3, family = categorical(), chains = 4, iter = 2000)
+```
+
+Check:
+
+```{r}
+summary(model_3)
+pp_check(model_3)
+```
+
+Predictions:
+
+```{r}
+preds <- posterior_predict(model_3, newdata = select(test_data, -event), allow_new_levels=TRUE)
+
+preds
+
+test_data <- test_data %>%
+  mutate(event_int = ifelse(
+    event == "death", 1, ifelse(
+      event == "ltx", 2, 3
+  )))
+
+preds_mean <- colMeans(preds) %>% round()
+sum(preds_mean == test_data$event_int)
+preds_mean
+test_data$event_int
+```
+
+# Test: 2nd take
+
+To handle imbalanced data:
+
+```{r}
+install.packages("smotefamily")
+library(smotefamily)
+```
