@@ -22,94 +22,43 @@ editor: source
 ## Loading the required packages
 
 ```{r}
-library(carData)
 library(ggplot2)
 library(dplyr)
 ```
 
-# Datasets
-
-## Migraine data
-
-```{r}
-# Migraines after treatment -  time series data
-data("KosteckiDillon")
-head(KosteckiDillon)
-
-# rename the data
-migraine <- KosteckiDillon
-```
-
-## Other datasets
+## Data
 
 ```{r}
 library(survival)
 data(transplant)
-head(transplant)
-
-library(AER)
-data(ResumeNames)
-head(ResumeNames)
-
-nrow(ResumeNames)
-
-```
-
-# Plot
-
-```{r}
-ggplot(transplant, aes(x = event)) + geom_bar()
 ```
 
 ```{r}
-plt <- ggplot(data = migraine, aes(x = dos)) + 
-  geom_histogram()
-plt
+ggplot(transplant, aes(x = futime)) + geom_histogram()
 ```
 
 ```{r}
-migraine %>%
-    group_by(id) %>%
-    # filter(dos < 200) %>%
-    ggplot(aes(x=dos, y=airq, group=id, color=headache)) + geom_line()
+transplant <- transplant %>%
+                  filter(event != 'censored')
 
-migraine %>% filter(id == 2)
+bins <- c(0, 100, 200, 300, 400, 500, Inf)
+
+labels <- c('0-100', '101-200', '201-300', '301-400', '401-500', '>500')
+
+transplant <- transplant %>%
+  mutate(time_group = cut(futime, breaks = bins, labels = labels, include.lowest = TRUE, right = FALSE))
+  
+fractions <- transplant %>%
+      group_by(time_group, abo) %>%
+      summarise(sum(event == 'ltx'), .groups = 'drop')
+
+colnames(fractions) <- c("days", "blood_type", "death")
+
+fractions
 ```
 
 ```{r}
-# head(migraine)
-migraine %>%
-    group_by(id) %>%
-    filter(time == min(time)) %>%
-    ungroup() %>%
-    ggplot(aes(x=headache, fill=medication)) + geom_bar(stat="count")
+ggplot(fractions, aes(x = days, y = death, group = blood_type, color = blood_type)) + geom_line()
 ```
 
-```{r}
-migraine %>%
-    group_by(id) %>%
-    filter(time == max(time)) %>%
-    ungroup() %>%
-    ggplot(aes(x=headache, fill=medication)) + geom_bar(stat="count")
-```
-
-```{r}
-migraine_freqs <- migraine %>%
-    select(time, headache) %>%
-    group_by(time) %>%
-    mutate(freqs_no = sum(headache == "no"),
-          freqs_yes = sum(headache == "yes"),
-          time = time,
-          freqs_total = freqs_no + freqs_yes,
-          freqs_frac_no = freqs_no / freqs_total,
-          freqs_frac_yes = freqs_yes / freqs_total) 
-migraine_freqs
-```
-
-```{r}
-migraine_freqs
-
-ggplot(migraine_freqs, aes(x=time, y=freqs_frac_no)) +
-    geom_line(color="deeppink") 
-    # geom_line(aes(y=freqs_frac_yes), color="seagreen")
-```
+SCALE DATA??? SCALE BASED ON NUM BLOOD TYPE? 
