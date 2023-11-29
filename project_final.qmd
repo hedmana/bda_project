@@ -56,7 +56,30 @@ cath <- medicaldata::cath
 
 # Data Desctription
 
-- Data set
+- Data set:
+
+```{r}
+#| label: Data description
+#| echo: false
+#| message: false
+#| warning: false
+
+head(cath)
+```
+
+Histograms and barplots of the variables:
+
+```{r}
+#| label: Univariate analysis
+#| echo: false
+par(mfrow=c(1,4))
+barplot(table(cath[,1]))
+for(i in 2:4){
+  hist(cath[,i])
+}
+```
+
+Explanation on data preprocessing (removing NA rows, scaling variables etc.)
 
 ```{r}
 #| label: Data preprocessing
@@ -65,14 +88,18 @@ cath <- medicaldata::cath
 #| message: false
 
 # Remove rows with at least one NA value
-cath <- na.omit(cath)
+cath <- cath %>%
+  na.omit() %>%
+  select(-tvdlm)
 
 # Scale the variables
 for (i in 1:(ncol(cath)-2)){
     cath[i] <- scale(cath[i])
 }
 
-# Make
+# Make response variable a factor
+cath$sigdz <- as.factor(cath$sigdz)
+
 
 ```
 
