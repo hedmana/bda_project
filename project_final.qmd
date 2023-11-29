@@ -7,7 +7,7 @@ format:
     toc: true
     code-tools: true
     code-line-numbers: true
-    mainfont: Georgia, serif
+    msainfont: Georgia, serif
     page-layout: article
   pdf:  
     number-sections: true
@@ -20,8 +20,27 @@ editor: source
  
 ## Setup
 
-```{r}
+Install packages:
 
+```{r}
+#| label: Setup
+remotes::install_github("higgi13425/medicaldata")
+library(medicaldata)
+library(dplyr)
+library(brms)
+library(corrplot)
+library(rstanarm)
+library(ggplot2)
+library(loo)
+library(rstanarm)
+library(caret)
+```
+
+Import the data:
+
+```{r}
+#| label: Importing data
+cath <- medicaldata::cath
 ```
 
 :::
@@ -33,11 +52,30 @@ editor: source
 - Background
 - Problem formulation/scope
 - Main modeling idea
-
+- Some picture of the data?
 
 # Data Desctription
 
 - Data set
+
+```{r}
+#| label: Data preprocessing
+#| echo: false
+#| warning: false
+#| message: false
+
+# Remove rows with at least one NA value
+cath <- na.omit(cath)
+
+# Scale the variables
+for (i in 1:(ncol(cath)-2)){
+    cath[i] <- scale(cath[i])
+}
+
+# Make
+
+```
+
 - Histograms
 - Correlations
 - Has it been used in previous studies?
