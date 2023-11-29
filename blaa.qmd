@@ -17,22 +17,52 @@ format:
 editor: source
 ---
 
+# Theory: Bayesian Logistic Regression
+
+Motivation: 
+  - Logistic regression gives the estimate of event probability. 
+  - Bayesian logistic regression gives also estimate on the *uncertainty* of the predicted probability OR the model itself.
+
+Probability of success: $P(y=1) = Sigmoid(w^Tx+b)$
+  - Sigmoid maps the output to interval [0, 1]
+
+Bayesian approach: 
+  - Instead of learning the weights, we learn the *distribution of the weights*: $P(y=1|w) = Sigmoid(w^Tx+b)$
+
+Let's say we have M vaeriables and N datapoints. Then:
+
+  For each variable ($j = 1,...,M$), the **prior** is $w_j \sim prior(w_j)$
+    $\rightarrow$ We define the prior to the **weights** of each variable
+  
+  For each datapoint $x_i$ and outcome $y_i$ ($i=1,...,N$): 
+    $\epsilon_i = Sigmoid(w^Tx_i+b)$
+    $y_i \sim Bernoulli(\epsilon_i)$
+
+Now we have $p(w|y) \propto p(y|w)p(w)$
+
+# Code
+
 ```{r}
-install.packages("medicaldata")
-library(remotes)
+# install.packages("medicaldata")
+# library(remotes)
 remotes::install_github("higgi13425/medicaldata")
 ```
 
 ```{r}
 library(medicaldata)
 library(dplyr)
+library(brms)
+library(corrplot)
+library(rstanarm)
+library(ggplot2)
+library(loo)
+library(rstanarm)
 cath <- medicaldata::cath
 
 ```
 
 ```{r}
 #remove na
-
 cath_clean <- na.omit(cath)
 
 cath_clean
@@ -40,8 +70,6 @@ cath_clean
 
 ```{r}
 #fit model
-
-library(brms)
 
 #priors
 prior_sigdz <- c(
@@ -124,14 +152,11 @@ cc
 ```
 
 ```{r}
-library(corrplot)
 corrplot(cor(cc[, c(6,1:5)]), type = "full", method = "number")
 
 ```
 
 ```{r}
-library(rstanarm)
-
 t_prior <- student_t(df = 3, location = 0, scale = 2.5)
 post1 <- stan_glm(formula_sigdz, data = cc,
                  family = binomial(link = "logit"), 
@@ -145,7 +170,6 @@ post2 <- stan_glm(formula_tvdlm, data = cc,
 ```
 
 ```{r}
-library(ggplot2)
 pplot<-plot(post1, "areas", prob = 0.95, prob_outer = 1)
 pplot + geom_vline(xintercept = 0)
 
@@ -155,7 +179,6 @@ pplot2 + geom_vline(xintercept = 0)
 ```
 
 ```{r}
-library(loo)
 
 loo1 <- loo(post1, save_psis = TRUE)
 loo2 <- loo(post2, save_psis = TRUE)
@@ -184,7 +207,6 @@ loo_compare(loo2, loo_baseline_2)
 ```
 
 ```{r}
-library(rstanarm)
 # Post1
 cc$sigdz <- as.factor(cc$sigdz)
 cc$tvdlm <- as.factor(cc$tvdlm)
