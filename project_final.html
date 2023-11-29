@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="anonymous">
+
+<title>PROJECT</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="project_final_files/libs/clipboard/clipboard.min.js"></script>
+<script src="project_final_files/libs/quarto-html/quarto.js"></script>
+<script src="project_final_files/libs/quarto-html/popper.min.js"></script>
+<script src="project_final_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="project_final_files/libs/quarto-html/anchor.min.js"></script>
+<link href="project_final_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="project_final_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="project_final_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="project_final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="project_final_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-desctription" id="toc-data-desctription" class="nav-link" data-scroll-target="#data-desctription">Data Desctription</a></li>
+  <li><a href="#mathematical-model" id="toc-mathematical-model" class="nav-link" data-scroll-target="#mathematical-model">Mathematical Model</a></li>
+  <li><a href="#model-definitions-and-implementation" id="toc-model-definitions-and-implementation" class="nav-link" data-scroll-target="#model-definitions-and-implementation">Model Definitions and Implementation</a></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#lessons-learned" id="toc-lessons-learned" class="nav-link" data-scroll-target="#lessons-learned">Lessons Learned</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="project_final.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">PROJECT</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">BLAL BLA BLA</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>anonymous </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Setup
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Install packages:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"higgi13425/medicaldata"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Skipping install of 'medicaldata' from a github remote, the SHA1 (a73901fe) has not changed since last install.
+  Use `force = TRUE` to force installation</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(medicaldata)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(brms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'brms' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Rcpp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading 'brms' package (version 2.20.4). Useful instructions
+can be found by typing help('brms'). A more detailed introduction
+to the package is available through vignette('brms_overview').</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'brms'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    ar</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'corrplot' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.92 loaded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">library</span>(rstanarm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'rstanarm' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is rstanarm version 2.26.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- For execution on a local, multicore CPU with excess RAM we recommend calling</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  options(mc.cores = parallel::detectCores())</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rstanarm'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:brms':
+
+    dirichlet, exponential, get_y, lasso, ngrps</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">library</span>(loo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'loo' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is loo version 2.6.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- Online documentation and vignettes at mc-stan.org/loo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- As of v2.0.0 loo defaults to 1 core but we recommend using as many as possible. Use the 'cores' argument or set options(mc.cores = NUM_CORES) for an entire session. </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- Windows 10 users: loo may be very slow if 'mc.cores' is set in your .Rprofile file (see https://github.com/stan-dev/loo/issues/94).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb33-2"><a href="#cb33-2"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'caret' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'caret'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:rstanarm':
+
+    compare_models, R2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co"># library(RColorBrewer)</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="co"># library(gridExtra)</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="co"># library(grid)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Import the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>cath <span class="ot">&lt;-</span> medicaldata<span class="sc">::</span>cath</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<ul>
+<li>Background</li>
+<li>Problem formulation/scope</li>
+<li>Main modeling idea</li>
+<li>Some picture of the data?</li>
+</ul>
+</section>
+<section id="data-desctription" class="level1">
+<h1>Data Desctription</h1>
+<ul>
+<li>Dataset:</li>
+</ul>
+<p>Number of variables: 6 Number of observations: 3504::: {.cell-output-display} | sex| age| cad_dur| choleste| sigdz| tvdlm| |—:|—:|——-:|——–:|—–:|—–:| | 0| 73| 132| 268| 1| 1| | 0| 68| 85| 120| 1| 1| | 0| 54| 45| NA| 1| 0| | 1| 58| 86| 245| 0| 0| | 1| 56| 7| 269| 0| 0| | 0| 64| 0| NA| 1| 0| :::</p>
+<p>Histograms and barplot of the explanatory variables:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="project_final_files/figure-html/Univariate%20analysis%20part%201-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TBD 1</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Barplots of the responsive variables:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="project_final_files/figure-html/Univariate%20analysis%20part%202-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TBD 2</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Explanation on data preprocessing (removing NA rows, scaling variables, removing tvdlm etc.)</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>After preprocessing we have:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of predictive variables:  4 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of observations:  2258</code></pre>
+</div>
+</div>
+<ul>
+<li>Histograms</li>
+<li>Correlations</li>
+<li>Has it been used in previous studies?</li>
+</ul>
+<p>Bivariate correlations:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="project_final_files/figure-html/Bivariate%20analysis-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TBD 3</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Seems that sex and age have the most significant bivariate correlation to the responsive variable sigdz.</p>
+</section>
+<section id="mathematical-model" class="level1">
+<h1>Mathematical Model</h1>
+<ul>
+<li>Bayesian logistic regression</li>
+<li>Likelihood</li>
+<li>Priors</li>
+<li>Posteriors</li>
+</ul>
+<p>Motivation: - Logistic regression gives the estimate of event probability. - Bayesian logistic regression gives also estimate on the <em>uncertainty</em> of the predicted probability OR the model itself.</p>
+<p>Probability of success: <span class="math inline">\(P(y=1) = Sigmoid(w^Tx+b)\)</span> - Sigmoid maps the output to interval [0, 1]</p>
+<p>Bayesian approach: - Instead of learning the weights, we learn the <em>distribution of the weights</em>: <span class="math inline">\(P(y=1|w) = Sigmoid(w^Tx+b)\)</span></p>
+<p>For M = ‘r expl_var’ variables and N = ‘r n_obs’. Then:</p>
+<p>For each variable (<span class="math inline">\(j = 1,...,M\)</span>), the <strong>prior</strong> is <span class="math inline">\(w_j \sim prior(w_j)\)</span> <span class="math inline">\(\rightarrow\)</span> We define the prior to the <strong>weights</strong> of each variable</p>
+<p>For each datapoint <span class="math inline">\(x_i\)</span> and outcome <span class="math inline">\(y_i\)</span> (<span class="math inline">\(i=1,...,N\)</span>): <span class="math inline">\(\epsilon_i = Sigmoid(w^Tx_i+b)\)</span> <span class="math inline">\(y_i \sim Bernoulli(\epsilon_i)\)</span></p>
+</section>
+<section id="model-definitions-and-implementation" class="level1">
+<h1>Model Definitions and Implementation</h1>
+<ul>
+<li>Tie mathematical model to our implementation</li>
+<li>Ndraws, warmup, etc.</li>
+</ul>
+<p>Linear model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co"># Make response variable a factor</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a>cath<span class="sc">$</span>sigdz <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(cath<span class="sc">$</span>sigdz)</span>
+<span id="cb43-3"><a href="#cb43-3"></a></span>
+<span id="cb43-4"><a href="#cb43-4"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(sigdz <span class="sc">~</span> . <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>cath)</span>
+<span id="cb43-5"><a href="#cb43-5"></a>y <span class="ot">&lt;-</span> cath<span class="sc">$</span>sigdz</span>
+<span id="cb43-6"><a href="#cb43-6"></a></span>
+<span id="cb43-7"><a href="#cb43-7"></a><span class="co"># Formula</span></span>
+<span id="cb43-8"><a href="#cb43-8"></a>formula_linear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> cad_dur <span class="sc">+</span> choleste)</span>
+<span id="cb43-9"><a href="#cb43-9"></a></span>
+<span id="cb43-10"><a href="#cb43-10"></a><span class="co"># Prior</span></span>
+<span id="cb43-11"><a href="#cb43-11"></a>prior_linear <span class="ot">&lt;-</span> <span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">3</span>, <span class="at">location =</span> <span class="dv">0</span>, <span class="at">scale =</span> <span class="fl">2.5</span>)</span>
+<span id="cb43-12"><a href="#cb43-12"></a></span>
+<span id="cb43-13"><a href="#cb43-13"></a><span class="co"># The model</span></span>
+<span id="cb43-14"><a href="#cb43-14"></a><span class="co"># linear_model &lt;- stan_glm(formula_linear, data = cath,</span></span>
+<span id="cb43-15"><a href="#cb43-15"></a><span class="co">#                  family = binomial(link = "logit"), </span></span>
+<span id="cb43-16"><a href="#cb43-16"></a><span class="co">#                  prior = prior_linear, prior_intercept = prior_linear, QR=TRUE,</span></span>
+<span id="cb43-17"><a href="#cb43-17"></a><span class="co">#                  refresh=0)</span></span>
+<span id="cb43-18"><a href="#cb43-18"></a></span>
+<span id="cb43-19"><a href="#cb43-19"></a><span class="co"># saveRDS(linear_model, file = "./additional_files/model_linear.rds")</span></span>
+<span id="cb43-20"><a href="#cb43-20"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_linear.rds"</span>)                </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nonlinear model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co"># Formula</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a>formula_nonlinear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(cad_dur) <span class="sc">+</span> <span class="fu">s</span>(choleste))</span>
+<span id="cb44-3"><a href="#cb44-3"></a></span>
+<span id="cb44-4"><a href="#cb44-4"></a><span class="co"># model_nonlinear &lt;- stan_gamm4(</span></span>
+<span id="cb44-5"><a href="#cb44-5"></a><span class="co">#   formula_nonlinear, data = cath,</span></span>
+<span id="cb44-6"><a href="#cb44-6"></a><span class="co">#   family = binomial(link = "logit")</span></span>
+<span id="cb44-7"><a href="#cb44-7"></a><span class="co"># )</span></span>
+<span id="cb44-8"><a href="#cb44-8"></a></span>
+<span id="cb44-9"><a href="#cb44-9"></a><span class="co"># saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")</span></span>
+<span id="cb44-10"><a href="#cb44-10"></a>model_nonlinear <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_nonlinear.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="model-evaluation" class="level1">
+<h1>Model Evaluation</h1>
+<ul>
+<li>Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy</li>
+<li>Prior sensitivity analysis</li>
+</ul>
+<p>Nonlinear model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="fu">summary</span>(model_nonlinear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model Info:
+ function:     stan_gamm4
+ family:       binomial [logit]
+ formula:      sigdz ~ sex + s(age) + s(cad_dur) + s(choleste)
+ algorithm:    sampling
+ sample:       4000 (posterior sample size)
+ priors:       see help('prior_summary')
+ observations: 2258
+
+Estimates:
+                          mean   sd   10%   50%   90%
+(Intercept)              0.8    0.1  0.7   0.8   0.9 
+sex                     -1.0    0.1 -1.0  -1.0  -0.9 
+s(age).1                -0.8    2.4 -3.8  -0.4   1.6 
+s(age).2                -0.8    2.5 -4.1  -0.4   1.7 
+s(age).3                -2.2    2.5 -5.5  -1.8   0.2 
+s(age).4                 1.1    2.1 -1.2   0.8   3.7 
+s(age).5                 3.2    2.2  0.2   3.3   6.2 
+s(age).6                -0.5    1.0 -1.9  -0.4   0.6 
+s(age).7                 1.2    0.9 -0.1   1.3   2.2 
+s(age).8                -1.2    2.3 -4.1  -0.8   1.0 
+s(age).9                 1.9    2.8 -0.4   0.6   6.5 
+s(cad_dur).1            -0.2    1.4 -1.9  -0.1   1.2 
+s(cad_dur).2             0.3    1.4 -1.1   0.1   1.8 
+s(cad_dur).3             0.4    1.2 -0.8   0.2   1.8 
+s(cad_dur).4            -0.4    1.3 -2.0  -0.2   0.9 
+s(cad_dur).5            -0.9    1.1 -2.4  -0.7   0.3 
+s(cad_dur).6             0.9    1.1 -0.2   0.7   2.3 
+s(cad_dur).7             0.5    1.0 -0.6   0.3   1.7 
+s(cad_dur).8             0.0    0.7 -1.0   0.0   0.8 
+s(cad_dur).9            -0.2    1.0 -1.4  -0.1   0.6 
+s(choleste).1            0.1    2.3 -2.6   0.1   2.9 
+s(choleste).2           -0.3    2.2 -3.0  -0.2   2.3 
+s(choleste).3           -1.0    2.0 -3.5  -0.9   1.4 
+s(choleste).4           -1.2    2.1 -3.9  -1.1   1.3 
+s(choleste).5           -0.1    1.7 -2.2  -0.1   2.1 
+s(choleste).6            0.4    1.2 -1.1   0.3   1.9 
+s(choleste).7            3.5    1.1  2.2   3.4   4.8 
+s(choleste).8            0.4    1.9 -1.7   0.3   2.7 
+s(choleste).9            0.2    1.3 -0.9   0.0   1.6 
+smooth_sd[s(age)1]       2.2    1.3  0.5   2.1   3.8 
+smooth_sd[s(age)2]       1.7    1.6  0.1   1.2   4.0 
+smooth_sd[s(cad_dur)1]   1.2    0.7  0.3   1.1   2.1 
+smooth_sd[s(cad_dur)2]   0.9    0.9  0.1   0.7   2.1 
+smooth_sd[s(choleste)1]  2.2    0.8  1.3   2.0   3.3 
+smooth_sd[s(choleste)2]  1.0    1.0  0.1   0.7   2.3 
+
+Fit Diagnostics:
+           mean   sd   10%   50%   90%
+mean_PPD 0.7    0.0  0.6   0.7   0.7  
+
+The mean_ppd is the sample average posterior predictive distribution of the outcome variable (for details see help('summary.stanreg')).
+
+MCMC diagnostics
+                        mcse Rhat n_eff
+(Intercept)             0.0  1.0  4332 
+sex                     0.0  1.0  4564 
+s(age).1                0.0  1.0  3980 
+s(age).2                0.0  1.0  4021 
+s(age).3                0.1  1.0  2013 
+s(age).4                0.0  1.0  3791 
+s(age).5                0.1  1.0  1065 
+s(age).6                0.0  1.0  2904 
+s(age).7                0.0  1.0  1106 
+s(age).8                0.0  1.0  2811 
+s(age).9                0.1  1.0   834 
+s(cad_dur).1            0.0  1.0  3803 
+s(cad_dur).2            0.0  1.0  4427 
+s(cad_dur).3            0.0  1.0  4102 
+s(cad_dur).4            0.0  1.0  4261 
+s(cad_dur).5            0.0  1.0  3532 
+s(cad_dur).6            0.0  1.0  2811 
+s(cad_dur).7            0.0  1.0  3719 
+s(cad_dur).8            0.0  1.0  3638 
+s(cad_dur).9            0.0  1.0  3104 
+s(choleste).1           0.0  1.0  4545 
+s(choleste).2           0.0  1.0  4010 
+s(choleste).3           0.0  1.0  4021 
+s(choleste).4           0.0  1.0  3792 
+s(choleste).5           0.0  1.0  4751 
+s(choleste).6           0.0  1.0  3555 
+s(choleste).7           0.0  1.0  2544 
+s(choleste).8           0.0  1.0  3324 
+s(choleste).9           0.0  1.0  2386 
+smooth_sd[s(age)1]      0.0  1.0  1002 
+smooth_sd[s(age)2]      0.0  1.0  1270 
+smooth_sd[s(cad_dur)1]  0.0  1.0  1944 
+smooth_sd[s(cad_dur)2]  0.0  1.0  4809 
+smooth_sd[s(choleste)1] 0.0  1.0  2106 
+smooth_sd[s(choleste)2] 0.0  1.0  5048 
+mean_PPD                0.0  1.0  4407 
+log-posterior           0.2  1.0   941 
+
+For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure of effective sample size, and Rhat is the potential scale reduction factor on split chains (at convergence Rhat=1).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="fu">pp_check</span>(model_nonlinear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="project_final_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<ul>
+<li>Problems, potential improvements?</li>
+<li>Conclusion of analysis</li>
+</ul>
+</section>
+<section id="lessons-learned" class="level1">
+<h1>Lessons Learned</h1>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb48" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb48-1"><a href="#cb48-1"></a><span class="co">---</span></span>
+<span id="cb48-2"><a href="#cb48-2"></a><span class="an">title:</span><span class="co"> "PROJECT"</span></span>
+<span id="cb48-3"><a href="#cb48-3"></a><span class="an">subtitle:</span><span class="co"> "BLAL BLA BLA"</span></span>
+<span id="cb48-4"><a href="#cb48-4"></a><span class="an">author:</span><span class="co"> anonymous</span></span>
+<span id="cb48-5"><a href="#cb48-5"></a><span class="an">format:</span></span>
+<span id="cb48-6"><a href="#cb48-6"></a><span class="co">  html:</span></span>
+<span id="cb48-7"><a href="#cb48-7"></a><span class="co">    toc: true</span></span>
+<span id="cb48-8"><a href="#cb48-8"></a><span class="co">    code-tools: true</span></span>
+<span id="cb48-9"><a href="#cb48-9"></a><span class="co">    code-line-numbers: true</span></span>
+<span id="cb48-10"><a href="#cb48-10"></a><span class="co">    msainfont: Georgia, serif</span></span>
+<span id="cb48-11"><a href="#cb48-11"></a><span class="co">    page-layout: article</span></span>
+<span id="cb48-12"><a href="#cb48-12"></a><span class="co">  pdf:  </span></span>
+<span id="cb48-13"><a href="#cb48-13"></a><span class="co">    number-sections: true</span></span>
+<span id="cb48-14"><a href="#cb48-14"></a><span class="co">    code-annotations: none</span></span>
+<span id="cb48-15"><a href="#cb48-15"></a><span class="an">editor:</span><span class="co"> source</span></span>
+<span id="cb48-16"><a href="#cb48-16"></a><span class="co">---</span></span>
+<span id="cb48-17"><a href="#cb48-17"></a></span>
+<span id="cb48-18"><a href="#cb48-18"></a>:::: {.content-hidden when-format="pdf"}</span>
+<span id="cb48-19"><a href="#cb48-19"></a>::: {.callout-warning collapse=false}</span>
+<span id="cb48-20"><a href="#cb48-20"></a> </span>
+<span id="cb48-21"><a href="#cb48-21"></a><span class="fu">## Setup</span></span>
+<span id="cb48-22"><a href="#cb48-22"></a></span>
+<span id="cb48-23"><a href="#cb48-23"></a>Install packages:</span>
+<span id="cb48-24"><a href="#cb48-24"></a></span>
+<span id="cb48-27"><a href="#cb48-27"></a><span class="in">```{r}</span></span>
+<span id="cb48-28"><a href="#cb48-28"></a><span class="co">#| label: Setup</span></span>
+<span id="cb48-29"><a href="#cb48-29"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"higgi13425/medicaldata"</span>)</span>
+<span id="cb48-30"><a href="#cb48-30"></a><span class="fu">library</span>(medicaldata)</span>
+<span id="cb48-31"><a href="#cb48-31"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb48-32"><a href="#cb48-32"></a><span class="fu">library</span>(brms)</span>
+<span id="cb48-33"><a href="#cb48-33"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb48-34"><a href="#cb48-34"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb48-35"><a href="#cb48-35"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb48-36"><a href="#cb48-36"></a><span class="fu">library</span>(loo)</span>
+<span id="cb48-37"><a href="#cb48-37"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb48-38"><a href="#cb48-38"></a><span class="fu">library</span>(caret)</span>
+<span id="cb48-39"><a href="#cb48-39"></a><span class="co"># library(RColorBrewer)</span></span>
+<span id="cb48-40"><a href="#cb48-40"></a><span class="co"># library(gridExtra)</span></span>
+<span id="cb48-41"><a href="#cb48-41"></a><span class="co"># library(grid)</span></span>
+<span id="cb48-42"><a href="#cb48-42"></a><span class="in">```</span></span>
+<span id="cb48-43"><a href="#cb48-43"></a></span>
+<span id="cb48-44"><a href="#cb48-44"></a>Import the data:</span>
+<span id="cb48-45"><a href="#cb48-45"></a></span>
+<span id="cb48-48"><a href="#cb48-48"></a><span class="in">```{r}</span></span>
+<span id="cb48-49"><a href="#cb48-49"></a><span class="co">#| label: Importing data</span></span>
+<span id="cb48-50"><a href="#cb48-50"></a>cath <span class="ot">&lt;-</span> medicaldata<span class="sc">::</span>cath</span>
+<span id="cb48-51"><a href="#cb48-51"></a><span class="in">```</span></span>
+<span id="cb48-52"><a href="#cb48-52"></a></span>
+<span id="cb48-53"><a href="#cb48-53"></a>:::</span>
+<span id="cb48-54"><a href="#cb48-54"></a>::::</span>
+<span id="cb48-55"><a href="#cb48-55"></a></span>
+<span id="cb48-56"><a href="#cb48-56"></a></span>
+<span id="cb48-57"><a href="#cb48-57"></a><span class="fu"># Introduction </span></span>
+<span id="cb48-58"><a href="#cb48-58"></a></span>
+<span id="cb48-59"><a href="#cb48-59"></a><span class="ss">- </span>Background</span>
+<span id="cb48-60"><a href="#cb48-60"></a><span class="ss">- </span>Problem formulation/scope</span>
+<span id="cb48-61"><a href="#cb48-61"></a><span class="ss">- </span>Main modeling idea</span>
+<span id="cb48-62"><a href="#cb48-62"></a><span class="ss">- </span>Some picture of the data?</span>
+<span id="cb48-63"><a href="#cb48-63"></a></span>
+<span id="cb48-64"><a href="#cb48-64"></a><span class="fu"># Data Desctription</span></span>
+<span id="cb48-65"><a href="#cb48-65"></a></span>
+<span id="cb48-66"><a href="#cb48-66"></a><span class="ss">- </span>Dataset:</span>
+<span id="cb48-67"><a href="#cb48-67"></a></span>
+<span id="cb48-70"><a href="#cb48-70"></a><span class="in">```{r}</span></span>
+<span id="cb48-71"><a href="#cb48-71"></a><span class="co">#| label: Data description</span></span>
+<span id="cb48-72"><a href="#cb48-72"></a><span class="co">#| echo: false</span></span>
+<span id="cb48-73"><a href="#cb48-73"></a><span class="co">#| message: false</span></span>
+<span id="cb48-74"><a href="#cb48-74"></a><span class="co">#| warning: false</span></span>
+<span id="cb48-75"><a href="#cb48-75"></a><span class="co">#| output: asis</span></span>
+<span id="cb48-76"><a href="#cb48-76"></a></span>
+<span id="cb48-77"><a href="#cb48-77"></a>cath_dims <span class="ot">&lt;-</span> <span class="fu">dim</span>(cath)</span>
+<span id="cb48-78"><a href="#cb48-78"></a><span class="fu">cat</span>(<span class="st">"Number of variables: "</span>, cath_dims[<span class="dv">2</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb48-79"><a href="#cb48-79"></a><span class="fu">cat</span>(<span class="st">"Number of observations: "</span>, cath_dims[<span class="dv">1</span>])</span>
+<span id="cb48-80"><a href="#cb48-80"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(cath))</span>
+<span id="cb48-81"><a href="#cb48-81"></a><span class="in">```</span></span>
+<span id="cb48-82"><a href="#cb48-82"></a></span>
+<span id="cb48-83"><a href="#cb48-83"></a>Histograms and barplot of the explanatory variables:</span>
+<span id="cb48-84"><a href="#cb48-84"></a></span>
+<span id="cb48-87"><a href="#cb48-87"></a><span class="in">```{r}</span></span>
+<span id="cb48-88"><a href="#cb48-88"></a><span class="co">#| label: Univariate analysis part 1</span></span>
+<span id="cb48-89"><a href="#cb48-89"></a><span class="co">#| echo: false</span></span>
+<span id="cb48-90"><a href="#cb48-90"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 1</span></span>
+<span id="cb48-91"><a href="#cb48-91"></a></span>
+<span id="cb48-92"><a href="#cb48-92"></a>variable_names <span class="ot">=</span> <span class="fu">names</span>(cath)</span>
+<span id="cb48-93"><a href="#cb48-93"></a></span>
+<span id="cb48-94"><a href="#cb48-94"></a>colors <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"#F4CAE4"</span>, <span class="st">"#E6F5C9"</span>)</span>
+<span id="cb48-95"><a href="#cb48-95"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>))</span>
+<span id="cb48-96"><a href="#cb48-96"></a><span class="fu">barplot</span>(<span class="fu">table</span>(cath[,<span class="dv">1</span>]), <span class="at">main =</span> variable_names[<span class="dv">1</span>], </span>
+<span id="cb48-97"><a href="#cb48-97"></a>  <span class="at">xlab =</span> variable_names[<span class="dv">1</span>], <span class="at">col =</span> colors[<span class="dv">1</span>])</span>
+<span id="cb48-98"><a href="#cb48-98"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb48-99"><a href="#cb48-99"></a>  <span class="fu">hist</span>(cath[[i]], <span class="at">main =</span> variable_names[i], </span>
+<span id="cb48-100"><a href="#cb48-100"></a>    <span class="at">xlab =</span> variable_names[i], <span class="at">col =</span> colors[<span class="dv">1</span>])</span>
+<span id="cb48-101"><a href="#cb48-101"></a>}</span>
+<span id="cb48-102"><a href="#cb48-102"></a></span>
+<span id="cb48-103"><a href="#cb48-103"></a><span class="in">```</span></span>
+<span id="cb48-104"><a href="#cb48-104"></a></span>
+<span id="cb48-105"><a href="#cb48-105"></a>Barplots of the responsive variables:</span>
+<span id="cb48-106"><a href="#cb48-106"></a></span>
+<span id="cb48-109"><a href="#cb48-109"></a><span class="in">```{r}</span></span>
+<span id="cb48-110"><a href="#cb48-110"></a><span class="co">#| label: Univariate analysis part 2</span></span>
+<span id="cb48-111"><a href="#cb48-111"></a><span class="co">#| echo: false</span></span>
+<span id="cb48-112"><a href="#cb48-112"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 2</span></span>
+<span id="cb48-113"><a href="#cb48-113"></a></span>
+<span id="cb48-114"><a href="#cb48-114"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb48-115"><a href="#cb48-115"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>){</span>
+<span id="cb48-116"><a href="#cb48-116"></a>  <span class="fu">barplot</span>(<span class="fu">table</span>(cath[,i]), <span class="at">main =</span> variable_names[i], </span>
+<span id="cb48-117"><a href="#cb48-117"></a>    <span class="at">xlab =</span> variable_names[i], <span class="at">col =</span> colors[<span class="dv">2</span>])</span>
+<span id="cb48-118"><a href="#cb48-118"></a>}</span>
+<span id="cb48-119"><a href="#cb48-119"></a><span class="in">```</span></span>
+<span id="cb48-120"><a href="#cb48-120"></a></span>
+<span id="cb48-121"><a href="#cb48-121"></a>Explanation on data preprocessing (removing NA rows, scaling variables, removing tvdlm etc.)</span>
+<span id="cb48-122"><a href="#cb48-122"></a></span>
+<span id="cb48-125"><a href="#cb48-125"></a><span class="in">```{r}</span></span>
+<span id="cb48-126"><a href="#cb48-126"></a><span class="co">#| label: Data preprocessing</span></span>
+<span id="cb48-127"><a href="#cb48-127"></a><span class="co">#| echo: false</span></span>
+<span id="cb48-128"><a href="#cb48-128"></a><span class="co">#| warning: false</span></span>
+<span id="cb48-129"><a href="#cb48-129"></a><span class="co">#| message: false</span></span>
+<span id="cb48-130"><a href="#cb48-130"></a></span>
+<span id="cb48-131"><a href="#cb48-131"></a><span class="co"># Remove tvdlm column</span></span>
+<span id="cb48-132"><a href="#cb48-132"></a><span class="co"># Remove rows with at least one NA value</span></span>
+<span id="cb48-133"><a href="#cb48-133"></a>cath <span class="ot">&lt;-</span> cath <span class="sc">%&gt;%</span></span>
+<span id="cb48-134"><a href="#cb48-134"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb48-135"><a href="#cb48-135"></a>  <span class="fu">select</span>(<span class="sc">-</span>tvdlm)</span>
+<span id="cb48-136"><a href="#cb48-136"></a></span>
+<span id="cb48-137"><a href="#cb48-137"></a><span class="co"># Scale the variables</span></span>
+<span id="cb48-138"><a href="#cb48-138"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(cath)<span class="sc">-</span><span class="dv">2</span>)){</span>
+<span id="cb48-139"><a href="#cb48-139"></a>    cath[i] <span class="ot">&lt;-</span> <span class="fu">scale</span>(cath[i])</span>
+<span id="cb48-140"><a href="#cb48-140"></a>}</span>
+<span id="cb48-141"><a href="#cb48-141"></a></span>
+<span id="cb48-142"><a href="#cb48-142"></a><span class="co"># Print out dimensions after preprocessing</span></span>
+<span id="cb48-143"><a href="#cb48-143"></a>cath_dims <span class="ot">&lt;-</span> <span class="fu">dim</span>(cath)</span>
+<span id="cb48-144"><a href="#cb48-144"></a>expl_var <span class="ot">&lt;-</span> cath_dims[<span class="dv">2</span>]<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb48-145"><a href="#cb48-145"></a>n_obs <span class="ot">&lt;-</span> cath_dims[<span class="dv">1</span>]</span>
+<span id="cb48-146"><a href="#cb48-146"></a><span class="fu">cat</span>(<span class="st">"After preprocessing we have:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb48-147"><a href="#cb48-147"></a><span class="fu">cat</span>(<span class="st">"Number of predictive variables: "</span>, expl_var, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb48-148"><a href="#cb48-148"></a><span class="fu">cat</span>(<span class="st">"Number of observations: "</span>, n_obs)</span>
+<span id="cb48-149"><a href="#cb48-149"></a><span class="in">```</span></span>
+<span id="cb48-150"><a href="#cb48-150"></a></span>
+<span id="cb48-151"><a href="#cb48-151"></a><span class="ss">- </span>Histograms</span>
+<span id="cb48-152"><a href="#cb48-152"></a><span class="ss">- </span>Correlations</span>
+<span id="cb48-153"><a href="#cb48-153"></a><span class="ss">- </span>Has it been used in previous studies?</span>
+<span id="cb48-154"><a href="#cb48-154"></a></span>
+<span id="cb48-155"><a href="#cb48-155"></a>Bivariate correlations:</span>
+<span id="cb48-156"><a href="#cb48-156"></a></span>
+<span id="cb48-159"><a href="#cb48-159"></a><span class="in">```{r}</span></span>
+<span id="cb48-160"><a href="#cb48-160"></a><span class="co">#| label: Bivariate analysis</span></span>
+<span id="cb48-161"><a href="#cb48-161"></a><span class="co">#| echo: false</span></span>
+<span id="cb48-162"><a href="#cb48-162"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 3</span></span>
+<span id="cb48-163"><a href="#cb48-163"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(cath)</span>
+<span id="cb48-164"><a href="#cb48-164"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb48-165"><a href="#cb48-165"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(cath[, <span class="fu">c</span>(p,<span class="dv">1</span><span class="sc">:</span>(p<span class="dv">-1</span>))]), <span class="at">type =</span> <span class="st">"full"</span>, <span class="at">method =</span> <span class="st">"number"</span>)</span>
+<span id="cb48-166"><a href="#cb48-166"></a><span class="in">```</span></span>
+<span id="cb48-167"><a href="#cb48-167"></a></span>
+<span id="cb48-168"><a href="#cb48-168"></a>Seems that sex and age have the most significant bivariate correlation to the responsive variable sigdz.</span>
+<span id="cb48-169"><a href="#cb48-169"></a></span>
+<span id="cb48-170"><a href="#cb48-170"></a><span class="fu"># Mathematical Model</span></span>
+<span id="cb48-171"><a href="#cb48-171"></a></span>
+<span id="cb48-172"><a href="#cb48-172"></a><span class="ss">- </span>Bayesian logistic regression</span>
+<span id="cb48-173"><a href="#cb48-173"></a><span class="ss">- </span>Likelihood</span>
+<span id="cb48-174"><a href="#cb48-174"></a><span class="ss">- </span>Priors</span>
+<span id="cb48-175"><a href="#cb48-175"></a><span class="ss">- </span>Posteriors</span>
+<span id="cb48-176"><a href="#cb48-176"></a></span>
+<span id="cb48-177"><a href="#cb48-177"></a>Motivation: </span>
+<span id="cb48-178"><a href="#cb48-178"></a><span class="ss">  - </span>Logistic regression gives the estimate of event probability. </span>
+<span id="cb48-179"><a href="#cb48-179"></a><span class="ss">  - </span>Bayesian logistic regression gives also estimate on the *uncertainty* of the predicted probability OR the model itself.</span>
+<span id="cb48-180"><a href="#cb48-180"></a></span>
+<span id="cb48-181"><a href="#cb48-181"></a>Probability of success: $P(y=1) = Sigmoid(w^Tx+b)$</span>
+<span id="cb48-182"><a href="#cb48-182"></a><span class="ss">  - </span>Sigmoid maps the output to interval <span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span></span>
+<span id="cb48-183"><a href="#cb48-183"></a></span>
+<span id="cb48-184"><a href="#cb48-184"></a>Bayesian approach: </span>
+<span id="cb48-185"><a href="#cb48-185"></a><span class="ss">  - </span>Instead of learning the weights, we learn the *distribution of the weights*: $P(y=1|w) = Sigmoid(w^Tx+b)$</span>
+<span id="cb48-186"><a href="#cb48-186"></a></span>
+<span id="cb48-187"><a href="#cb48-187"></a>For M = 'r expl_var' variables and N = 'r n_obs'. Then:</span>
+<span id="cb48-188"><a href="#cb48-188"></a></span>
+<span id="cb48-189"><a href="#cb48-189"></a>  For each variable ($j = 1,...,M$), the **prior** is $w_j \sim prior(w_j)$</span>
+<span id="cb48-190"><a href="#cb48-190"></a>    $\rightarrow$ We define the prior to the **weights** of each variable</span>
+<span id="cb48-191"><a href="#cb48-191"></a>  </span>
+<span id="cb48-192"><a href="#cb48-192"></a>  For each datapoint $x_i$ and outcome $y_i$ ($i=1,...,N$): </span>
+<span id="cb48-193"><a href="#cb48-193"></a>    $\epsilon_i = Sigmoid(w^Tx_i+b)$</span>
+<span id="cb48-194"><a href="#cb48-194"></a>    $y_i \sim Bernoulli(\epsilon_i)$</span>
+<span id="cb48-195"><a href="#cb48-195"></a></span>
+<span id="cb48-196"><a href="#cb48-196"></a></span>
+<span id="cb48-197"><a href="#cb48-197"></a><span class="fu"># Model Definitions and Implementation</span></span>
+<span id="cb48-198"><a href="#cb48-198"></a></span>
+<span id="cb48-199"><a href="#cb48-199"></a><span class="ss">- </span>Tie mathematical model to our implementation</span>
+<span id="cb48-200"><a href="#cb48-200"></a><span class="ss">- </span>Ndraws, warmup, etc.</span>
+<span id="cb48-201"><a href="#cb48-201"></a></span>
+<span id="cb48-202"><a href="#cb48-202"></a>Linear model:</span>
+<span id="cb48-203"><a href="#cb48-203"></a></span>
+<span id="cb48-206"><a href="#cb48-206"></a><span class="in">```{r}</span></span>
+<span id="cb48-207"><a href="#cb48-207"></a><span class="co"># Make response variable a factor</span></span>
+<span id="cb48-208"><a href="#cb48-208"></a>cath<span class="sc">$</span>sigdz <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(cath<span class="sc">$</span>sigdz)</span>
+<span id="cb48-209"><a href="#cb48-209"></a></span>
+<span id="cb48-210"><a href="#cb48-210"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(sigdz <span class="sc">~</span> . <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>cath)</span>
+<span id="cb48-211"><a href="#cb48-211"></a>y <span class="ot">&lt;-</span> cath<span class="sc">$</span>sigdz</span>
+<span id="cb48-212"><a href="#cb48-212"></a></span>
+<span id="cb48-213"><a href="#cb48-213"></a><span class="co"># Formula</span></span>
+<span id="cb48-214"><a href="#cb48-214"></a>formula_linear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> cad_dur <span class="sc">+</span> choleste)</span>
+<span id="cb48-215"><a href="#cb48-215"></a></span>
+<span id="cb48-216"><a href="#cb48-216"></a><span class="co"># Prior</span></span>
+<span id="cb48-217"><a href="#cb48-217"></a>prior_linear <span class="ot">&lt;-</span> <span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">3</span>, <span class="at">location =</span> <span class="dv">0</span>, <span class="at">scale =</span> <span class="fl">2.5</span>)</span>
+<span id="cb48-218"><a href="#cb48-218"></a></span>
+<span id="cb48-219"><a href="#cb48-219"></a><span class="co"># The model</span></span>
+<span id="cb48-220"><a href="#cb48-220"></a><span class="co"># linear_model &lt;- stan_glm(formula_linear, data = cath,</span></span>
+<span id="cb48-221"><a href="#cb48-221"></a><span class="co">#                  family = binomial(link = "logit"), </span></span>
+<span id="cb48-222"><a href="#cb48-222"></a><span class="co">#                  prior = prior_linear, prior_intercept = prior_linear, QR=TRUE,</span></span>
+<span id="cb48-223"><a href="#cb48-223"></a><span class="co">#                  refresh=0)</span></span>
+<span id="cb48-224"><a href="#cb48-224"></a></span>
+<span id="cb48-225"><a href="#cb48-225"></a><span class="co"># saveRDS(linear_model, file = "./additional_files/model_linear.rds")</span></span>
+<span id="cb48-226"><a href="#cb48-226"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_linear.rds"</span>)                </span>
+<span id="cb48-227"><a href="#cb48-227"></a><span class="in">```</span></span>
+<span id="cb48-228"><a href="#cb48-228"></a></span>
+<span id="cb48-229"><a href="#cb48-229"></a></span>
+<span id="cb48-230"><a href="#cb48-230"></a>Nonlinear model:</span>
+<span id="cb48-231"><a href="#cb48-231"></a></span>
+<span id="cb48-234"><a href="#cb48-234"></a><span class="in">```{r}</span></span>
+<span id="cb48-235"><a href="#cb48-235"></a><span class="co"># Formula</span></span>
+<span id="cb48-236"><a href="#cb48-236"></a>formula_nonlinear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(cad_dur) <span class="sc">+</span> <span class="fu">s</span>(choleste))</span>
+<span id="cb48-237"><a href="#cb48-237"></a></span>
+<span id="cb48-238"><a href="#cb48-238"></a><span class="co"># model_nonlinear &lt;- stan_gamm4(</span></span>
+<span id="cb48-239"><a href="#cb48-239"></a><span class="co">#   formula_nonlinear, data = cath,</span></span>
+<span id="cb48-240"><a href="#cb48-240"></a><span class="co">#   family = binomial(link = "logit")</span></span>
+<span id="cb48-241"><a href="#cb48-241"></a><span class="co"># )</span></span>
+<span id="cb48-242"><a href="#cb48-242"></a></span>
+<span id="cb48-243"><a href="#cb48-243"></a><span class="co"># saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")</span></span>
+<span id="cb48-244"><a href="#cb48-244"></a>model_nonlinear <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_nonlinear.rds"</span>)</span>
+<span id="cb48-245"><a href="#cb48-245"></a><span class="in">```</span></span>
+<span id="cb48-246"><a href="#cb48-246"></a></span>
+<span id="cb48-247"><a href="#cb48-247"></a><span class="fu"># Model Evaluation</span></span>
+<span id="cb48-248"><a href="#cb48-248"></a><span class="ss">- </span>Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy</span>
+<span id="cb48-249"><a href="#cb48-249"></a><span class="ss">- </span>Prior sensitivity analysis</span>
+<span id="cb48-250"><a href="#cb48-250"></a></span>
+<span id="cb48-251"><a href="#cb48-251"></a>Nonlinear model:</span>
+<span id="cb48-252"><a href="#cb48-252"></a></span>
+<span id="cb48-255"><a href="#cb48-255"></a><span class="in">```{r}</span></span>
+<span id="cb48-256"><a href="#cb48-256"></a><span class="fu">summary</span>(model_nonlinear)</span>
+<span id="cb48-257"><a href="#cb48-257"></a><span class="fu">pp_check</span>(model_nonlinear)</span>
+<span id="cb48-258"><a href="#cb48-258"></a><span class="in">```</span></span>
+<span id="cb48-259"><a href="#cb48-259"></a></span>
+<span id="cb48-260"><a href="#cb48-260"></a><span class="fu"># Discussion</span></span>
+<span id="cb48-261"><a href="#cb48-261"></a><span class="ss">- </span>Problems, potential improvements?</span>
+<span id="cb48-262"><a href="#cb48-262"></a><span class="ss">- </span>Conclusion of analysis</span>
+<span id="cb48-263"><a href="#cb48-263"></a></span>
+<span id="cb48-264"><a href="#cb48-264"></a><span class="fu"># Lessons Learned</span></span>
+<span id="cb48-265"><a href="#cb48-265"></a></span>
+<span id="cb48-266"><a href="#cb48-266"></a></span>
+<span id="cb48-267"><a href="#cb48-267"></a><span class="fu"># References</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+</body></html>
