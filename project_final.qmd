@@ -1,0 +1,76 @@
+---
+title: "PROJECT"
+subtitle: "BLAL BLA BLA"
+author: anonymous
+format:
+  html:
+    toc: true
+    code-tools: true
+    code-line-numbers: true
+    mainfont: Georgia, serif
+    page-layout: article
+  pdf:  
+    number-sections: true
+    code-annotations: none
+editor: source
+---
+
+:::: {.content-hidden when-format="pdf"}
+::: {.callout-warning collapse=false}
+ 
+## Setup
+
+```{r}
+
+```
+
+:::
+::::
+
+
+# Introduction 
+
+- Background
+- Problem formulation/scope
+- Main modeling idea
+
+
+# Data Desctription
+
+- Data set
+- Histograms
+- Correlations
+- Has it been used in previous studies?
+
+
+# Mathematical Model
+
+- Bayesian logistic regression
+- Likelihood
+- Priors
+- Posteriors
+
+
+# Model Definitions and Implementation
+
+- Tie mathematical model to our implementation
+- Ndraws, warmup, etc.
+```{r}
+# model code
+```
+
+
+# Model Evaluation
+- Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
+- Prior sensitivity analysis
+
+
+# Discussion
+- Problems, potential improvements?
+- Conclusion of analysis
+
+# Lessons Learned
+
+
+# References
+
