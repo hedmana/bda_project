@@ -67,15 +67,30 @@ cath <- medicaldata::cath
 head(cath)
 ```
 
-Histograms and barplots of the variables:
+Histograms and barplot of the explanatory variables:
 
 ```{r}
-#| label: Univariate analysis
+#| label: Univariate analysis part 1
 #| echo: false
-par(mfrow=c(1,4))
-barplot(table(cath[,1]))
+
+variable_names = names(cath)
+par(mfrow = c(1,4))
+barplot(table(cath[,1]), main = variable_names[1])
 for(i in 2:4){
-  hist(cath[,i])
+  hist(cath[,i], main = variable_names[i])
+}
+
+```
+
+Barplots of the responsive variables:
+
+```{r}
+#| label: Univariate analysis part 2
+#| echo: false
+
+par(mfrow = c(1,2))
+for(i in 5:6){
+  barplot(table(cath[,i]), main = variable_names[i])
 }
 ```
 
