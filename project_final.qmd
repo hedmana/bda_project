@@ -75,9 +75,9 @@ Histograms and barplot of the explanatory variables:
 
 variable_names = names(cath)
 par(mfrow = c(1,4))
-barplot(table(cath[,1]), main = variable_names[1])
+barplot(table(cath[[1]]), main = variable_names[1])
 for(i in 2:4){
-  hist(cath[,i], main = variable_names[i])
+  hist(cath[[i]], main = variable_names[i])
 }
 
 ```
@@ -94,7 +94,7 @@ for(i in 5:6){
 }
 ```
 
-Explanation on data preprocessing (removing NA rows, scaling variables etc.)
+Explanation on data preprocessing (removing NA rows, scaling variables, removing tvdlm etc.)
 
 ```{r}
 #| label: Data preprocessing
@@ -102,6 +102,7 @@ Explanation on data preprocessing (removing NA rows, scaling variables etc.)
 #| warning: false
 #| message: false
 
+# Remove tvdlm column
 # Remove rows with at least one NA value
 cath <- cath %>%
   na.omit() %>%
@@ -114,7 +115,6 @@ for (i in 1:(ncol(cath)-2)){
 
 # Make response variable a factor
 cath$sigdz <- as.factor(cath$sigdz)
-
 
 ```
 
