@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-12-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This report examines the predictive performance of two bayesian models: a generalized linear model (GLM) and a non-linear additive model.
+
+## The generalized linear model and priors
+
+For the binary response variable $y$, the likelihood for the binomial GLM can be written as a conditionally binomial PMF.
+
+$$\binom{n}{y} \pi (1 - \pi)^{n-y},$$
+
+where n is the number of patients enrolled in the study, $\pi = g^{-1}(\eta)$ is the probability of success (patient presenting with significant coronary disease) and $\eta = \alpha + x^{T} \beta$ is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.
+
+The link function $g$ maps the probability $\pi$ between the unit interval and the set of real numbers $\mathbb{R}$, and when applying the inverse link function to the linear predictor $\eta H$ the output will be a valid probability between 0 and 1.
+
+This project utilizes the logit link function for the GLM, which makes it a logistic regression model. The likelihood expressed with the logit link function $g(x) = \text{ln}(\frac{x}{1-x})$ for a single observation can be written as:
+
+$$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1})^{n-y}$$
+
+Priors are set for the intercept and vector of regression coefficients, $\alpha$ and $\beta$.
+
+$$
+\alpha \sim 
+$$
+
+The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.
+
+## The additive non-linear model
+
+The additive non-linear model on the other hand combines multiple functions in a way that isn't strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the non-linear model uses the same link function, and the logistic regression model can be written as:
+
+$\text{logit} (\pi_i) = \beta_0 + f_1(x_1) + f_2(x_2) ... f_n(x_n),$
+
+where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, they're smooth functions that utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.
