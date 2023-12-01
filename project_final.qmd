@@ -38,6 +38,7 @@ library(MASS)
 # library(RColorBrewer)
 library(gridExtra)
 library(grid)
+seed = 1234
 ```
 
 Import the data:
@@ -178,7 +179,9 @@ $$
 \alpha &\sim t_v(\mu, \sigma^2) \\
 \beta_k &\sim t_v(\mu, \sigma^2) \\
 \end{aligned}
-$$ where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
+$$ 
+
+where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
 
 The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.
 
@@ -186,7 +189,9 @@ The intercept and the regression coefficients are believed to be as likely posit
 
 The additive non-linear model on the other hand combines multiple functions in a way that isn't strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the non-linear model uses the same link function, and the logistic regression model can be written as:
 
-$$\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),$$
+$$
+\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),
+$$
 
 where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, all functions are smooth functions except $f_{age}$, which would only be the variable itself. The smooth functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.nThe smooth function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
 
@@ -204,7 +209,7 @@ $$
 ## Linear model
 
 ```{r}
-#| label: Linear model definition
+#| label: Linear-model-definition
 #| warning: false
 #| message: false
 
@@ -221,13 +226,13 @@ formula_linear <- formula(sigdz ~ sex + age + cad_dur + choleste)
 prior_linear <- student_t(df = 3, location = 0, scale = 2.5)
 
 # The model
-# model_linear <- stan_glm(formula_linear, data = cath,
-#                  family = binomial(link = "logit"), 
-#                  prior = prior_linear, prior_intercept = prior_linear, QR=TRUE,
-#                  refresh=0)
+model_linear <- stan_glm(formula_linear, data = cath,
+                 family = binomial(link = "logit"), 
+                 prior = prior_linear, prior_intercept = prior_linear,
+                  QR=TRUE, refresh=0)
 
 # saveRDS(model_linear, file = "./additional_files/model_linear.rds")
-model_linear <- readRDS("./additional_files/model_linear.rds")                
+# model_linear <- readRDS("./additional_files/model_linear.rds")                
 ```
 
 ## Nonlinear model
@@ -241,18 +246,21 @@ model_linear <- readRDS("./additional_files/model_linear.rds")
 formula_nonlinear <- formula(sigdz ~ sex + s(age) + s(cad_dur) + s(choleste))
 
 # Model definition
-# model_nonlinear <- stan_gamm4(
-#   formula_nonlinear, data = cath,
-#   family = binomial(link = "logit"),
-#   prior = prior_linear, prior_intercept = prior_linear,
-#   refresh = 0
-# )
+model_nonlinear <- stan_gamm4(
+  formula_nonlinear, data = cath,
+  family = binomial(link = "logit"),
+  prior = prior_linear, prior_intercept = prior_linear,
+  iter = 4000, warmup = 2000, refresh = 0
+)
 
 # saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")
-model_nonlinear <- readRDS("./additional_files/model_nonlinear.rds")
+# model_nonlinear <- readRDS("./additional_files/model_nonlinear.rds")
 ```
 
 # Model Evaluation
+
+After fitting the models, multiple evaluation metrics such as $\hat{R}$, effective sample size (ESS) and number of divergent transitions are used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV). 
+
 
 -   Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
 -   Prior sensitivity analysis
@@ -262,7 +270,9 @@ model_nonlinear <- readRDS("./additional_files/model_nonlinear.rds")
 ```{r}
 #| label: Linear model - Posterior predictive check
 summary(model_linear)
-pp_check(model_linear)
+model_linear$stan_summary[, "Rhat"] %>% round(3)
+
+brms::pp_check(model_linear)
 ```
 
 Nonlinear model:
