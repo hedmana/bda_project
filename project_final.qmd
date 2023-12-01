@@ -153,13 +153,7 @@ Seems that sex and age have the most significant bivariate correlation to the re
 
 # Mathematical Model
 
-To-be-done still: 
--   Check likelihood notation for non-linear model
--   Prior justification
--   Check prior notations
--   Include priors with own values ? 
--   Posteriors ? 
-
+To-be-done still: - Check likelihood notation for non-linear model - Prior justification - Check prior notations - Include priors with own values ? - Posteriors ?
 
 ## The generalized linear model and priors
 
@@ -202,10 +196,21 @@ $$
 
 # Model Definitions and Implementation
 
--   Tie mathematical model to our implementation
+TO DO:
+-   Explain in more detail what stan_glm and stan_gamm4 do
 -   Ndraws, warmup, etc.
+-   check if line 218 is necessary (x <- model.matrix(sigdz ~ . - 1, data=cath))
+    IF NOT: --> remove commented code
+
+The linear and non-linear stan models are implemented with the rstanarm package functions as described below. Both models were implemented with identical number of chains, draws and warm-up. The default values (chains = 4, draws = 4000, and warmup = 2000) were used in both cases.
 
 ## Linear model
+
+The linear model was implemented with the help of the `stan_glm` function from the rstanarm package and defined to a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`. 
+
+The linear relationship between the response variable `sigdz` and the explanatory variables are defined with the help of the `formula` function and the prior for the regression coefficients and intercept with the help of the `student_t` function. 
+
+
 
 ```{r}
 #| label: Linear model definition
@@ -215,7 +220,7 @@ $$
 # Make response variable a factor
 cath$sigdz <- as.factor(cath$sigdz)
 
-x <- model.matrix(sigdz ~ . - 1, data=cath)
+#x <- model.matrix(sigdz ~ . - 1, data=cath)
 y <- cath$sigdz
 
 # Formula
@@ -236,6 +241,12 @@ model_linear <- readRDS("./additional_files/model_linear.rds")
 
 ## Nonlinear model
 
+The non-linear model is simliarly implemented `stan_gamm4` function from the rstanarm package and defined to a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`. 
+
+The non-linear relationship between the response variable `sigdz` and the explanatory variables is again defined with the help of the `formula` function. This time, passing the smooth function `s()` for all continuous explanatory variables, to allow for more complexity in the model, while simultaneously penalizing over-fitting of the model with the the thin plate regression splines smoothness.  
+
+The same priors are used as for the linear model for both the intercept and the regression coefficients.
+
 ```{r}
 #| label: Nonlinear model definition
 #| warning: false
@@ -255,6 +266,7 @@ formula_nonlinear <- formula(sigdz ~ sex + s(age) + s(cad_dur) + s(choleste))
 # saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")
 model_nonlinear <- readRDS("./additional_files/model_nonlinear.rds")
 ```
+
 
 # Model Evaluation
 
