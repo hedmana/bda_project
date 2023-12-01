@@ -84,9 +84,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#data-desctription" id="toc-data-desctription" class="nav-link" data-scroll-target="#data-desctription">Data Desctription</a></li>
-  <li><a href="#mathematical-model" id="toc-mathematical-model" class="nav-link" data-scroll-target="#mathematical-model">Mathematical Model</a></li>
-  <li><a href="#model-definitions-and-implementation" id="toc-model-definitions-and-implementation" class="nav-link" data-scroll-target="#model-definitions-and-implementation">Model Definitions and Implementation</a></li>
-  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a></li>
+  <li><a href="#mathematical-model" id="toc-mathematical-model" class="nav-link" data-scroll-target="#mathematical-model">Mathematical Model</a>
+  <ul class="collapse">
+  <li><a href="#the-generalized-linear-model-and-priors" id="toc-the-generalized-linear-model-and-priors" class="nav-link" data-scroll-target="#the-generalized-linear-model-and-priors">The generalized linear model and priors</a></li>
+  <li><a href="#the-additive-non-linear-model" id="toc-the-additive-non-linear-model" class="nav-link" data-scroll-target="#the-additive-non-linear-model">The additive non-linear model</a></li>
+  </ul></li>
+  <li><a href="#model-definitions-and-implementation" id="toc-model-definitions-and-implementation" class="nav-link" data-scroll-target="#model-definitions-and-implementation">Model Definitions and Implementation</a>
+  <ul class="collapse">
+  <li><a href="#linear-model" id="toc-linear-model" class="nav-link" data-scroll-target="#linear-model">Linear model</a></li>
+  <li><a href="#nonlinear-model" id="toc-nonlinear-model" class="nav-link" data-scroll-target="#nonlinear-model">Nonlinear model</a></li>
+  </ul></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#convergence-diagnostics-posterior-predictive-checks" id="toc-convergence-diagnostics-posterior-predictive-checks" class="nav-link" data-scroll-target="#convergence-diagnostics-posterior-predictive-checks">Convergence diagnostics &amp; posterior predictive checks</a></li>
+  <li><a href="#model-comparison-using-loo-cv" id="toc-model-comparison-using-loo-cv" class="nav-link" data-scroll-target="#model-comparison-using-loo-cv">Model comparison using LOO-CV</a></li>
+  <li><a href="#posterior-predictive-performance-classification-accuracy" id="toc-posterior-predictive-performance-classification-accuracy" class="nav-link" data-scroll-target="#posterior-predictive-performance-classification-accuracy">Posterior predictive performance: Classification accuracy</a>
+  <ul class="collapse">
+  <li><a href="#linear-model-1" id="toc-linear-model-1" class="nav-link" data-scroll-target="#linear-model-1">Linear model:</a></li>
+  <li><a href="#nonlinear-model-1" id="toc-nonlinear-model-1" class="nav-link" data-scroll-target="#nonlinear-model-1">Nonlinear model</a></li>
+  <li><a href="#calibration-curves" id="toc-calibration-curves" class="nav-link" data-scroll-target="#calibration-curves">Calibration curves</a></li>
+  </ul></li>
+  </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   <li><a href="#lessons-learned" id="toc-lessons-learned" class="nav-link" data-scroll-target="#lessons-learned">Lessons Learned</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
@@ -247,13 +265,34 @@ Attaching package: 'caret'</code></pre>
 
     compare_models, R2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co"># library(RColorBrewer)</span></span>
-<span id="cb38-2"><a href="#cb38-2"></a><span class="co"># library(gridExtra)</span></span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="co"># library(grid)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">library</span>(splines)</span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="fu">library</span>(MASS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'MASS'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    select</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="co"># library(RColorBrewer)</span></span>
+<span id="cb41-2"><a href="#cb41-2"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'gridExtra'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    combine</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="fu">library</span>(grid)</span>
+<span id="cb44-2"><a href="#cb44-2"></a>seed <span class="ot">=</span> <span class="dv">1234</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Import the data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>cath <span class="ot">&lt;-</span> medicaldata<span class="sc">::</span>cath</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>cath <span class="ot">&lt;-</span> medicaldata<span class="sc">::</span>cath</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -269,129 +308,258 @@ Attaching package: 'caret'</code></pre>
 </section>
 <section id="data-desctription" class="level1">
 <h1>Data Desctription</h1>
+<p>The “cath” dataset used in this report is obtained from Duke University Cardiovascular Disease Databank. It encapsulates a collection of 6 variables (<span class="citation" data-cites="Data-table">@Data-table</span>) that are closely related to cardiovascular health.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>TBD </caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">sex</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">cad_dur</th>
+<th style="text-align: right;">choleste</th>
+<th style="text-align: right;">sigdz</th>
+<th style="text-align: right;">tvdlm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">268</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">245</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">269</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The dataset consists of four explanatory variables (<em>sex</em>, <em>age</em>, <em>cad_dur</em>, <em>choleste</em>) and two response variables (<em>sigdz</em>, <em>tvdlm</em>) that provide an overview on patient demographics, clinical indicators, and critical outcomes related to coronary artery disease:</p>
 <ul>
-<li>Dataset:</li>
+<li><p><strong>Sex</strong> (<em>sex</em>): Categorized as 0 for male and 1 for female, this variable represents the gender distribution within our dataset.</p></li>
+<li><p><strong>Age</strong> (<em>age</em>): Representing the age of patients in years, this variable serves as a demographic feature.</p></li>
+<li><p><strong>Chest Pain Duration</strong> (<em>cad_dur</em>): The duration of chest pain symptoms in days.</p></li>
+<li><p><strong>Serum Cholesterol Level</strong> (<em>choleste</em>): Measured in milligrams per deciliter, serum cholesterol levels are indicative of lipid metabolism and play a crucial role in cardiovascular health.</p></li>
+<li><p><strong>Significant Coronary Disease</strong> (<em>sigdz</em>): A binary variable that captures the presence (1) or absence (0) of at least 75% blockage in one of the major coronary arteries.</p></li>
+<li><p><strong>Three Vessel Disease or Left Main Disease</strong> (<em>tvdlm</em>): Denoting the presence (1) or absence (0) of blockage in either all three coronary vessels or in the left main coronary artery.</p></li>
 </ul>
-<p>Number of variables: 6 Number of observations: 3504::: {.cell-output-display} | sex| age| cad_dur| choleste| sigdz| tvdlm| |—:|—:|——-:|——–:|—–:|—–:| | 0| 73| 132| 268| 1| 1| | 0| 68| 85| 120| 1| 1| | 0| 54| 45| NA| 1| 0| | 1| 58| 86| 245| 0| 0| | 1| 56| 7| 269| 0| 0| | 0| 64| 0| NA| 1| 0| :::</p>
-<p>Histograms and barplot of the explanatory variables:</p>
+<p>The univariate distributions of these variables are visualized in <span class="citation" data-cites="Univariate-analysis">@Univariate-analysis</span>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="project_final_files/figure-html/Univariate%20analysis%20part%201-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="project_final_files/figure-html/Univariate-analysis-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption class="figure-caption">TBD 1</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Barplots of the responsive variables:</p>
+<p>While constructing the Bayesian models to predict the probaility of significant coronary disease, the report strives to utilize the correlation between the explanatory variables (<em>sex</em>, <em>age</em>, <em>cad_dur</em>, <em>choleste</em>) and the desired response variable (<em>sigdz</em>). The <em>tvdlm</em> variable is not relevant in this report as the main focus is to predict the probability of significant coronary disease, independent of the type of the blockade.</p>
+<p>Before the analysis, the data is preprocessed by removing <em>tvdlm</em> column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with <span class="math inline">\(n =\)</span> 2258 observations. The pairwise correlations of variables are described in <span class="citation" data-cites="Bivariate-analysis">@Bivariate-analysis</span>. We can see that sex and age have the most significant bivariate correlation to the responsive variable sigdz.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="project_final_files/figure-html/Univariate%20analysis%20part%202-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">TBD 2</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Explanation on data preprocessing (removing NA rows, scaling variables, removing tvdlm etc.)</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>After preprocessing we have:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Number of predictive variables:  4 </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Number of observations:  2258</code></pre>
-</div>
-</div>
-<ul>
-<li>Histograms</li>
-<li>Correlations</li>
-<li>Has it been used in previous studies?</li>
-</ul>
-<p>Bivariate correlations:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="project_final_files/figure-html/Bivariate%20analysis-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="project_final_files/figure-html/Bivariate-analysis-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption class="figure-caption">TBD 3</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Seems that sex and age have the most significant bivariate correlation to the responsive variable sigdz.</p>
 </section>
 <section id="mathematical-model" class="level1">
 <h1>Mathematical Model</h1>
-<ul>
-<li>Bayesian logistic regression</li>
-<li>Likelihood</li>
-<li>Priors</li>
-<li>Posteriors</li>
-</ul>
-<p>Motivation: - Logistic regression gives the estimate of event probability. - Bayesian logistic regression gives also estimate on the <em>uncertainty</em> of the predicted probability OR the model itself.</p>
-<p>Probability of success: <span class="math inline">\(P(y=1) = Sigmoid(w^Tx+b)\)</span> - Sigmoid maps the output to interval [0, 1]</p>
-<p>Bayesian approach: - Instead of learning the weights, we learn the <em>distribution of the weights</em>: <span class="math inline">\(P(y=1|w) = Sigmoid(w^Tx+b)\)</span></p>
-<p>For M = ‘r expl_var’ variables and N = ‘r n_obs’. Then:</p>
-<p>For each variable (<span class="math inline">\(j = 1,...,M\)</span>), the <strong>prior</strong> is <span class="math inline">\(w_j \sim prior(w_j)\)</span> <span class="math inline">\(\rightarrow\)</span> We define the prior to the <strong>weights</strong> of each variable</p>
-<p>For each datapoint <span class="math inline">\(x_i\)</span> and outcome <span class="math inline">\(y_i\)</span> (<span class="math inline">\(i=1,...,N\)</span>): <span class="math inline">\(\epsilon_i = Sigmoid(w^Tx_i+b)\)</span> <span class="math inline">\(y_i \sim Bernoulli(\epsilon_i)\)</span></p>
+<p>To-be-done still: - Check likelihood notation for non-linear model - Prior justification - Check prior notations - Include priors with own values ? - Posteriors ?</p>
+<section id="the-generalized-linear-model-and-priors" class="level2">
+<h2 class="anchored" data-anchor-id="the-generalized-linear-model-and-priors">The generalized linear model and priors</h2>
+<p>For the binary response variable <span class="math inline">\(y\)</span>, the likelihood for the binomial GLM can be written as a conditionally binomial PMF.</p>
+<p><span class="math display">\[\binom{n}{y} \pi (1 - \pi)^{n-y},\]</span></p>
+<p>where n is the total amount of trials, <span class="math inline">\(\pi = g^{-1}(\eta)\)</span> is the probability of success (patient presenting with significant coronary disease) and <span class="math inline">\(\eta = \alpha + x^{T} \beta\)</span> is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.</p>
+<p>The link function <span class="math inline">\(g\)</span> maps the probability <span class="math inline">\(\pi\)</span> between the unit interval and the set of real numbers <span class="math inline">\(\mathbb{R}\)</span>, and when applying the inverse link function to the linear predictor <span class="math inline">\(\eta H\)</span> the output will be a valid probability between 0 and 1.</p>
+<p>This project utilizes the logit link function for the GLM, which makes it a logistic regression model. The likelihood expressed with the logit link function <span class="math inline">\(g(x) = \text{ln}(\frac{x}{1-x})\)</span> for a single observation can be written as:</p>
+<p><span class="math display">\[\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1})^{n-y}\]</span></p>
+<p>Priors are set for the intercept and vector of regression coefficients <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, from the linear predictor <span class="math inline">\(\eta = \alpha + x^{T} \beta\)</span>,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\alpha &amp;\sim t_v(\mu, \sigma^2) \\
+\beta_k &amp;\sim t_v(\mu, \sigma^2) \\
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(v\)</span> is the degrees of freedom, <span class="math inline">\(\mu\)</span> is the location and <span class="math inline">\(\sigma\)</span> is the scale.</p>
+<p>The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, <span class="math inline">\(\mathcal{N}(0, 1)\)</span>. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.</p>
+</section>
+<section id="the-additive-non-linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-additive-non-linear-model">The additive non-linear model</h2>
+<p>The additive non-linear model on the other hand combines multiple functions in a way that isn’t strictly linear. This allows for a more flexible relationship between the explanatory and response variable <span class="math inline">\(y\)</span>. In this report, the non-linear model uses the same link function, and the logistic regression model can be written as:</p>
+<p><span class="math display">\[
+\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),
+\]</span></p>
+<p>where <span class="math inline">\(f_i\)</span> are non-linear functions that transform the explanatory features individually. In this report, all functions are smooth functions except <span class="math inline">\(f_{age}\)</span>, which would only be the variable itself. The smooth functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.nThe smooth function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).</p>
+<p>The likelihood would then become:</p>
+<p><span class="math display">\[
+\prod_{i = 1}^{N}\text{Bernoulli}(y|\text{logit}^{-1}(\pi_i),  \sigma)
+\]</span></p>
+</section>
 </section>
 <section id="model-definitions-and-implementation" class="level1">
 <h1>Model Definitions and Implementation</h1>
-<ul>
-<li>Tie mathematical model to our implementation</li>
-<li>Ndraws, warmup, etc.</li>
-</ul>
-<p>Linear model:</p>
+<p>TO DO: - Explain in more detail what stan_glm and stan_gamm4 do - check if line 218 is necessary (x &lt;- model.matrix(sigdz ~ . - 1, data=cath)) IF NOT: –&gt; remove commented code</p>
+<p>The linear and non-linear stan models are implemented with the rstanarm package functions as described below. Both models were implemented with identical number of chains, draws and warm-up. The default values (chains = 4, draws = 4000, and warmup = 2000) were used in both cases.</p>
+<section id="linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="linear-model">Linear model</h2>
+<p>The linear model was implemented with the help of the <code>stan_glm</code> function from the rstanarm package and defined to a logistic regression model with the help of the model parameter <code>family = binomial(link = 'logit')</code>.</p>
+<p>The linear relationship between the response variable <code>sigdz</code> and the explanatory variables are defined with the help of the <code>formula</code> function and the prior for the regression coefficients and intercept with the help of the <code>student_t</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co"># Make response variable a factor</span></span>
-<span id="cb43-2"><a href="#cb43-2"></a>cath<span class="sc">$</span>sigdz <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(cath<span class="sc">$</span>sigdz)</span>
-<span id="cb43-3"><a href="#cb43-3"></a></span>
-<span id="cb43-4"><a href="#cb43-4"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(sigdz <span class="sc">~</span> . <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>cath)</span>
-<span id="cb43-5"><a href="#cb43-5"></a>y <span class="ot">&lt;-</span> cath<span class="sc">$</span>sigdz</span>
-<span id="cb43-6"><a href="#cb43-6"></a></span>
-<span id="cb43-7"><a href="#cb43-7"></a><span class="co"># Formula</span></span>
-<span id="cb43-8"><a href="#cb43-8"></a>formula_linear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> cad_dur <span class="sc">+</span> choleste)</span>
-<span id="cb43-9"><a href="#cb43-9"></a></span>
-<span id="cb43-10"><a href="#cb43-10"></a><span class="co"># Prior</span></span>
-<span id="cb43-11"><a href="#cb43-11"></a>prior_linear <span class="ot">&lt;-</span> <span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">3</span>, <span class="at">location =</span> <span class="dv">0</span>, <span class="at">scale =</span> <span class="fl">2.5</span>)</span>
-<span id="cb43-12"><a href="#cb43-12"></a></span>
-<span id="cb43-13"><a href="#cb43-13"></a><span class="co"># The model</span></span>
-<span id="cb43-14"><a href="#cb43-14"></a><span class="co"># linear_model &lt;- stan_glm(formula_linear, data = cath,</span></span>
-<span id="cb43-15"><a href="#cb43-15"></a><span class="co">#                  family = binomial(link = "logit"), </span></span>
-<span id="cb43-16"><a href="#cb43-16"></a><span class="co">#                  prior = prior_linear, prior_intercept = prior_linear, QR=TRUE,</span></span>
-<span id="cb43-17"><a href="#cb43-17"></a><span class="co">#                  refresh=0)</span></span>
-<span id="cb43-18"><a href="#cb43-18"></a></span>
-<span id="cb43-19"><a href="#cb43-19"></a><span class="co"># saveRDS(linear_model, file = "./additional_files/model_linear.rds")</span></span>
-<span id="cb43-20"><a href="#cb43-20"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_linear.rds"</span>)                </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="co"># Make response variable a factor</span></span>
+<span id="cb46-2"><a href="#cb46-2"></a>cath<span class="sc">$</span>sigdz <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(cath<span class="sc">$</span>sigdz)</span>
+<span id="cb46-3"><a href="#cb46-3"></a></span>
+<span id="cb46-4"><a href="#cb46-4"></a><span class="co">#x &lt;- model.matrix(sigdz ~ . - 1, data=cath)</span></span>
+<span id="cb46-5"><a href="#cb46-5"></a>y <span class="ot">&lt;-</span> cath<span class="sc">$</span>sigdz</span>
+<span id="cb46-6"><a href="#cb46-6"></a></span>
+<span id="cb46-7"><a href="#cb46-7"></a><span class="co"># Formula</span></span>
+<span id="cb46-8"><a href="#cb46-8"></a>formula_linear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> cad_dur <span class="sc">+</span> choleste)</span>
+<span id="cb46-9"><a href="#cb46-9"></a></span>
+<span id="cb46-10"><a href="#cb46-10"></a><span class="co"># Prior</span></span>
+<span id="cb46-11"><a href="#cb46-11"></a>prior_linear <span class="ot">&lt;-</span> <span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">3</span>, <span class="at">location =</span> <span class="dv">0</span>, <span class="at">scale =</span> <span class="fl">2.5</span>)</span>
+<span id="cb46-12"><a href="#cb46-12"></a></span>
+<span id="cb46-13"><a href="#cb46-13"></a><span class="co"># The model</span></span>
+<span id="cb46-14"><a href="#cb46-14"></a>model_linear <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(formula_linear, <span class="at">data =</span> cath,</span>
+<span id="cb46-15"><a href="#cb46-15"></a>                 <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb46-16"><a href="#cb46-16"></a>                 <span class="at">prior =</span> prior_linear, <span class="at">prior_intercept =</span> prior_linear,</span>
+<span id="cb46-17"><a href="#cb46-17"></a>                  <span class="at">QR=</span><span class="cn">TRUE</span>, <span class="at">refresh=</span><span class="dv">0</span>)</span>
+<span id="cb46-18"><a href="#cb46-18"></a></span>
+<span id="cb46-19"><a href="#cb46-19"></a><span class="co"># saveRDS(model_linear, file = "./additional_files/model_linear.rds")</span></span>
+<span id="cb46-20"><a href="#cb46-20"></a><span class="co"># model_linear &lt;- readRDS("./additional_files/model_linear.rds")                </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Nonlinear model:</p>
+</section>
+<section id="nonlinear-model" class="level2">
+<h2 class="anchored" data-anchor-id="nonlinear-model">Nonlinear model</h2>
+<p>The non-linear model is simliarly implemented <code>stan_gamm4</code> function from the rstanarm package and defined to a logistic regression model with the help of the model parameter <code>family = binomial(link = 'logit')</code>.</p>
+<p>The non-linear relationship between the response variable <code>sigdz</code> and the explanatory variables is again defined with the help of the <code>formula</code> function. This time, passing the smooth function <code>s()</code> for all continuous explanatory variables, to allow for more complexity in the model, while simultaneously penalizing over-fitting of the model with the the thin plate regression splines smoothness.</p>
+<p>The same priors are used as for the linear model for both the intercept and the regression coefficients.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co"># Formula</span></span>
-<span id="cb44-2"><a href="#cb44-2"></a>formula_nonlinear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(cad_dur) <span class="sc">+</span> <span class="fu">s</span>(choleste))</span>
-<span id="cb44-3"><a href="#cb44-3"></a></span>
-<span id="cb44-4"><a href="#cb44-4"></a><span class="co"># model_nonlinear &lt;- stan_gamm4(</span></span>
-<span id="cb44-5"><a href="#cb44-5"></a><span class="co">#   formula_nonlinear, data = cath,</span></span>
-<span id="cb44-6"><a href="#cb44-6"></a><span class="co">#   family = binomial(link = "logit")</span></span>
-<span id="cb44-7"><a href="#cb44-7"></a><span class="co"># )</span></span>
-<span id="cb44-8"><a href="#cb44-8"></a></span>
-<span id="cb44-9"><a href="#cb44-9"></a><span class="co"># saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")</span></span>
-<span id="cb44-10"><a href="#cb44-10"></a>model_nonlinear <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_nonlinear.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># Formula</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a>formula_nonlinear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(cad_dur) <span class="sc">+</span> <span class="fu">s</span>(choleste))</span>
+<span id="cb47-3"><a href="#cb47-3"></a></span>
+<span id="cb47-4"><a href="#cb47-4"></a><span class="co"># Model definition</span></span>
+<span id="cb47-5"><a href="#cb47-5"></a>model_nonlinear <span class="ot">&lt;-</span> <span class="fu">stan_gamm4</span>(</span>
+<span id="cb47-6"><a href="#cb47-6"></a>  formula_nonlinear, <span class="at">data =</span> cath,</span>
+<span id="cb47-7"><a href="#cb47-7"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb47-8"><a href="#cb47-8"></a>  <span class="at">prior =</span> prior_linear, <span class="at">prior_intercept =</span> prior_linear,</span>
+<span id="cb47-9"><a href="#cb47-9"></a>  <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">warmup =</span> <span class="dv">2000</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb47-10"><a href="#cb47-10"></a>)</span>
+<span id="cb47-11"><a href="#cb47-11"></a></span>
+<span id="cb47-12"><a href="#cb47-12"></a><span class="co"># saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")</span></span>
+<span id="cb47-13"><a href="#cb47-13"></a><span class="co"># model_nonlinear &lt;- readRDS("./additional_files/model_nonlinear.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 </section>
 <section id="model-evaluation" class="level1">
 <h1>Model Evaluation</h1>
+<p>After fitting the models, multiple evaluation metrics such as <span class="math inline">\(\hat{R}\)</span>, effective sample size (ESS) and number of divergent transitions are used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV).</p>
 <ul>
 <li>Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy</li>
 <li>Prior sensitivity analysis</li>
 </ul>
+<section id="convergence-diagnostics-posterior-predictive-checks" class="level2">
+<h2 class="anchored" data-anchor-id="convergence-diagnostics-posterior-predictive-checks">Convergence diagnostics &amp; posterior predictive checks</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="fu">summary</span>(model_linear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model Info:
+ function:     stan_glm
+ family:       binomial [logit]
+ formula:      sigdz ~ sex + age + cad_dur + choleste
+ algorithm:    sampling
+ sample:       4000 (posterior sample size)
+ priors:       see help('prior_summary')
+ observations: 2258
+ predictors:   5
+
+Estimates:
+              mean   sd   10%   50%   90%
+(Intercept)  0.8    0.1  0.7   0.8   0.9 
+sex         -1.0    0.1 -1.0  -1.0  -0.9 
+age          0.7    0.1  0.6   0.7   0.8 
+cad_dur     -0.1    0.1 -0.2  -0.1   0.0 
+choleste     0.5    0.1  0.4   0.5   0.5 
+
+Fit Diagnostics:
+           mean   sd   10%   50%   90%
+mean_PPD 0.7    0.0  0.6   0.7   0.7  
+
+The mean_ppd is the sample average posterior predictive distribution of the outcome variable (for details see help('summary.stanreg')).
+
+MCMC diagnostics
+              mcse Rhat n_eff
+(Intercept)   0.0  1.0  5746 
+sex           0.0  1.0  5738 
+age           0.0  1.0  4463 
+cad_dur       0.0  1.0  4814 
+choleste      0.0  1.0  5489 
+mean_PPD      0.0  1.0  4893 
+log-posterior 0.0  1.0  1910 
+
+For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure of effective sample size, and Rhat is the potential scale reduction factor on split chains (at convergence Rhat=1).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>model_linear<span class="sc">$</span>stan_summary[, <span class="st">"Rhat"</span>] <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept)           sex           age       cad_dur      choleste 
+        1.000         1.000         1.000         0.999         0.999 
+     mean_PPD log-posterior 
+        1.000         1.005 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>brms<span class="sc">::</span><span class="fu">pp_check</span>(model_linear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="project_final_files/figure-html/Linear%20model%20-%20Posterior%20predictive%20check-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <p>Nonlinear model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="fu">summary</span>(model_nonlinear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="fu">summary</span>(model_nonlinear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Model Info:
@@ -399,7 +567,7 @@ Model Info:
  family:       binomial [logit]
  formula:      sigdz ~ sex + s(age) + s(cad_dur) + s(choleste)
  algorithm:    sampling
- sample:       4000 (posterior sample size)
+ sample:       8000 (posterior sample size)
  priors:       see help('prior_summary')
  observations: 2258
 
@@ -407,37 +575,37 @@ Estimates:
                           mean   sd   10%   50%   90%
 (Intercept)              0.8    0.1  0.7   0.8   0.9 
 sex                     -1.0    0.1 -1.0  -1.0  -0.9 
-s(age).1                -0.8    2.4 -3.8  -0.4   1.6 
-s(age).2                -0.8    2.5 -4.1  -0.4   1.7 
-s(age).3                -2.2    2.5 -5.5  -1.8   0.2 
-s(age).4                 1.1    2.1 -1.2   0.8   3.7 
-s(age).5                 3.2    2.2  0.2   3.3   6.2 
-s(age).6                -0.5    1.0 -1.9  -0.4   0.6 
-s(age).7                 1.2    0.9 -0.1   1.3   2.2 
-s(age).8                -1.2    2.3 -4.1  -0.8   1.0 
+s(age).1                -0.8    2.3 -3.8  -0.4   1.7 
+s(age).2                -0.9    2.5 -4.1  -0.3   1.7 
+s(age).3                -2.2    2.4 -5.5  -1.8   0.2 
+s(age).4                 1.1    2.1 -1.1   0.8   3.7 
+s(age).5                 3.3    2.2  0.1   3.3   6.2 
+s(age).6                -0.6    1.0 -2.0  -0.4   0.5 
+s(age).7                 1.1    0.9 -0.1   1.3   2.1 
+s(age).8                -1.3    2.3 -4.3  -0.9   0.9 
 s(age).9                 1.9    2.8 -0.4   0.6   6.5 
-s(cad_dur).1            -0.2    1.4 -1.9  -0.1   1.2 
-s(cad_dur).2             0.3    1.4 -1.1   0.1   1.8 
-s(cad_dur).3             0.4    1.2 -0.8   0.2   1.8 
-s(cad_dur).4            -0.4    1.3 -2.0  -0.2   0.9 
-s(cad_dur).5            -0.9    1.1 -2.4  -0.7   0.3 
-s(cad_dur).6             0.9    1.1 -0.2   0.7   2.3 
-s(cad_dur).7             0.5    1.0 -0.6   0.3   1.7 
-s(cad_dur).8             0.0    0.7 -1.0   0.0   0.8 
-s(cad_dur).9            -0.2    1.0 -1.4  -0.1   0.6 
-s(choleste).1            0.1    2.3 -2.6   0.1   2.9 
-s(choleste).2           -0.3    2.2 -3.0  -0.2   2.3 
-s(choleste).3           -1.0    2.0 -3.5  -0.9   1.4 
-s(choleste).4           -1.2    2.1 -3.9  -1.1   1.3 
-s(choleste).5           -0.1    1.7 -2.2  -0.1   2.1 
-s(choleste).6            0.4    1.2 -1.1   0.3   1.9 
+s(cad_dur).1            -0.2    1.4 -1.8  -0.1   1.2 
+s(cad_dur).2             0.2    1.3 -1.1   0.1   1.8 
+s(cad_dur).3             0.3    1.2 -1.0   0.2   1.8 
+s(cad_dur).4            -0.4    1.4 -2.1  -0.2   0.9 
+s(cad_dur).5            -0.9    1.1 -2.3  -0.7   0.2 
+s(cad_dur).6             0.8    1.1 -0.3   0.7   2.2 
+s(cad_dur).7             0.5    1.0 -0.5   0.3   1.7 
+s(cad_dur).8            -0.1    0.7 -1.0   0.0   0.8 
+s(cad_dur).9            -0.3    1.0 -1.4  -0.1   0.6 
+s(choleste).1            0.1    2.2 -2.4   0.1   2.7 
+s(choleste).2           -0.2    2.2 -2.9  -0.1   2.4 
+s(choleste).3           -1.0    2.0 -3.6  -0.9   1.3 
+s(choleste).4           -1.2    2.1 -3.9  -1.0   1.2 
+s(choleste).5           -0.1    1.8 -2.3  -0.1   2.1 
+s(choleste).6            0.4    1.2 -1.1   0.4   1.9 
 s(choleste).7            3.5    1.1  2.2   3.4   4.8 
-s(choleste).8            0.4    1.9 -1.7   0.3   2.7 
+s(choleste).8            0.4    1.9 -1.8   0.2   2.8 
 s(choleste).9            0.2    1.3 -0.9   0.0   1.6 
-smooth_sd[s(age)1]       2.2    1.3  0.5   2.1   3.8 
-smooth_sd[s(age)2]       1.7    1.6  0.1   1.2   4.0 
-smooth_sd[s(cad_dur)1]   1.2    0.7  0.3   1.1   2.1 
-smooth_sd[s(cad_dur)2]   0.9    0.9  0.1   0.7   2.1 
+smooth_sd[s(age)1]       2.2    1.3  0.4   2.2   3.9 
+smooth_sd[s(age)2]       1.7    1.6  0.2   1.2   4.0 
+smooth_sd[s(cad_dur)1]   1.1    0.7  0.3   1.0   2.1 
+smooth_sd[s(cad_dur)2]   0.9    0.9  0.1   0.6   2.0 
 smooth_sd[s(choleste)1]  2.2    0.8  1.3   2.0   3.3 
 smooth_sd[s(choleste)2]  1.0    1.0  0.1   0.7   2.3 
 
@@ -449,51 +617,227 @@ The mean_ppd is the sample average posterior predictive distribution of the outc
 
 MCMC diagnostics
                         mcse Rhat n_eff
-(Intercept)             0.0  1.0  4332 
-sex                     0.0  1.0  4564 
-s(age).1                0.0  1.0  3980 
-s(age).2                0.0  1.0  4021 
-s(age).3                0.1  1.0  2013 
-s(age).4                0.0  1.0  3791 
-s(age).5                0.1  1.0  1065 
-s(age).6                0.0  1.0  2904 
-s(age).7                0.0  1.0  1106 
-s(age).8                0.0  1.0  2811 
-s(age).9                0.1  1.0   834 
-s(cad_dur).1            0.0  1.0  3803 
-s(cad_dur).2            0.0  1.0  4427 
-s(cad_dur).3            0.0  1.0  4102 
-s(cad_dur).4            0.0  1.0  4261 
-s(cad_dur).5            0.0  1.0  3532 
-s(cad_dur).6            0.0  1.0  2811 
-s(cad_dur).7            0.0  1.0  3719 
-s(cad_dur).8            0.0  1.0  3638 
-s(cad_dur).9            0.0  1.0  3104 
-s(choleste).1           0.0  1.0  4545 
-s(choleste).2           0.0  1.0  4010 
-s(choleste).3           0.0  1.0  4021 
-s(choleste).4           0.0  1.0  3792 
-s(choleste).5           0.0  1.0  4751 
-s(choleste).6           0.0  1.0  3555 
-s(choleste).7           0.0  1.0  2544 
-s(choleste).8           0.0  1.0  3324 
-s(choleste).9           0.0  1.0  2386 
-smooth_sd[s(age)1]      0.0  1.0  1002 
-smooth_sd[s(age)2]      0.0  1.0  1270 
-smooth_sd[s(cad_dur)1]  0.0  1.0  1944 
-smooth_sd[s(cad_dur)2]  0.0  1.0  4809 
-smooth_sd[s(choleste)1] 0.0  1.0  2106 
-smooth_sd[s(choleste)2] 0.0  1.0  5048 
-mean_PPD                0.0  1.0  4407 
-log-posterior           0.2  1.0   941 
+(Intercept)             0.0  1.0   9690
+sex                     0.0  1.0  10638
+s(age).1                0.0  1.0   6770
+s(age).2                0.0  1.0   6428
+s(age).3                0.0  1.0   3018
+s(age).4                0.0  1.0   6719
+s(age).5                0.1  1.0   1666
+s(age).6                0.0  1.0   5377
+s(age).7                0.0  1.0   1707
+s(age).8                0.0  1.0   5511
+s(age).9                0.1  1.0   1229
+s(cad_dur).1            0.0  1.0   8633
+s(cad_dur).2            0.0  1.0   8359
+s(cad_dur).3            0.0  1.0   8249
+s(cad_dur).4            0.0  1.0   7798
+s(cad_dur).5            0.0  1.0   6132
+s(cad_dur).6            0.0  1.0   5711
+s(cad_dur).7            0.0  1.0   6710
+s(cad_dur).8            0.0  1.0   6778
+s(cad_dur).9            0.0  1.0   5683
+s(choleste).1           0.0  1.0   8647
+s(choleste).2           0.0  1.0   9076
+s(choleste).3           0.0  1.0   7871
+s(choleste).4           0.0  1.0   8083
+s(choleste).5           0.0  1.0   9573
+s(choleste).6           0.0  1.0   7615
+s(choleste).7           0.0  1.0   6671
+s(choleste).8           0.0  1.0   6918
+s(choleste).9           0.0  1.0   5127
+smooth_sd[s(age)1]      0.0  1.0   1610
+smooth_sd[s(age)2]      0.0  1.0   1864
+smooth_sd[s(cad_dur)1]  0.0  1.0   3117
+smooth_sd[s(cad_dur)2]  0.0  1.0   8543
+smooth_sd[s(choleste)1] 0.0  1.0   5171
+smooth_sd[s(choleste)2] 0.0  1.0   9393
+mean_PPD                0.0  1.0   9166
+log-posterior           0.1  1.0   2148
 
 For each parameter, mcse is Monte Carlo standard error, n_eff is a crude measure of effective sample size, and Rhat is the potential scale reduction factor on split chains (at convergence Rhat=1).</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="fu">pp_check</span>(model_nonlinear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a><span class="fu">pp_check</span>(model_nonlinear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="project_final_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="project_final_files/figure-html/Nonlinear%20model%20-%20Posterior%20predictive%20check-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Both:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a>pplot_linear<span class="ot">&lt;-</span><span class="fu">plot</span>(model_linear, <span class="st">"areas"</span>, <span class="at">prob =</span> <span class="fl">0.95</span>, <span class="at">prob_outer =</span> <span class="dv">1</span>)</span>
+<span id="cb56-2"><a href="#cb56-2"></a>pplot_linear <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="project_final_files/figure-html/Plotting%20the%20uncertainty%20of%20intercepts-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="co"># pplot_nonlinear&lt;-plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1)</span></span>
+<span id="cb57-2"><a href="#cb57-2"></a><span class="co"># pplot_nonlinear + geom_vline(xintercept = 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="model-comparison-using-loo-cv" class="level2">
+<h2 class="anchored" data-anchor-id="model-comparison-using-loo-cv">Model comparison using LOO-CV</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a><span class="co"># LOO of our models</span></span>
+<span id="cb58-2"><a href="#cb58-2"></a>loo_linear <span class="ot">&lt;-</span> <span class="fu">loo</span>(model_linear, <span class="at">save_psis =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-3"><a href="#cb58-3"></a>loo_nonlinear <span class="ot">&lt;-</span> <span class="fu">loo</span>(model_nonlinear, <span class="at">save_psis =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-4"><a href="#cb58-4"></a><span class="fu">print</span>(loo_linear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Computed from 4000 by 2258 log-likelihood matrix
+
+         Estimate   SE
+elpd_loo  -1177.4 24.4
+p_loo         5.2  0.2
+looic      2354.8 48.8
+------
+Monte Carlo SE of elpd_loo is 0.0.
+
+All Pareto k estimates are good (k &lt; 0.5).
+See help('pareto-k-diagnostic') for details.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">print</span>(loo_nonlinear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Computed from 8000 by 2258 log-likelihood matrix
+
+         Estimate   SE
+elpd_loo  -1170.5 24.3
+p_loo        11.6  0.7
+looic      2341.0 48.6
+------
+Monte Carlo SE of elpd_loo is 0.0.
+
+All Pareto k estimates are good (k &lt; 0.5).
+See help('pareto-k-diagnostic') for details.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co"># Baseline model of the linear model</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a>model_baseline <span class="ot">&lt;-</span> <span class="fu">update</span>(model_linear, <span class="at">formula =</span> sigdz <span class="sc">~</span> <span class="dv">1</span>, <span class="at">QR =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb62-3"><a href="#cb62-3"></a></span>
+<span id="cb62-4"><a href="#cb62-4"></a><span class="co"># LOO of the baseline model</span></span>
+<span id="cb62-5"><a href="#cb62-5"></a>loo_baseline <span class="ot">&lt;-</span> <span class="fu">loo</span>(model_baseline, <span class="at">save_psis =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Comparing the LOOs:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="fu">loo_compare</span>(loo_linear, loo_nonlinear, loo_baseline)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                elpd_diff se_diff
+model_nonlinear    0.0       0.0 
+model_linear      -6.9       3.4 
+model_baseline  -278.2      21.8 </code></pre>
+</div>
+</div>
+<p>The nonlinear model seems to be the best!</p>
+</section>
+<section id="posterior-predictive-performance-classification-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="posterior-predictive-performance-classification-accuracy">Posterior predictive performance: Classification accuracy</h2>
+<section id="linear-model-1" class="level3">
+<h3 class="anchored" data-anchor-id="linear-model-1">Linear model:</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="do">## Predicted probabilities</span></span>
+<span id="cb65-2"><a href="#cb65-2"></a>linpred_linear <span class="ot">&lt;-</span> <span class="fu">posterior_linpred</span>(model_linear)</span>
+<span id="cb65-3"><a href="#cb65-3"></a>preds_linear <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(model_linear)</span>
+<span id="cb65-4"><a href="#cb65-4"></a>pred_linear <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(preds_linear)</span>
+<span id="cb65-5"><a href="#cb65-5"></a>pr_linear <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(pred_linear <span class="sc">&gt;=</span> <span class="fl">0.5</span>)</span>
+<span id="cb65-6"><a href="#cb65-6"></a>   </span>
+<span id="cb65-7"><a href="#cb65-7"></a><span class="do">## posterior classification accuracy</span></span>
+<span id="cb65-8"><a href="#cb65-8"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.75</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="co"># posterior balanced classification accuracy</span></span>
+<span id="cb67-2"><a href="#cb67-2"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.69</code></pre>
+</div>
+</div>
+<p>LOO balanced (Better estimate, maybe let’s include only these?):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a><span class="co"># LOO predictive probabilities</span></span>
+<span id="cb69-2"><a href="#cb69-2"></a>ploo_linear<span class="ot">=</span><span class="fu">E_loo</span>(preds_linear, loo_linear<span class="sc">$</span>psis_object, <span class="at">type=</span><span class="st">"mean"</span>, <span class="at">log_ratios =</span> <span class="sc">-</span><span class="fu">log_lik</span>(model_linear))<span class="sc">$</span>value</span>
+<span id="cb69-3"><a href="#cb69-3"></a></span>
+<span id="cb69-4"><a href="#cb69-4"></a><span class="co"># LOO classification accuracy</span></span>
+<span id="cb69-5"><a href="#cb69-5"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_linear<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.75</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="co"># LOO balanced classification accuracy</span></span>
+<span id="cb71-2"><a href="#cb71-2"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_linear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(ploo_linear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.69</code></pre>
+</div>
+</div>
+</section>
+<section id="nonlinear-model-1" class="level3">
+<h3 class="anchored" data-anchor-id="nonlinear-model-1">Nonlinear model</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a><span class="do">## Predicted probabilities</span></span>
+<span id="cb73-2"><a href="#cb73-2"></a>linpred_nonlinear <span class="ot">&lt;-</span> <span class="fu">posterior_linpred</span>(model_nonlinear)</span>
+<span id="cb73-3"><a href="#cb73-3"></a>preds_nonlinear <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(model_nonlinear)</span>
+<span id="cb73-4"><a href="#cb73-4"></a>pred_nonlinear <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(preds_nonlinear)</span>
+<span id="cb73-5"><a href="#cb73-5"></a>pr_nonlinear <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(pred_nonlinear <span class="sc">&gt;=</span> <span class="fl">0.5</span>)</span>
+<span id="cb73-6"><a href="#cb73-6"></a>   </span>
+<span id="cb73-7"><a href="#cb73-7"></a><span class="do">## posterior classification accuracy</span></span>
+<span id="cb73-8"><a href="#cb73-8"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(pr_nonlinear,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.76</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1"></a><span class="co"># posterior balanced classification accuracy</span></span>
+<span id="cb75-2"><a href="#cb75-2"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(pr_nonlinear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.69</code></pre>
+</div>
+</div>
+<p>LOO balanced (Better estimate, maybe let’s include only these?):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1"></a><span class="co"># LOO predictive probabilities</span></span>
+<span id="cb77-2"><a href="#cb77-2"></a>ploo_nonlinear<span class="ot">=</span><span class="fu">E_loo</span>(preds_nonlinear, loo_nonlinear<span class="sc">$</span>psis_object, <span class="at">type=</span><span class="st">"mean"</span>, <span class="at">log_ratios =</span> <span class="sc">-</span><span class="fu">log_lik</span>(model_nonlinear))<span class="sc">$</span>value</span>
+<span id="cb77-3"><a href="#cb77-3"></a></span>
+<span id="cb77-4"><a href="#cb77-4"></a><span class="co"># LOO classification accuracy</span></span>
+<span id="cb77-5"><a href="#cb77-5"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_nonlinear<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.76</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a><span class="co"># LOO balanced classification accuracy</span></span>
+<span id="cb79-2"><a href="#cb79-2"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_nonlinear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(ploo_nonlinear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.69</code></pre>
+</div>
+</div>
+</section>
+<section id="calibration-curves" class="level3">
+<h3 class="anchored" data-anchor-id="calibration-curves">Calibration curves</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a>cplot_linear <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">pred=</span>pred_linear,<span class="at">loopred=</span>ploo_linear,</span>
+<span id="cb81-2"><a href="#cb81-2"></a>  <span class="at">y=</span><span class="fu">as.numeric</span>(y)<span class="sc">-</span><span class="dv">1</span>), <span class="fu">aes</span>(<span class="at">x=</span>loopred, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb81-3"><a href="#cb81-3"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">'glm'</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">ns</span>(x, <span class="dv">5</span>), <span class="at">fullrange=</span><span class="cn">TRUE</span>, <span class="at">color=</span><span class="st">"deeppink"</span>) <span class="sc">+</span></span>
+<span id="cb81-4"><a href="#cb81-4"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb81-5"><a href="#cb81-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Predicted (LOO)"</span>,<span class="at">y =</span> <span class="st">"Observed"</span>,<span class="at">title =</span> <span class="st">"Linear model - Calibration plot"</span>) <span class="sc">+</span></span>
+<span id="cb81-6"><a href="#cb81-6"></a>  <span class="fu">geom_jitter</span>(<span class="at">height=</span><span class="fl">0.02</span>, <span class="at">width=</span><span class="dv">0</span>, <span class="at">alpha=</span><span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb81-7"><a href="#cb81-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.1</span>)) <span class="sc">+</span></span>
+<span id="cb81-8"><a href="#cb81-8"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb81-9"><a href="#cb81-9"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb81-10"><a href="#cb81-10"></a></span>
+<span id="cb81-11"><a href="#cb81-11"></a>cplot_nonlinear <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">loopred=</span>ploo_nonlinear,</span>
+<span id="cb81-12"><a href="#cb81-12"></a>  <span class="at">y=</span><span class="fu">as.numeric</span>(y)<span class="sc">-</span><span class="dv">1</span>), <span class="fu">aes</span>(<span class="at">x=</span>loopred, <span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb81-13"><a href="#cb81-13"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">'glm'</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">ns</span>(x, <span class="dv">5</span>), <span class="at">fullrange=</span><span class="cn">TRUE</span>, <span class="at">color=</span><span class="st">"deeppink"</span>) <span class="sc">+</span></span>
+<span id="cb81-14"><a href="#cb81-14"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">'dashed'</span>) <span class="sc">+</span> </span>
+<span id="cb81-15"><a href="#cb81-15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Predicted (LOO)"</span>,<span class="at">y =</span> <span class="st">"Observed"</span>,<span class="at">title =</span> <span class="st">"Nonlinear model - Calibration plot"</span>) <span class="sc">+</span></span>
+<span id="cb81-16"><a href="#cb81-16"></a>  <span class="fu">geom_jitter</span>(<span class="at">height=</span><span class="fl">0.02</span>, <span class="at">width=</span><span class="dv">0</span>, <span class="at">alpha=</span><span class="fl">0.05</span>) <span class="sc">+</span> </span>
+<span id="cb81-17"><a href="#cb81-17"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.1</span>)) <span class="sc">+</span> </span>
+<span id="cb81-18"><a href="#cb81-18"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb81-19"><a href="#cb81-19"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb81-20"><a href="#cb81-20"></a></span>
+<span id="cb81-21"><a href="#cb81-21"></a><span class="fu">grid.arrange</span>(cplot_linear, cplot_nonlinear, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="project_final_files/figure-html/Calibration%20plots-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TBD X</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
 </section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
@@ -797,253 +1141,434 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb48" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb48-1"><a href="#cb48-1"></a><span class="co">---</span></span>
-<span id="cb48-2"><a href="#cb48-2"></a><span class="an">title:</span><span class="co"> "PROJECT"</span></span>
-<span id="cb48-3"><a href="#cb48-3"></a><span class="an">subtitle:</span><span class="co"> "BLAL BLA BLA"</span></span>
-<span id="cb48-4"><a href="#cb48-4"></a><span class="an">author:</span><span class="co"> anonymous</span></span>
-<span id="cb48-5"><a href="#cb48-5"></a><span class="an">format:</span></span>
-<span id="cb48-6"><a href="#cb48-6"></a><span class="co">  html:</span></span>
-<span id="cb48-7"><a href="#cb48-7"></a><span class="co">    toc: true</span></span>
-<span id="cb48-8"><a href="#cb48-8"></a><span class="co">    code-tools: true</span></span>
-<span id="cb48-9"><a href="#cb48-9"></a><span class="co">    code-line-numbers: true</span></span>
-<span id="cb48-10"><a href="#cb48-10"></a><span class="co">    msainfont: Georgia, serif</span></span>
-<span id="cb48-11"><a href="#cb48-11"></a><span class="co">    page-layout: article</span></span>
-<span id="cb48-12"><a href="#cb48-12"></a><span class="co">  pdf:  </span></span>
-<span id="cb48-13"><a href="#cb48-13"></a><span class="co">    number-sections: true</span></span>
-<span id="cb48-14"><a href="#cb48-14"></a><span class="co">    code-annotations: none</span></span>
-<span id="cb48-15"><a href="#cb48-15"></a><span class="an">editor:</span><span class="co"> source</span></span>
-<span id="cb48-16"><a href="#cb48-16"></a><span class="co">---</span></span>
-<span id="cb48-17"><a href="#cb48-17"></a></span>
-<span id="cb48-18"><a href="#cb48-18"></a>:::: {.content-hidden when-format="pdf"}</span>
-<span id="cb48-19"><a href="#cb48-19"></a>::: {.callout-warning collapse=false}</span>
-<span id="cb48-20"><a href="#cb48-20"></a> </span>
-<span id="cb48-21"><a href="#cb48-21"></a><span class="fu">## Setup</span></span>
-<span id="cb48-22"><a href="#cb48-22"></a></span>
-<span id="cb48-23"><a href="#cb48-23"></a>Install packages:</span>
-<span id="cb48-24"><a href="#cb48-24"></a></span>
-<span id="cb48-27"><a href="#cb48-27"></a><span class="in">```{r}</span></span>
-<span id="cb48-28"><a href="#cb48-28"></a><span class="co">#| label: Setup</span></span>
-<span id="cb48-29"><a href="#cb48-29"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"higgi13425/medicaldata"</span>)</span>
-<span id="cb48-30"><a href="#cb48-30"></a><span class="fu">library</span>(medicaldata)</span>
-<span id="cb48-31"><a href="#cb48-31"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb48-32"><a href="#cb48-32"></a><span class="fu">library</span>(brms)</span>
-<span id="cb48-33"><a href="#cb48-33"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb48-34"><a href="#cb48-34"></a><span class="fu">library</span>(rstanarm)</span>
-<span id="cb48-35"><a href="#cb48-35"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb48-36"><a href="#cb48-36"></a><span class="fu">library</span>(loo)</span>
-<span id="cb48-37"><a href="#cb48-37"></a><span class="fu">library</span>(rstanarm)</span>
-<span id="cb48-38"><a href="#cb48-38"></a><span class="fu">library</span>(caret)</span>
-<span id="cb48-39"><a href="#cb48-39"></a><span class="co"># library(RColorBrewer)</span></span>
-<span id="cb48-40"><a href="#cb48-40"></a><span class="co"># library(gridExtra)</span></span>
-<span id="cb48-41"><a href="#cb48-41"></a><span class="co"># library(grid)</span></span>
-<span id="cb48-42"><a href="#cb48-42"></a><span class="in">```</span></span>
-<span id="cb48-43"><a href="#cb48-43"></a></span>
-<span id="cb48-44"><a href="#cb48-44"></a>Import the data:</span>
-<span id="cb48-45"><a href="#cb48-45"></a></span>
-<span id="cb48-48"><a href="#cb48-48"></a><span class="in">```{r}</span></span>
-<span id="cb48-49"><a href="#cb48-49"></a><span class="co">#| label: Importing data</span></span>
-<span id="cb48-50"><a href="#cb48-50"></a>cath <span class="ot">&lt;-</span> medicaldata<span class="sc">::</span>cath</span>
-<span id="cb48-51"><a href="#cb48-51"></a><span class="in">```</span></span>
-<span id="cb48-52"><a href="#cb48-52"></a></span>
-<span id="cb48-53"><a href="#cb48-53"></a>:::</span>
-<span id="cb48-54"><a href="#cb48-54"></a>::::</span>
-<span id="cb48-55"><a href="#cb48-55"></a></span>
-<span id="cb48-56"><a href="#cb48-56"></a></span>
-<span id="cb48-57"><a href="#cb48-57"></a><span class="fu"># Introduction </span></span>
-<span id="cb48-58"><a href="#cb48-58"></a></span>
-<span id="cb48-59"><a href="#cb48-59"></a><span class="ss">- </span>Background</span>
-<span id="cb48-60"><a href="#cb48-60"></a><span class="ss">- </span>Problem formulation/scope</span>
-<span id="cb48-61"><a href="#cb48-61"></a><span class="ss">- </span>Main modeling idea</span>
-<span id="cb48-62"><a href="#cb48-62"></a><span class="ss">- </span>Some picture of the data?</span>
-<span id="cb48-63"><a href="#cb48-63"></a></span>
-<span id="cb48-64"><a href="#cb48-64"></a><span class="fu"># Data Desctription</span></span>
-<span id="cb48-65"><a href="#cb48-65"></a></span>
-<span id="cb48-66"><a href="#cb48-66"></a><span class="ss">- </span>Dataset:</span>
-<span id="cb48-67"><a href="#cb48-67"></a></span>
-<span id="cb48-70"><a href="#cb48-70"></a><span class="in">```{r}</span></span>
-<span id="cb48-71"><a href="#cb48-71"></a><span class="co">#| label: Data description</span></span>
-<span id="cb48-72"><a href="#cb48-72"></a><span class="co">#| echo: false</span></span>
-<span id="cb48-73"><a href="#cb48-73"></a><span class="co">#| message: false</span></span>
-<span id="cb48-74"><a href="#cb48-74"></a><span class="co">#| warning: false</span></span>
-<span id="cb48-75"><a href="#cb48-75"></a><span class="co">#| output: asis</span></span>
-<span id="cb48-76"><a href="#cb48-76"></a></span>
-<span id="cb48-77"><a href="#cb48-77"></a>cath_dims <span class="ot">&lt;-</span> <span class="fu">dim</span>(cath)</span>
-<span id="cb48-78"><a href="#cb48-78"></a><span class="fu">cat</span>(<span class="st">"Number of variables: "</span>, cath_dims[<span class="dv">2</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb48-79"><a href="#cb48-79"></a><span class="fu">cat</span>(<span class="st">"Number of observations: "</span>, cath_dims[<span class="dv">1</span>])</span>
-<span id="cb48-80"><a href="#cb48-80"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(cath))</span>
-<span id="cb48-81"><a href="#cb48-81"></a><span class="in">```</span></span>
-<span id="cb48-82"><a href="#cb48-82"></a></span>
-<span id="cb48-83"><a href="#cb48-83"></a>Histograms and barplot of the explanatory variables:</span>
-<span id="cb48-84"><a href="#cb48-84"></a></span>
-<span id="cb48-87"><a href="#cb48-87"></a><span class="in">```{r}</span></span>
-<span id="cb48-88"><a href="#cb48-88"></a><span class="co">#| label: Univariate analysis part 1</span></span>
-<span id="cb48-89"><a href="#cb48-89"></a><span class="co">#| echo: false</span></span>
-<span id="cb48-90"><a href="#cb48-90"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 1</span></span>
-<span id="cb48-91"><a href="#cb48-91"></a></span>
-<span id="cb48-92"><a href="#cb48-92"></a>variable_names <span class="ot">=</span> <span class="fu">names</span>(cath)</span>
-<span id="cb48-93"><a href="#cb48-93"></a></span>
-<span id="cb48-94"><a href="#cb48-94"></a>colors <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"#F4CAE4"</span>, <span class="st">"#E6F5C9"</span>)</span>
-<span id="cb48-95"><a href="#cb48-95"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>))</span>
-<span id="cb48-96"><a href="#cb48-96"></a><span class="fu">barplot</span>(<span class="fu">table</span>(cath[,<span class="dv">1</span>]), <span class="at">main =</span> variable_names[<span class="dv">1</span>], </span>
-<span id="cb48-97"><a href="#cb48-97"></a>  <span class="at">xlab =</span> variable_names[<span class="dv">1</span>], <span class="at">col =</span> colors[<span class="dv">1</span>])</span>
-<span id="cb48-98"><a href="#cb48-98"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>){</span>
-<span id="cb48-99"><a href="#cb48-99"></a>  <span class="fu">hist</span>(cath[[i]], <span class="at">main =</span> variable_names[i], </span>
-<span id="cb48-100"><a href="#cb48-100"></a>    <span class="at">xlab =</span> variable_names[i], <span class="at">col =</span> colors[<span class="dv">1</span>])</span>
-<span id="cb48-101"><a href="#cb48-101"></a>}</span>
-<span id="cb48-102"><a href="#cb48-102"></a></span>
-<span id="cb48-103"><a href="#cb48-103"></a><span class="in">```</span></span>
-<span id="cb48-104"><a href="#cb48-104"></a></span>
-<span id="cb48-105"><a href="#cb48-105"></a>Barplots of the responsive variables:</span>
-<span id="cb48-106"><a href="#cb48-106"></a></span>
-<span id="cb48-109"><a href="#cb48-109"></a><span class="in">```{r}</span></span>
-<span id="cb48-110"><a href="#cb48-110"></a><span class="co">#| label: Univariate analysis part 2</span></span>
-<span id="cb48-111"><a href="#cb48-111"></a><span class="co">#| echo: false</span></span>
-<span id="cb48-112"><a href="#cb48-112"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 2</span></span>
-<span id="cb48-113"><a href="#cb48-113"></a></span>
-<span id="cb48-114"><a href="#cb48-114"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb48-115"><a href="#cb48-115"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>){</span>
-<span id="cb48-116"><a href="#cb48-116"></a>  <span class="fu">barplot</span>(<span class="fu">table</span>(cath[,i]), <span class="at">main =</span> variable_names[i], </span>
-<span id="cb48-117"><a href="#cb48-117"></a>    <span class="at">xlab =</span> variable_names[i], <span class="at">col =</span> colors[<span class="dv">2</span>])</span>
-<span id="cb48-118"><a href="#cb48-118"></a>}</span>
-<span id="cb48-119"><a href="#cb48-119"></a><span class="in">```</span></span>
-<span id="cb48-120"><a href="#cb48-120"></a></span>
-<span id="cb48-121"><a href="#cb48-121"></a>Explanation on data preprocessing (removing NA rows, scaling variables, removing tvdlm etc.)</span>
-<span id="cb48-122"><a href="#cb48-122"></a></span>
-<span id="cb48-125"><a href="#cb48-125"></a><span class="in">```{r}</span></span>
-<span id="cb48-126"><a href="#cb48-126"></a><span class="co">#| label: Data preprocessing</span></span>
-<span id="cb48-127"><a href="#cb48-127"></a><span class="co">#| echo: false</span></span>
-<span id="cb48-128"><a href="#cb48-128"></a><span class="co">#| warning: false</span></span>
-<span id="cb48-129"><a href="#cb48-129"></a><span class="co">#| message: false</span></span>
-<span id="cb48-130"><a href="#cb48-130"></a></span>
-<span id="cb48-131"><a href="#cb48-131"></a><span class="co"># Remove tvdlm column</span></span>
-<span id="cb48-132"><a href="#cb48-132"></a><span class="co"># Remove rows with at least one NA value</span></span>
-<span id="cb48-133"><a href="#cb48-133"></a>cath <span class="ot">&lt;-</span> cath <span class="sc">%&gt;%</span></span>
-<span id="cb48-134"><a href="#cb48-134"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb48-135"><a href="#cb48-135"></a>  <span class="fu">select</span>(<span class="sc">-</span>tvdlm)</span>
-<span id="cb48-136"><a href="#cb48-136"></a></span>
-<span id="cb48-137"><a href="#cb48-137"></a><span class="co"># Scale the variables</span></span>
-<span id="cb48-138"><a href="#cb48-138"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(cath)<span class="sc">-</span><span class="dv">2</span>)){</span>
-<span id="cb48-139"><a href="#cb48-139"></a>    cath[i] <span class="ot">&lt;-</span> <span class="fu">scale</span>(cath[i])</span>
-<span id="cb48-140"><a href="#cb48-140"></a>}</span>
-<span id="cb48-141"><a href="#cb48-141"></a></span>
-<span id="cb48-142"><a href="#cb48-142"></a><span class="co"># Print out dimensions after preprocessing</span></span>
-<span id="cb48-143"><a href="#cb48-143"></a>cath_dims <span class="ot">&lt;-</span> <span class="fu">dim</span>(cath)</span>
-<span id="cb48-144"><a href="#cb48-144"></a>expl_var <span class="ot">&lt;-</span> cath_dims[<span class="dv">2</span>]<span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb48-145"><a href="#cb48-145"></a>n_obs <span class="ot">&lt;-</span> cath_dims[<span class="dv">1</span>]</span>
-<span id="cb48-146"><a href="#cb48-146"></a><span class="fu">cat</span>(<span class="st">"After preprocessing we have:</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb48-147"><a href="#cb48-147"></a><span class="fu">cat</span>(<span class="st">"Number of predictive variables: "</span>, expl_var, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb48-148"><a href="#cb48-148"></a><span class="fu">cat</span>(<span class="st">"Number of observations: "</span>, n_obs)</span>
-<span id="cb48-149"><a href="#cb48-149"></a><span class="in">```</span></span>
-<span id="cb48-150"><a href="#cb48-150"></a></span>
-<span id="cb48-151"><a href="#cb48-151"></a><span class="ss">- </span>Histograms</span>
-<span id="cb48-152"><a href="#cb48-152"></a><span class="ss">- </span>Correlations</span>
-<span id="cb48-153"><a href="#cb48-153"></a><span class="ss">- </span>Has it been used in previous studies?</span>
-<span id="cb48-154"><a href="#cb48-154"></a></span>
-<span id="cb48-155"><a href="#cb48-155"></a>Bivariate correlations:</span>
-<span id="cb48-156"><a href="#cb48-156"></a></span>
-<span id="cb48-159"><a href="#cb48-159"></a><span class="in">```{r}</span></span>
-<span id="cb48-160"><a href="#cb48-160"></a><span class="co">#| label: Bivariate analysis</span></span>
-<span id="cb48-161"><a href="#cb48-161"></a><span class="co">#| echo: false</span></span>
-<span id="cb48-162"><a href="#cb48-162"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 3</span></span>
-<span id="cb48-163"><a href="#cb48-163"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(cath)</span>
-<span id="cb48-164"><a href="#cb48-164"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb48-165"><a href="#cb48-165"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(cath[, <span class="fu">c</span>(p,<span class="dv">1</span><span class="sc">:</span>(p<span class="dv">-1</span>))]), <span class="at">type =</span> <span class="st">"full"</span>, <span class="at">method =</span> <span class="st">"number"</span>)</span>
-<span id="cb48-166"><a href="#cb48-166"></a><span class="in">```</span></span>
-<span id="cb48-167"><a href="#cb48-167"></a></span>
-<span id="cb48-168"><a href="#cb48-168"></a>Seems that sex and age have the most significant bivariate correlation to the responsive variable sigdz.</span>
-<span id="cb48-169"><a href="#cb48-169"></a></span>
-<span id="cb48-170"><a href="#cb48-170"></a><span class="fu"># Mathematical Model</span></span>
-<span id="cb48-171"><a href="#cb48-171"></a></span>
-<span id="cb48-172"><a href="#cb48-172"></a><span class="ss">- </span>Bayesian logistic regression</span>
-<span id="cb48-173"><a href="#cb48-173"></a><span class="ss">- </span>Likelihood</span>
-<span id="cb48-174"><a href="#cb48-174"></a><span class="ss">- </span>Priors</span>
-<span id="cb48-175"><a href="#cb48-175"></a><span class="ss">- </span>Posteriors</span>
-<span id="cb48-176"><a href="#cb48-176"></a></span>
-<span id="cb48-177"><a href="#cb48-177"></a>Motivation: </span>
-<span id="cb48-178"><a href="#cb48-178"></a><span class="ss">  - </span>Logistic regression gives the estimate of event probability. </span>
-<span id="cb48-179"><a href="#cb48-179"></a><span class="ss">  - </span>Bayesian logistic regression gives also estimate on the *uncertainty* of the predicted probability OR the model itself.</span>
-<span id="cb48-180"><a href="#cb48-180"></a></span>
-<span id="cb48-181"><a href="#cb48-181"></a>Probability of success: $P(y=1) = Sigmoid(w^Tx+b)$</span>
-<span id="cb48-182"><a href="#cb48-182"></a><span class="ss">  - </span>Sigmoid maps the output to interval <span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span></span>
-<span id="cb48-183"><a href="#cb48-183"></a></span>
-<span id="cb48-184"><a href="#cb48-184"></a>Bayesian approach: </span>
-<span id="cb48-185"><a href="#cb48-185"></a><span class="ss">  - </span>Instead of learning the weights, we learn the *distribution of the weights*: $P(y=1|w) = Sigmoid(w^Tx+b)$</span>
-<span id="cb48-186"><a href="#cb48-186"></a></span>
-<span id="cb48-187"><a href="#cb48-187"></a>For M = 'r expl_var' variables and N = 'r n_obs'. Then:</span>
-<span id="cb48-188"><a href="#cb48-188"></a></span>
-<span id="cb48-189"><a href="#cb48-189"></a>  For each variable ($j = 1,...,M$), the **prior** is $w_j \sim prior(w_j)$</span>
-<span id="cb48-190"><a href="#cb48-190"></a>    $\rightarrow$ We define the prior to the **weights** of each variable</span>
-<span id="cb48-191"><a href="#cb48-191"></a>  </span>
-<span id="cb48-192"><a href="#cb48-192"></a>  For each datapoint $x_i$ and outcome $y_i$ ($i=1,...,N$): </span>
-<span id="cb48-193"><a href="#cb48-193"></a>    $\epsilon_i = Sigmoid(w^Tx_i+b)$</span>
-<span id="cb48-194"><a href="#cb48-194"></a>    $y_i \sim Bernoulli(\epsilon_i)$</span>
-<span id="cb48-195"><a href="#cb48-195"></a></span>
-<span id="cb48-196"><a href="#cb48-196"></a></span>
-<span id="cb48-197"><a href="#cb48-197"></a><span class="fu"># Model Definitions and Implementation</span></span>
-<span id="cb48-198"><a href="#cb48-198"></a></span>
-<span id="cb48-199"><a href="#cb48-199"></a><span class="ss">- </span>Tie mathematical model to our implementation</span>
-<span id="cb48-200"><a href="#cb48-200"></a><span class="ss">- </span>Ndraws, warmup, etc.</span>
-<span id="cb48-201"><a href="#cb48-201"></a></span>
-<span id="cb48-202"><a href="#cb48-202"></a>Linear model:</span>
-<span id="cb48-203"><a href="#cb48-203"></a></span>
-<span id="cb48-206"><a href="#cb48-206"></a><span class="in">```{r}</span></span>
-<span id="cb48-207"><a href="#cb48-207"></a><span class="co"># Make response variable a factor</span></span>
-<span id="cb48-208"><a href="#cb48-208"></a>cath<span class="sc">$</span>sigdz <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(cath<span class="sc">$</span>sigdz)</span>
-<span id="cb48-209"><a href="#cb48-209"></a></span>
-<span id="cb48-210"><a href="#cb48-210"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(sigdz <span class="sc">~</span> . <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>cath)</span>
-<span id="cb48-211"><a href="#cb48-211"></a>y <span class="ot">&lt;-</span> cath<span class="sc">$</span>sigdz</span>
-<span id="cb48-212"><a href="#cb48-212"></a></span>
-<span id="cb48-213"><a href="#cb48-213"></a><span class="co"># Formula</span></span>
-<span id="cb48-214"><a href="#cb48-214"></a>formula_linear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> cad_dur <span class="sc">+</span> choleste)</span>
-<span id="cb48-215"><a href="#cb48-215"></a></span>
-<span id="cb48-216"><a href="#cb48-216"></a><span class="co"># Prior</span></span>
-<span id="cb48-217"><a href="#cb48-217"></a>prior_linear <span class="ot">&lt;-</span> <span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">3</span>, <span class="at">location =</span> <span class="dv">0</span>, <span class="at">scale =</span> <span class="fl">2.5</span>)</span>
-<span id="cb48-218"><a href="#cb48-218"></a></span>
-<span id="cb48-219"><a href="#cb48-219"></a><span class="co"># The model</span></span>
-<span id="cb48-220"><a href="#cb48-220"></a><span class="co"># linear_model &lt;- stan_glm(formula_linear, data = cath,</span></span>
-<span id="cb48-221"><a href="#cb48-221"></a><span class="co">#                  family = binomial(link = "logit"), </span></span>
-<span id="cb48-222"><a href="#cb48-222"></a><span class="co">#                  prior = prior_linear, prior_intercept = prior_linear, QR=TRUE,</span></span>
-<span id="cb48-223"><a href="#cb48-223"></a><span class="co">#                  refresh=0)</span></span>
-<span id="cb48-224"><a href="#cb48-224"></a></span>
-<span id="cb48-225"><a href="#cb48-225"></a><span class="co"># saveRDS(linear_model, file = "./additional_files/model_linear.rds")</span></span>
-<span id="cb48-226"><a href="#cb48-226"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_linear.rds"</span>)                </span>
-<span id="cb48-227"><a href="#cb48-227"></a><span class="in">```</span></span>
-<span id="cb48-228"><a href="#cb48-228"></a></span>
-<span id="cb48-229"><a href="#cb48-229"></a></span>
-<span id="cb48-230"><a href="#cb48-230"></a>Nonlinear model:</span>
-<span id="cb48-231"><a href="#cb48-231"></a></span>
-<span id="cb48-234"><a href="#cb48-234"></a><span class="in">```{r}</span></span>
-<span id="cb48-235"><a href="#cb48-235"></a><span class="co"># Formula</span></span>
-<span id="cb48-236"><a href="#cb48-236"></a>formula_nonlinear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(cad_dur) <span class="sc">+</span> <span class="fu">s</span>(choleste))</span>
-<span id="cb48-237"><a href="#cb48-237"></a></span>
-<span id="cb48-238"><a href="#cb48-238"></a><span class="co"># model_nonlinear &lt;- stan_gamm4(</span></span>
-<span id="cb48-239"><a href="#cb48-239"></a><span class="co">#   formula_nonlinear, data = cath,</span></span>
-<span id="cb48-240"><a href="#cb48-240"></a><span class="co">#   family = binomial(link = "logit")</span></span>
-<span id="cb48-241"><a href="#cb48-241"></a><span class="co"># )</span></span>
-<span id="cb48-242"><a href="#cb48-242"></a></span>
-<span id="cb48-243"><a href="#cb48-243"></a><span class="co"># saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")</span></span>
-<span id="cb48-244"><a href="#cb48-244"></a>model_nonlinear <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"./additional_files/model_nonlinear.rds"</span>)</span>
-<span id="cb48-245"><a href="#cb48-245"></a><span class="in">```</span></span>
-<span id="cb48-246"><a href="#cb48-246"></a></span>
-<span id="cb48-247"><a href="#cb48-247"></a><span class="fu"># Model Evaluation</span></span>
-<span id="cb48-248"><a href="#cb48-248"></a><span class="ss">- </span>Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy</span>
-<span id="cb48-249"><a href="#cb48-249"></a><span class="ss">- </span>Prior sensitivity analysis</span>
-<span id="cb48-250"><a href="#cb48-250"></a></span>
-<span id="cb48-251"><a href="#cb48-251"></a>Nonlinear model:</span>
-<span id="cb48-252"><a href="#cb48-252"></a></span>
-<span id="cb48-255"><a href="#cb48-255"></a><span class="in">```{r}</span></span>
-<span id="cb48-256"><a href="#cb48-256"></a><span class="fu">summary</span>(model_nonlinear)</span>
-<span id="cb48-257"><a href="#cb48-257"></a><span class="fu">pp_check</span>(model_nonlinear)</span>
-<span id="cb48-258"><a href="#cb48-258"></a><span class="in">```</span></span>
-<span id="cb48-259"><a href="#cb48-259"></a></span>
-<span id="cb48-260"><a href="#cb48-260"></a><span class="fu"># Discussion</span></span>
-<span id="cb48-261"><a href="#cb48-261"></a><span class="ss">- </span>Problems, potential improvements?</span>
-<span id="cb48-262"><a href="#cb48-262"></a><span class="ss">- </span>Conclusion of analysis</span>
-<span id="cb48-263"><a href="#cb48-263"></a></span>
-<span id="cb48-264"><a href="#cb48-264"></a><span class="fu"># Lessons Learned</span></span>
-<span id="cb48-265"><a href="#cb48-265"></a></span>
-<span id="cb48-266"><a href="#cb48-266"></a></span>
-<span id="cb48-267"><a href="#cb48-267"></a><span class="fu"># References</span></span>
+<div class="sourceCode" id="cb82" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb82-1"><a href="#cb82-1"></a><span class="co">---</span></span>
+<span id="cb82-2"><a href="#cb82-2"></a><span class="an">title:</span><span class="co"> "PROJECT"</span></span>
+<span id="cb82-3"><a href="#cb82-3"></a><span class="an">subtitle:</span><span class="co"> "BLAL BLA BLA"</span></span>
+<span id="cb82-4"><a href="#cb82-4"></a><span class="an">author:</span><span class="co"> anonymous</span></span>
+<span id="cb82-5"><a href="#cb82-5"></a><span class="an">format:</span></span>
+<span id="cb82-6"><a href="#cb82-6"></a><span class="co">  html:</span></span>
+<span id="cb82-7"><a href="#cb82-7"></a><span class="co">    toc: true</span></span>
+<span id="cb82-8"><a href="#cb82-8"></a><span class="co">    code-tools: true</span></span>
+<span id="cb82-9"><a href="#cb82-9"></a><span class="co">    code-line-numbers: true</span></span>
+<span id="cb82-10"><a href="#cb82-10"></a><span class="co">    msainfont: Georgia, serif</span></span>
+<span id="cb82-11"><a href="#cb82-11"></a><span class="co">    page-layout: article</span></span>
+<span id="cb82-12"><a href="#cb82-12"></a><span class="co">  pdf:  </span></span>
+<span id="cb82-13"><a href="#cb82-13"></a><span class="co">    number-sections: true</span></span>
+<span id="cb82-14"><a href="#cb82-14"></a><span class="co">    code-annotations: none</span></span>
+<span id="cb82-15"><a href="#cb82-15"></a><span class="an">editor:</span><span class="co"> source</span></span>
+<span id="cb82-16"><a href="#cb82-16"></a><span class="co">---</span></span>
+<span id="cb82-17"><a href="#cb82-17"></a></span>
+<span id="cb82-18"><a href="#cb82-18"></a>::: {.content-hidden when-format="pdf"}</span>
+<span id="cb82-19"><a href="#cb82-19"></a>::: {.callout-warning collapse="false"}</span>
+<span id="cb82-20"><a href="#cb82-20"></a><span class="fu">## Setup</span></span>
+<span id="cb82-21"><a href="#cb82-21"></a></span>
+<span id="cb82-22"><a href="#cb82-22"></a>Install packages:</span>
+<span id="cb82-23"><a href="#cb82-23"></a></span>
+<span id="cb82-26"><a href="#cb82-26"></a><span class="in">```{r}</span></span>
+<span id="cb82-27"><a href="#cb82-27"></a><span class="co">#| label: Setup</span></span>
+<span id="cb82-28"><a href="#cb82-28"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"higgi13425/medicaldata"</span>)</span>
+<span id="cb82-29"><a href="#cb82-29"></a><span class="fu">library</span>(medicaldata)</span>
+<span id="cb82-30"><a href="#cb82-30"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb82-31"><a href="#cb82-31"></a><span class="fu">library</span>(brms)</span>
+<span id="cb82-32"><a href="#cb82-32"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb82-33"><a href="#cb82-33"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb82-34"><a href="#cb82-34"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb82-35"><a href="#cb82-35"></a><span class="fu">library</span>(loo)</span>
+<span id="cb82-36"><a href="#cb82-36"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb82-37"><a href="#cb82-37"></a><span class="fu">library</span>(caret)</span>
+<span id="cb82-38"><a href="#cb82-38"></a><span class="fu">library</span>(splines)</span>
+<span id="cb82-39"><a href="#cb82-39"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb82-40"><a href="#cb82-40"></a><span class="co"># library(RColorBrewer)</span></span>
+<span id="cb82-41"><a href="#cb82-41"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb82-42"><a href="#cb82-42"></a><span class="fu">library</span>(grid)</span>
+<span id="cb82-43"><a href="#cb82-43"></a>seed <span class="ot">=</span> <span class="dv">1234</span></span>
+<span id="cb82-44"><a href="#cb82-44"></a><span class="in">```</span></span>
+<span id="cb82-45"><a href="#cb82-45"></a></span>
+<span id="cb82-46"><a href="#cb82-46"></a>Import the data:</span>
+<span id="cb82-47"><a href="#cb82-47"></a></span>
+<span id="cb82-50"><a href="#cb82-50"></a><span class="in">```{r}</span></span>
+<span id="cb82-51"><a href="#cb82-51"></a><span class="co">#| label: Importing-data</span></span>
+<span id="cb82-52"><a href="#cb82-52"></a>cath <span class="ot">&lt;-</span> medicaldata<span class="sc">::</span>cath</span>
+<span id="cb82-53"><a href="#cb82-53"></a><span class="in">```</span></span>
+<span id="cb82-54"><a href="#cb82-54"></a>:::</span>
+<span id="cb82-55"><a href="#cb82-55"></a>:::</span>
+<span id="cb82-56"><a href="#cb82-56"></a></span>
+<span id="cb82-57"><a href="#cb82-57"></a><span class="fu"># Introduction</span></span>
+<span id="cb82-58"><a href="#cb82-58"></a></span>
+<span id="cb82-59"><a href="#cb82-59"></a><span class="ss">-   </span>Background</span>
+<span id="cb82-60"><a href="#cb82-60"></a><span class="ss">-   </span>Problem formulation/scope</span>
+<span id="cb82-61"><a href="#cb82-61"></a><span class="ss">-   </span>Main modeling idea</span>
+<span id="cb82-62"><a href="#cb82-62"></a><span class="ss">-   </span>Some picture of the data?</span>
+<span id="cb82-63"><a href="#cb82-63"></a></span>
+<span id="cb82-64"><a href="#cb82-64"></a><span class="fu"># Data Desctription</span></span>
+<span id="cb82-65"><a href="#cb82-65"></a></span>
+<span id="cb82-66"><a href="#cb82-66"></a>The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.</span>
+<span id="cb82-67"><a href="#cb82-67"></a></span>
+<span id="cb82-70"><a href="#cb82-70"></a><span class="in">```{r}</span></span>
+<span id="cb82-71"><a href="#cb82-71"></a><span class="co">#| label: Data-table</span></span>
+<span id="cb82-72"><a href="#cb82-72"></a><span class="co">#| echo: false</span></span>
+<span id="cb82-73"><a href="#cb82-73"></a><span class="co">#| message: false</span></span>
+<span id="cb82-74"><a href="#cb82-74"></a><span class="co">#| warning: false</span></span>
+<span id="cb82-75"><a href="#cb82-75"></a><span class="co">#| tbl-cap: </span><span class="al">TBD</span></span>
+<span id="cb82-76"><a href="#cb82-76"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(cath))</span>
+<span id="cb82-77"><a href="#cb82-77"></a><span class="in">```</span></span>
+<span id="cb82-78"><a href="#cb82-78"></a></span>
+<span id="cb82-79"><a href="#cb82-79"></a>The dataset consists of four explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and two response variables (*sigdz*, *tvdlm*) that provide an overview on patient demographics, clinical indicators, and critical outcomes related to coronary artery disease:</span>
+<span id="cb82-80"><a href="#cb82-80"></a></span>
+<span id="cb82-81"><a href="#cb82-81"></a><span class="ss">-   </span>**Sex** (*sex*): Categorized as 0 for male and 1 for female, this variable represents the gender distribution within our dataset.</span>
+<span id="cb82-82"><a href="#cb82-82"></a></span>
+<span id="cb82-83"><a href="#cb82-83"></a><span class="ss">-   </span>**Age** (*age*): Representing the age of patients in years, this variable serves as a demographic feature.</span>
+<span id="cb82-84"><a href="#cb82-84"></a></span>
+<span id="cb82-85"><a href="#cb82-85"></a><span class="ss">-   </span>**Chest Pain Duration** (*cad_dur*): The duration of chest pain symptoms in days.</span>
+<span id="cb82-86"><a href="#cb82-86"></a></span>
+<span id="cb82-87"><a href="#cb82-87"></a><span class="ss">-   </span>**Serum Cholesterol Level** (*choleste*): Measured in milligrams per deciliter, serum cholesterol levels are indicative of lipid metabolism and play a crucial role in cardiovascular health.</span>
+<span id="cb82-88"><a href="#cb82-88"></a></span>
+<span id="cb82-89"><a href="#cb82-89"></a><span class="ss">-   </span>**Significant Coronary Disease** (*sigdz*): A binary variable that captures the presence (1) or absence (0) of at least 75% blockage in one of the major coronary arteries.</span>
+<span id="cb82-90"><a href="#cb82-90"></a></span>
+<span id="cb82-91"><a href="#cb82-91"></a><span class="ss">-   </span>**Three Vessel Disease or Left Main Disease** (*tvdlm*): Denoting the presence (1) or absence (0) of blockage in either all three coronary vessels or in the left main coronary artery.</span>
+<span id="cb82-92"><a href="#cb82-92"></a></span>
+<span id="cb82-93"><a href="#cb82-93"></a>The univariate distributions of these variables are visualized in @Univariate-analysis.</span>
+<span id="cb82-94"><a href="#cb82-94"></a></span>
+<span id="cb82-97"><a href="#cb82-97"></a><span class="in">```{r}</span></span>
+<span id="cb82-98"><a href="#cb82-98"></a><span class="co">#| label: Univariate-analysis</span></span>
+<span id="cb82-99"><a href="#cb82-99"></a><span class="co">#| echo: false</span></span>
+<span id="cb82-100"><a href="#cb82-100"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 1</span></span>
+<span id="cb82-101"><a href="#cb82-101"></a></span>
+<span id="cb82-102"><a href="#cb82-102"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>), <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span>)) <span class="co"># </span><span class="al">TBD</span></span>
+<span id="cb82-103"><a href="#cb82-103"></a></span>
+<span id="cb82-104"><a href="#cb82-104"></a>variable_names <span class="ot">=</span> <span class="fu">names</span>(cath)</span>
+<span id="cb82-105"><a href="#cb82-105"></a>colors <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"#F4CAE4"</span>, <span class="st">"#E6F5C9"</span>)</span>
+<span id="cb82-106"><a href="#cb82-106"></a></span>
+<span id="cb82-107"><a href="#cb82-107"></a><span class="co"># Explanatory variables</span></span>
+<span id="cb82-108"><a href="#cb82-108"></a><span class="fu">barplot</span>(<span class="fu">table</span>(cath[,<span class="dv">1</span>]), <span class="at">main =</span> variable_names[<span class="dv">1</span>], </span>
+<span id="cb82-109"><a href="#cb82-109"></a>  <span class="at">xlab =</span> variable_names[<span class="dv">1</span>], <span class="at">col =</span> colors[<span class="dv">1</span>])</span>
+<span id="cb82-110"><a href="#cb82-110"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb82-111"><a href="#cb82-111"></a>  <span class="fu">hist</span>(cath[[i]], <span class="at">main =</span> variable_names[i], </span>
+<span id="cb82-112"><a href="#cb82-112"></a>    <span class="at">xlab =</span> variable_names[i], <span class="at">col =</span> colors[<span class="dv">1</span>])</span>
+<span id="cb82-113"><a href="#cb82-113"></a>}</span>
+<span id="cb82-114"><a href="#cb82-114"></a></span>
+<span id="cb82-115"><a href="#cb82-115"></a><span class="co"># Response variables</span></span>
+<span id="cb82-116"><a href="#cb82-116"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>){</span>
+<span id="cb82-117"><a href="#cb82-117"></a>  <span class="fu">barplot</span>(<span class="fu">table</span>(cath[,i]), <span class="at">main =</span> variable_names[i], </span>
+<span id="cb82-118"><a href="#cb82-118"></a>    <span class="at">xlab =</span> variable_names[i], <span class="at">col =</span> colors[<span class="dv">2</span>])</span>
+<span id="cb82-119"><a href="#cb82-119"></a>}</span>
+<span id="cb82-120"><a href="#cb82-120"></a><span class="in">```</span></span>
+<span id="cb82-121"><a href="#cb82-121"></a></span>
+<span id="cb82-122"><a href="#cb82-122"></a>While constructing the Bayesian models to predict the probaility of significant coronary disease, the report strives to utilize the correlation between the explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and the desired response variable (*sigdz*). The *tvdlm* variable is not relevant in this report as the main focus is to predict the probability of significant coronary disease, independent of the type of the blockade.</span>
+<span id="cb82-123"><a href="#cb82-123"></a></span>
+<span id="cb82-126"><a href="#cb82-126"></a><span class="in">```{r}</span></span>
+<span id="cb82-127"><a href="#cb82-127"></a><span class="co">#| label: Data-preprocessing</span></span>
+<span id="cb82-128"><a href="#cb82-128"></a><span class="co">#| echo: false</span></span>
+<span id="cb82-129"><a href="#cb82-129"></a><span class="co">#| warning: false</span></span>
+<span id="cb82-130"><a href="#cb82-130"></a><span class="co">#| message: false</span></span>
+<span id="cb82-131"><a href="#cb82-131"></a></span>
+<span id="cb82-132"><a href="#cb82-132"></a><span class="co"># Remove tvdlm column</span></span>
+<span id="cb82-133"><a href="#cb82-133"></a><span class="co"># Remove rows with at least one NA value</span></span>
+<span id="cb82-134"><a href="#cb82-134"></a>cath <span class="ot">&lt;-</span> cath <span class="sc">%&gt;%</span></span>
+<span id="cb82-135"><a href="#cb82-135"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb82-136"><a href="#cb82-136"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tvdlm)</span>
+<span id="cb82-137"><a href="#cb82-137"></a></span>
+<span id="cb82-138"><a href="#cb82-138"></a><span class="co"># Scale the variables</span></span>
+<span id="cb82-139"><a href="#cb82-139"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(cath)<span class="sc">-</span><span class="dv">1</span>)){</span>
+<span id="cb82-140"><a href="#cb82-140"></a>    cath[i] <span class="ot">&lt;-</span> <span class="fu">scale</span>(cath[i])</span>
+<span id="cb82-141"><a href="#cb82-141"></a>}</span>
+<span id="cb82-142"><a href="#cb82-142"></a></span>
+<span id="cb82-143"><a href="#cb82-143"></a><span class="co"># Dimensions after preprocessing</span></span>
+<span id="cb82-144"><a href="#cb82-144"></a>cath_dims <span class="ot">&lt;-</span> <span class="fu">dim</span>(cath)</span>
+<span id="cb82-145"><a href="#cb82-145"></a>n_obs <span class="ot">&lt;-</span> cath_dims[<span class="dv">1</span>]</span>
+<span id="cb82-146"><a href="#cb82-146"></a><span class="in">```</span></span>
+<span id="cb82-147"><a href="#cb82-147"></a></span>
+<span id="cb82-148"><a href="#cb82-148"></a>Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are visualized in @Bivariate-analysis. We can see that variables *sex* and *age* have the most significant bivariate correlation to the responsive variable *sigdz*.</span>
+<span id="cb82-149"><a href="#cb82-149"></a></span>
+<span id="cb82-152"><a href="#cb82-152"></a><span class="in">```{r}</span></span>
+<span id="cb82-153"><a href="#cb82-153"></a><span class="co">#| label: Bivariate-analysis</span></span>
+<span id="cb82-154"><a href="#cb82-154"></a><span class="co">#| echo: false</span></span>
+<span id="cb82-155"><a href="#cb82-155"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> 3</span></span>
+<span id="cb82-156"><a href="#cb82-156"></a></span>
+<span id="cb82-157"><a href="#cb82-157"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb82-158"><a href="#cb82-158"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(cath)</span>
+<span id="cb82-159"><a href="#cb82-159"></a></span>
+<span id="cb82-160"><a href="#cb82-160"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(cath[, <span class="fu">c</span>(p,<span class="dv">1</span><span class="sc">:</span>(p<span class="dv">-1</span>))]), <span class="at">type =</span> <span class="st">"full"</span>, <span class="at">method =</span> <span class="st">"number"</span>)</span>
+<span id="cb82-161"><a href="#cb82-161"></a><span class="in">```</span></span>
+<span id="cb82-162"><a href="#cb82-162"></a></span>
+<span id="cb82-163"><a href="#cb82-163"></a><span class="fu"># Mathematical Model</span></span>
+<span id="cb82-164"><a href="#cb82-164"></a></span>
+<span id="cb82-165"><a href="#cb82-165"></a>To-be-done still: - Check likelihood notation for non-linear model - Prior justification - Check prior notations - Include priors with own values ? - Posteriors ?</span>
+<span id="cb82-166"><a href="#cb82-166"></a></span>
+<span id="cb82-167"><a href="#cb82-167"></a><span class="fu">## The generalized linear model and priors</span></span>
+<span id="cb82-168"><a href="#cb82-168"></a></span>
+<span id="cb82-169"><a href="#cb82-169"></a>For the binary response variable $y$, the likelihood for the binomial GLM can be written as a conditionally binomial PMF.</span>
+<span id="cb82-170"><a href="#cb82-170"></a></span>
+<span id="cb82-171"><a href="#cb82-171"></a>$$</span>
+<span id="cb82-172"><a href="#cb82-172"></a>\binom{n}{y} \pi (1 - \pi)^{n-y},</span>
+<span id="cb82-173"><a href="#cb82-173"></a>$$</span>
+<span id="cb82-174"><a href="#cb82-174"></a></span>
+<span id="cb82-175"><a href="#cb82-175"></a>where n is the total amount of trials, $\pi = g^{-1}(\eta)$ is the probability of success (patient presenting with significant coronary disease) and $\eta = \alpha + x^{T} \beta$ is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.</span>
+<span id="cb82-176"><a href="#cb82-176"></a></span>
+<span id="cb82-177"><a href="#cb82-177"></a>The link function $g$ maps the probability $\pi$ between the unit interval and the set of real numbers $\mathbb{R}$, and when applying the inverse link function to the linear predictor $\eta H$ the output will be a valid probability between 0 and 1.</span>
+<span id="cb82-178"><a href="#cb82-178"></a></span>
+<span id="cb82-179"><a href="#cb82-179"></a>This project utilizes the logit link function for the GLM, which makes it a logistic regression model. The likelihood expressed with the logit link function $g(x) = \text{ln}(\frac{x}{1-x})$ for a single observation can be written as:</span>
+<span id="cb82-180"><a href="#cb82-180"></a></span>
+<span id="cb82-181"><a href="#cb82-181"></a>$$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1})^{n-y}$$</span>
+<span id="cb82-182"><a href="#cb82-182"></a></span>
+<span id="cb82-183"><a href="#cb82-183"></a>Priors are set for the intercept and vector of regression coefficients $\alpha$ and $\beta$, from the linear predictor $\eta = \alpha + x^{T} \beta$,</span>
+<span id="cb82-184"><a href="#cb82-184"></a></span>
+<span id="cb82-185"><a href="#cb82-185"></a>$$</span>
+<span id="cb82-186"><a href="#cb82-186"></a>\begin{aligned}</span>
+<span id="cb82-187"><a href="#cb82-187"></a>\alpha &amp;\sim t_v(\mu, \sigma^2) <span class="sc">\\</span></span>
+<span id="cb82-188"><a href="#cb82-188"></a>\beta_k &amp;\sim t_v(\mu, \sigma^2) <span class="sc">\\</span></span>
+<span id="cb82-189"><a href="#cb82-189"></a>\end{aligned}</span>
+<span id="cb82-190"><a href="#cb82-190"></a>$$</span>
+<span id="cb82-191"><a href="#cb82-191"></a></span>
+<span id="cb82-192"><a href="#cb82-192"></a>where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.</span>
+<span id="cb82-193"><a href="#cb82-193"></a></span>
+<span id="cb82-194"><a href="#cb82-194"></a>The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.</span>
+<span id="cb82-195"><a href="#cb82-195"></a></span>
+<span id="cb82-196"><a href="#cb82-196"></a><span class="fu">## The additive non-linear model</span></span>
+<span id="cb82-197"><a href="#cb82-197"></a></span>
+<span id="cb82-198"><a href="#cb82-198"></a>The additive non-linear model on the other hand combines multiple functions in a way that isn't strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the non-linear model uses the same link function, and the logistic regression model can be written as:</span>
+<span id="cb82-199"><a href="#cb82-199"></a></span>
+<span id="cb82-200"><a href="#cb82-200"></a>$$</span>
+<span id="cb82-201"><a href="#cb82-201"></a>\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),</span>
+<span id="cb82-202"><a href="#cb82-202"></a>$$</span>
+<span id="cb82-203"><a href="#cb82-203"></a></span>
+<span id="cb82-204"><a href="#cb82-204"></a>where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, all functions are smooth functions except $f_{age}$, which would only be the variable itself. The smooth functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.nThe smooth function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).</span>
+<span id="cb82-205"><a href="#cb82-205"></a></span>
+<span id="cb82-206"><a href="#cb82-206"></a>The likelihood would then become:</span>
+<span id="cb82-207"><a href="#cb82-207"></a></span>
+<span id="cb82-208"><a href="#cb82-208"></a>$$</span>
+<span id="cb82-209"><a href="#cb82-209"></a>\prod_{i = 1}^{N}\text{Bernoulli}(y|\text{logit}^{-1}(\pi_i),  \sigma)</span>
+<span id="cb82-210"><a href="#cb82-210"></a>$$</span>
+<span id="cb82-211"><a href="#cb82-211"></a></span>
+<span id="cb82-212"><a href="#cb82-212"></a><span class="fu"># Model Definitions and Implementation</span></span>
+<span id="cb82-213"><a href="#cb82-213"></a></span>
+<span id="cb82-214"><a href="#cb82-214"></a>TO DO: - Explain in more detail what stan_glm and stan_gamm4 do - check if line 218 is necessary (x <span class="sc">\&lt;</span>- model.matrix(sigdz \~ . - 1, data=cath)) IF NOT: --<span class="sc">\&gt;</span> remove commented code</span>
+<span id="cb82-215"><a href="#cb82-215"></a></span>
+<span id="cb82-216"><a href="#cb82-216"></a>The linear and non-linear stan models are implemented with the rstanarm package functions as described below. Both models were implemented with identical number of chains, draws and warm-up. The default values (chains = 4, draws = 4000, and warmup = 2000) were used in both cases.</span>
+<span id="cb82-217"><a href="#cb82-217"></a></span>
+<span id="cb82-218"><a href="#cb82-218"></a><span class="fu">## Linear model</span></span>
+<span id="cb82-219"><a href="#cb82-219"></a></span>
+<span id="cb82-220"><a href="#cb82-220"></a>The linear model was implemented with the help of the <span class="in">`stan_glm`</span> function from the rstanarm package and defined to a logistic regression model with the help of the model parameter <span class="in">`family = binomial(link = 'logit')`</span>.</span>
+<span id="cb82-221"><a href="#cb82-221"></a></span>
+<span id="cb82-222"><a href="#cb82-222"></a>The linear relationship between the response variable <span class="in">`sigdz`</span> and the explanatory variables are defined with the help of the <span class="in">`formula`</span> function and the prior for the regression coefficients and intercept with the help of the <span class="in">`student_t`</span> function.</span>
+<span id="cb82-223"><a href="#cb82-223"></a></span>
+<span id="cb82-226"><a href="#cb82-226"></a><span class="in">```{r}</span></span>
+<span id="cb82-227"><a href="#cb82-227"></a><span class="co">#| label: Linear-model-definition</span></span>
+<span id="cb82-228"><a href="#cb82-228"></a><span class="co">#| warning: false</span></span>
+<span id="cb82-229"><a href="#cb82-229"></a><span class="co">#| message: false</span></span>
+<span id="cb82-230"><a href="#cb82-230"></a></span>
+<span id="cb82-231"><a href="#cb82-231"></a><span class="co"># Make response variable a factor</span></span>
+<span id="cb82-232"><a href="#cb82-232"></a>cath<span class="sc">$</span>sigdz <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(cath<span class="sc">$</span>sigdz)</span>
+<span id="cb82-233"><a href="#cb82-233"></a></span>
+<span id="cb82-234"><a href="#cb82-234"></a><span class="co">#x &lt;- model.matrix(sigdz ~ . - 1, data=cath)</span></span>
+<span id="cb82-235"><a href="#cb82-235"></a>y <span class="ot">&lt;-</span> cath<span class="sc">$</span>sigdz</span>
+<span id="cb82-236"><a href="#cb82-236"></a></span>
+<span id="cb82-237"><a href="#cb82-237"></a><span class="co"># Formula</span></span>
+<span id="cb82-238"><a href="#cb82-238"></a>formula_linear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> cad_dur <span class="sc">+</span> choleste)</span>
+<span id="cb82-239"><a href="#cb82-239"></a></span>
+<span id="cb82-240"><a href="#cb82-240"></a><span class="co"># Prior</span></span>
+<span id="cb82-241"><a href="#cb82-241"></a>prior_linear <span class="ot">&lt;-</span> <span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">3</span>, <span class="at">location =</span> <span class="dv">0</span>, <span class="at">scale =</span> <span class="fl">2.5</span>)</span>
+<span id="cb82-242"><a href="#cb82-242"></a></span>
+<span id="cb82-243"><a href="#cb82-243"></a><span class="co"># The model</span></span>
+<span id="cb82-244"><a href="#cb82-244"></a>model_linear <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(formula_linear, <span class="at">data =</span> cath,</span>
+<span id="cb82-245"><a href="#cb82-245"></a>                 <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb82-246"><a href="#cb82-246"></a>                 <span class="at">prior =</span> prior_linear, <span class="at">prior_intercept =</span> prior_linear,</span>
+<span id="cb82-247"><a href="#cb82-247"></a>                  <span class="at">QR=</span><span class="cn">TRUE</span>, <span class="at">refresh=</span><span class="dv">0</span>)</span>
+<span id="cb82-248"><a href="#cb82-248"></a></span>
+<span id="cb82-249"><a href="#cb82-249"></a><span class="co"># saveRDS(model_linear, file = "./additional_files/model_linear.rds")</span></span>
+<span id="cb82-250"><a href="#cb82-250"></a><span class="co"># model_linear &lt;- readRDS("./additional_files/model_linear.rds")                </span></span>
+<span id="cb82-251"><a href="#cb82-251"></a><span class="in">```</span></span>
+<span id="cb82-252"><a href="#cb82-252"></a></span>
+<span id="cb82-253"><a href="#cb82-253"></a><span class="fu">## Nonlinear model</span></span>
+<span id="cb82-254"><a href="#cb82-254"></a></span>
+<span id="cb82-255"><a href="#cb82-255"></a>The non-linear model is simliarly implemented <span class="in">`stan_gamm4`</span> function from the rstanarm package and defined to a logistic regression model with the help of the model parameter <span class="in">`family = binomial(link = 'logit')`</span>.</span>
+<span id="cb82-256"><a href="#cb82-256"></a></span>
+<span id="cb82-257"><a href="#cb82-257"></a>The non-linear relationship between the response variable <span class="in">`sigdz`</span> and the explanatory variables is again defined with the help of the <span class="in">`formula`</span> function. This time, passing the smooth function <span class="in">`s()`</span> for all continuous explanatory variables, to allow for more complexity in the model, while simultaneously penalizing over-fitting of the model with the the thin plate regression splines smoothness.</span>
+<span id="cb82-258"><a href="#cb82-258"></a></span>
+<span id="cb82-259"><a href="#cb82-259"></a>The same priors are used as for the linear model for both the intercept and the regression coefficients.</span>
+<span id="cb82-260"><a href="#cb82-260"></a></span>
+<span id="cb82-263"><a href="#cb82-263"></a><span class="in">```{r}</span></span>
+<span id="cb82-264"><a href="#cb82-264"></a><span class="co">#| label: Nonlinear model definition</span></span>
+<span id="cb82-265"><a href="#cb82-265"></a><span class="co">#| warning: false</span></span>
+<span id="cb82-266"><a href="#cb82-266"></a><span class="co">#| message: false</span></span>
+<span id="cb82-267"><a href="#cb82-267"></a></span>
+<span id="cb82-268"><a href="#cb82-268"></a><span class="co"># Formula</span></span>
+<span id="cb82-269"><a href="#cb82-269"></a>formula_nonlinear <span class="ot">&lt;-</span> <span class="fu">formula</span>(sigdz <span class="sc">~</span> sex <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(cad_dur) <span class="sc">+</span> <span class="fu">s</span>(choleste))</span>
+<span id="cb82-270"><a href="#cb82-270"></a></span>
+<span id="cb82-271"><a href="#cb82-271"></a><span class="co"># Model definition</span></span>
+<span id="cb82-272"><a href="#cb82-272"></a>model_nonlinear <span class="ot">&lt;-</span> <span class="fu">stan_gamm4</span>(</span>
+<span id="cb82-273"><a href="#cb82-273"></a>  formula_nonlinear, <span class="at">data =</span> cath,</span>
+<span id="cb82-274"><a href="#cb82-274"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb82-275"><a href="#cb82-275"></a>  <span class="at">prior =</span> prior_linear, <span class="at">prior_intercept =</span> prior_linear,</span>
+<span id="cb82-276"><a href="#cb82-276"></a>  <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">warmup =</span> <span class="dv">2000</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb82-277"><a href="#cb82-277"></a>)</span>
+<span id="cb82-278"><a href="#cb82-278"></a></span>
+<span id="cb82-279"><a href="#cb82-279"></a><span class="co"># saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")</span></span>
+<span id="cb82-280"><a href="#cb82-280"></a><span class="co"># model_nonlinear &lt;- readRDS("./additional_files/model_nonlinear.rds")</span></span>
+<span id="cb82-281"><a href="#cb82-281"></a><span class="in">```</span></span>
+<span id="cb82-282"><a href="#cb82-282"></a></span>
+<span id="cb82-283"><a href="#cb82-283"></a><span class="fu"># Model Evaluation</span></span>
+<span id="cb82-284"><a href="#cb82-284"></a></span>
+<span id="cb82-285"><a href="#cb82-285"></a>After fitting the models, multiple evaluation metrics such as $\hat{R}$, effective sample size (ESS) and number of divergent transitions are used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV).</span>
+<span id="cb82-286"><a href="#cb82-286"></a></span>
+<span id="cb82-287"><a href="#cb82-287"></a><span class="ss">-   </span>Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy</span>
+<span id="cb82-288"><a href="#cb82-288"></a><span class="ss">-   </span>Prior sensitivity analysis</span>
+<span id="cb82-289"><a href="#cb82-289"></a></span>
+<span id="cb82-290"><a href="#cb82-290"></a><span class="fu">## Convergence diagnostics &amp; posterior predictive checks</span></span>
+<span id="cb82-291"><a href="#cb82-291"></a></span>
+<span id="cb82-294"><a href="#cb82-294"></a><span class="in">```{r}</span></span>
+<span id="cb82-295"><a href="#cb82-295"></a><span class="co">#| label: Linear model - Posterior predictive check</span></span>
+<span id="cb82-296"><a href="#cb82-296"></a><span class="fu">summary</span>(model_linear)</span>
+<span id="cb82-297"><a href="#cb82-297"></a>model_linear<span class="sc">$</span>stan_summary[, <span class="st">"Rhat"</span>] <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb82-298"><a href="#cb82-298"></a></span>
+<span id="cb82-299"><a href="#cb82-299"></a>brms<span class="sc">::</span><span class="fu">pp_check</span>(model_linear)</span>
+<span id="cb82-300"><a href="#cb82-300"></a><span class="in">```</span></span>
+<span id="cb82-301"><a href="#cb82-301"></a></span>
+<span id="cb82-302"><a href="#cb82-302"></a>Nonlinear model:</span>
+<span id="cb82-303"><a href="#cb82-303"></a></span>
+<span id="cb82-306"><a href="#cb82-306"></a><span class="in">```{r}</span></span>
+<span id="cb82-307"><a href="#cb82-307"></a><span class="co">#| label: Nonlinear model - Posterior predictive check</span></span>
+<span id="cb82-308"><a href="#cb82-308"></a><span class="fu">summary</span>(model_nonlinear)</span>
+<span id="cb82-309"><a href="#cb82-309"></a><span class="fu">pp_check</span>(model_nonlinear)</span>
+<span id="cb82-310"><a href="#cb82-310"></a><span class="in">```</span></span>
+<span id="cb82-311"><a href="#cb82-311"></a></span>
+<span id="cb82-312"><a href="#cb82-312"></a>Both:</span>
+<span id="cb82-313"><a href="#cb82-313"></a></span>
+<span id="cb82-316"><a href="#cb82-316"></a><span class="in">```{r}</span></span>
+<span id="cb82-317"><a href="#cb82-317"></a><span class="co">#| label: Plotting the uncertainty of intercepts</span></span>
+<span id="cb82-318"><a href="#cb82-318"></a>pplot_linear<span class="ot">&lt;-</span><span class="fu">plot</span>(model_linear, <span class="st">"areas"</span>, <span class="at">prob =</span> <span class="fl">0.95</span>, <span class="at">prob_outer =</span> <span class="dv">1</span>)</span>
+<span id="cb82-319"><a href="#cb82-319"></a>pplot_linear <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>)</span>
+<span id="cb82-320"><a href="#cb82-320"></a></span>
+<span id="cb82-321"><a href="#cb82-321"></a><span class="co"># pplot_nonlinear&lt;-plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1)</span></span>
+<span id="cb82-322"><a href="#cb82-322"></a><span class="co"># pplot_nonlinear + geom_vline(xintercept = 0)</span></span>
+<span id="cb82-323"><a href="#cb82-323"></a><span class="in">```</span></span>
+<span id="cb82-324"><a href="#cb82-324"></a></span>
+<span id="cb82-325"><a href="#cb82-325"></a><span class="fu">## Model comparison using LOO-CV</span></span>
+<span id="cb82-326"><a href="#cb82-326"></a></span>
+<span id="cb82-329"><a href="#cb82-329"></a><span class="in">```{r}</span></span>
+<span id="cb82-330"><a href="#cb82-330"></a><span class="co">#| label: Computing LOOs</span></span>
+<span id="cb82-331"><a href="#cb82-331"></a><span class="co"># LOO of our models</span></span>
+<span id="cb82-332"><a href="#cb82-332"></a>loo_linear <span class="ot">&lt;-</span> <span class="fu">loo</span>(model_linear, <span class="at">save_psis =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb82-333"><a href="#cb82-333"></a>loo_nonlinear <span class="ot">&lt;-</span> <span class="fu">loo</span>(model_nonlinear, <span class="at">save_psis =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb82-334"><a href="#cb82-334"></a><span class="fu">print</span>(loo_linear)</span>
+<span id="cb82-335"><a href="#cb82-335"></a><span class="fu">print</span>(loo_nonlinear)</span>
+<span id="cb82-336"><a href="#cb82-336"></a></span>
+<span id="cb82-337"><a href="#cb82-337"></a><span class="co"># Baseline model of the linear model</span></span>
+<span id="cb82-338"><a href="#cb82-338"></a>model_baseline <span class="ot">&lt;-</span> <span class="fu">update</span>(model_linear, <span class="at">formula =</span> sigdz <span class="sc">~</span> <span class="dv">1</span>, <span class="at">QR =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb82-339"><a href="#cb82-339"></a></span>
+<span id="cb82-340"><a href="#cb82-340"></a><span class="co"># LOO of the baseline model</span></span>
+<span id="cb82-341"><a href="#cb82-341"></a>loo_baseline <span class="ot">&lt;-</span> <span class="fu">loo</span>(model_baseline, <span class="at">save_psis =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb82-342"><a href="#cb82-342"></a><span class="in">```</span></span>
+<span id="cb82-343"><a href="#cb82-343"></a></span>
+<span id="cb82-344"><a href="#cb82-344"></a>Comparing the LOOs:</span>
+<span id="cb82-345"><a href="#cb82-345"></a></span>
+<span id="cb82-348"><a href="#cb82-348"></a><span class="in">```{r}</span></span>
+<span id="cb82-349"><a href="#cb82-349"></a><span class="co">#| label: Comparing LOOs</span></span>
+<span id="cb82-350"><a href="#cb82-350"></a><span class="fu">loo_compare</span>(loo_linear, loo_nonlinear, loo_baseline)</span>
+<span id="cb82-351"><a href="#cb82-351"></a><span class="in">```</span></span>
+<span id="cb82-352"><a href="#cb82-352"></a></span>
+<span id="cb82-353"><a href="#cb82-353"></a>The nonlinear model seems to be the best!</span>
+<span id="cb82-354"><a href="#cb82-354"></a></span>
+<span id="cb82-355"><a href="#cb82-355"></a><span class="fu">## Posterior predictive performance: Classification accuracy</span></span>
+<span id="cb82-356"><a href="#cb82-356"></a></span>
+<span id="cb82-357"><a href="#cb82-357"></a><span class="fu">### Linear model:</span></span>
+<span id="cb82-358"><a href="#cb82-358"></a></span>
+<span id="cb82-361"><a href="#cb82-361"></a><span class="in">```{r}</span></span>
+<span id="cb82-362"><a href="#cb82-362"></a><span class="co">#| label: Linear model - Predictive probs</span></span>
+<span id="cb82-363"><a href="#cb82-363"></a><span class="do">## Predicted probabilities</span></span>
+<span id="cb82-364"><a href="#cb82-364"></a>linpred_linear <span class="ot">&lt;-</span> <span class="fu">posterior_linpred</span>(model_linear)</span>
+<span id="cb82-365"><a href="#cb82-365"></a>preds_linear <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(model_linear)</span>
+<span id="cb82-366"><a href="#cb82-366"></a>pred_linear <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(preds_linear)</span>
+<span id="cb82-367"><a href="#cb82-367"></a>pr_linear <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(pred_linear <span class="sc">&gt;=</span> <span class="fl">0.5</span>)</span>
+<span id="cb82-368"><a href="#cb82-368"></a>   </span>
+<span id="cb82-369"><a href="#cb82-369"></a><span class="do">## posterior classification accuracy</span></span>
+<span id="cb82-370"><a href="#cb82-370"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span>
+<span id="cb82-371"><a href="#cb82-371"></a></span>
+<span id="cb82-372"><a href="#cb82-372"></a><span class="co"># posterior balanced classification accuracy</span></span>
+<span id="cb82-373"><a href="#cb82-373"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb82-374"><a href="#cb82-374"></a><span class="in">```</span></span>
+<span id="cb82-375"><a href="#cb82-375"></a></span>
+<span id="cb82-376"><a href="#cb82-376"></a>LOO balanced (Better estimate, maybe let's include only these?):</span>
+<span id="cb82-377"><a href="#cb82-377"></a></span>
+<span id="cb82-380"><a href="#cb82-380"></a><span class="in">```{r}</span></span>
+<span id="cb82-381"><a href="#cb82-381"></a><span class="co">#| label: Linear model - LOO balanced predictive probs</span></span>
+<span id="cb82-382"><a href="#cb82-382"></a><span class="co"># LOO predictive probabilities</span></span>
+<span id="cb82-383"><a href="#cb82-383"></a>ploo_linear<span class="ot">=</span><span class="fu">E_loo</span>(preds_linear, loo_linear<span class="sc">$</span>psis_object, <span class="at">type=</span><span class="st">"mean"</span>, <span class="at">log_ratios =</span> <span class="sc">-</span><span class="fu">log_lik</span>(model_linear))<span class="sc">$</span>value</span>
+<span id="cb82-384"><a href="#cb82-384"></a></span>
+<span id="cb82-385"><a href="#cb82-385"></a><span class="co"># LOO classification accuracy</span></span>
+<span id="cb82-386"><a href="#cb82-386"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_linear<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span>
+<span id="cb82-387"><a href="#cb82-387"></a></span>
+<span id="cb82-388"><a href="#cb82-388"></a><span class="co"># LOO balanced classification accuracy</span></span>
+<span id="cb82-389"><a href="#cb82-389"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_linear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(ploo_linear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb82-390"><a href="#cb82-390"></a><span class="in">```</span></span>
+<span id="cb82-391"><a href="#cb82-391"></a></span>
+<span id="cb82-392"><a href="#cb82-392"></a><span class="fu">### Nonlinear model</span></span>
+<span id="cb82-393"><a href="#cb82-393"></a></span>
+<span id="cb82-396"><a href="#cb82-396"></a><span class="in">```{r}</span></span>
+<span id="cb82-397"><a href="#cb82-397"></a><span class="co">#| label: Nonlinear model - Predictive probs</span></span>
+<span id="cb82-398"><a href="#cb82-398"></a><span class="do">## Predicted probabilities</span></span>
+<span id="cb82-399"><a href="#cb82-399"></a>linpred_nonlinear <span class="ot">&lt;-</span> <span class="fu">posterior_linpred</span>(model_nonlinear)</span>
+<span id="cb82-400"><a href="#cb82-400"></a>preds_nonlinear <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(model_nonlinear)</span>
+<span id="cb82-401"><a href="#cb82-401"></a>pred_nonlinear <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(preds_nonlinear)</span>
+<span id="cb82-402"><a href="#cb82-402"></a>pr_nonlinear <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(pred_nonlinear <span class="sc">&gt;=</span> <span class="fl">0.5</span>)</span>
+<span id="cb82-403"><a href="#cb82-403"></a>   </span>
+<span id="cb82-404"><a href="#cb82-404"></a><span class="do">## posterior classification accuracy</span></span>
+<span id="cb82-405"><a href="#cb82-405"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(pr_nonlinear,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span>
+<span id="cb82-406"><a href="#cb82-406"></a></span>
+<span id="cb82-407"><a href="#cb82-407"></a><span class="co"># posterior balanced classification accuracy</span></span>
+<span id="cb82-408"><a href="#cb82-408"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(pr_linear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(pr_nonlinear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb82-409"><a href="#cb82-409"></a><span class="in">```</span></span>
+<span id="cb82-410"><a href="#cb82-410"></a></span>
+<span id="cb82-411"><a href="#cb82-411"></a>LOO balanced (Better estimate, maybe let's include only these?):</span>
+<span id="cb82-412"><a href="#cb82-412"></a></span>
+<span id="cb82-415"><a href="#cb82-415"></a><span class="in">```{r}</span></span>
+<span id="cb82-416"><a href="#cb82-416"></a><span class="co">#| label: Nonlinear model - LOO balanced predictive probs</span></span>
+<span id="cb82-417"><a href="#cb82-417"></a><span class="co"># LOO predictive probabilities</span></span>
+<span id="cb82-418"><a href="#cb82-418"></a>ploo_nonlinear<span class="ot">=</span><span class="fu">E_loo</span>(preds_nonlinear, loo_nonlinear<span class="sc">$</span>psis_object, <span class="at">type=</span><span class="st">"mean"</span>, <span class="at">log_ratios =</span> <span class="sc">-</span><span class="fu">log_lik</span>(model_nonlinear))<span class="sc">$</span>value</span>
+<span id="cb82-419"><a href="#cb82-419"></a></span>
+<span id="cb82-420"><a href="#cb82-420"></a><span class="co"># LOO classification accuracy</span></span>
+<span id="cb82-421"><a href="#cb82-421"></a><span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_nonlinear<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y<span class="sc">==</span><span class="dv">0</span>))),<span class="dv">2</span>)</span>
+<span id="cb82-422"><a href="#cb82-422"></a></span>
+<span id="cb82-423"><a href="#cb82-423"></a><span class="co"># LOO balanced classification accuracy</span></span>
+<span id="cb82-424"><a href="#cb82-424"></a><span class="fu">round</span>((<span class="fu">mean</span>(<span class="fu">xor</span>(ploo_nonlinear[y<span class="sc">==</span><span class="dv">0</span>]<span class="sc">&gt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">0</span>])))<span class="sc">+</span><span class="fu">mean</span>(<span class="fu">xor</span>(ploo_nonlinear[y<span class="sc">==</span><span class="dv">1</span>]<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="fu">as.integer</span>(y[y<span class="sc">==</span><span class="dv">1</span>]))))<span class="sc">/</span><span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb82-425"><a href="#cb82-425"></a><span class="in">```</span></span>
+<span id="cb82-426"><a href="#cb82-426"></a></span>
+<span id="cb82-427"><a href="#cb82-427"></a><span class="fu">### Calibration curves</span></span>
+<span id="cb82-428"><a href="#cb82-428"></a></span>
+<span id="cb82-431"><a href="#cb82-431"></a><span class="in">```{r}</span></span>
+<span id="cb82-432"><a href="#cb82-432"></a><span class="co">#| label: Calibration plots</span></span>
+<span id="cb82-433"><a href="#cb82-433"></a><span class="co">#| fig-cap: </span><span class="al">TBD</span><span class="co"> X</span></span>
+<span id="cb82-434"><a href="#cb82-434"></a>cplot_linear <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">pred=</span>pred_linear,<span class="at">loopred=</span>ploo_linear,</span>
+<span id="cb82-435"><a href="#cb82-435"></a>  <span class="at">y=</span><span class="fu">as.numeric</span>(y)<span class="sc">-</span><span class="dv">1</span>), <span class="fu">aes</span>(<span class="at">x=</span>loopred, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb82-436"><a href="#cb82-436"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">'glm'</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">ns</span>(x, <span class="dv">5</span>), <span class="at">fullrange=</span><span class="cn">TRUE</span>, <span class="at">color=</span><span class="st">"deeppink"</span>) <span class="sc">+</span></span>
+<span id="cb82-437"><a href="#cb82-437"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb82-438"><a href="#cb82-438"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Predicted (LOO)"</span>,<span class="at">y =</span> <span class="st">"Observed"</span>,<span class="at">title =</span> <span class="st">"Linear model - Calibration plot"</span>) <span class="sc">+</span></span>
+<span id="cb82-439"><a href="#cb82-439"></a>  <span class="fu">geom_jitter</span>(<span class="at">height=</span><span class="fl">0.02</span>, <span class="at">width=</span><span class="dv">0</span>, <span class="at">alpha=</span><span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb82-440"><a href="#cb82-440"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.1</span>)) <span class="sc">+</span></span>
+<span id="cb82-441"><a href="#cb82-441"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb82-442"><a href="#cb82-442"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb82-443"><a href="#cb82-443"></a></span>
+<span id="cb82-444"><a href="#cb82-444"></a>cplot_nonlinear <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">loopred=</span>ploo_nonlinear,</span>
+<span id="cb82-445"><a href="#cb82-445"></a>  <span class="at">y=</span><span class="fu">as.numeric</span>(y)<span class="sc">-</span><span class="dv">1</span>), <span class="fu">aes</span>(<span class="at">x=</span>loopred, <span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb82-446"><a href="#cb82-446"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">'glm'</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">ns</span>(x, <span class="dv">5</span>), <span class="at">fullrange=</span><span class="cn">TRUE</span>, <span class="at">color=</span><span class="st">"deeppink"</span>) <span class="sc">+</span></span>
+<span id="cb82-447"><a href="#cb82-447"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">'dashed'</span>) <span class="sc">+</span> </span>
+<span id="cb82-448"><a href="#cb82-448"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Predicted (LOO)"</span>,<span class="at">y =</span> <span class="st">"Observed"</span>,<span class="at">title =</span> <span class="st">"Nonlinear model - Calibration plot"</span>) <span class="sc">+</span></span>
+<span id="cb82-449"><a href="#cb82-449"></a>  <span class="fu">geom_jitter</span>(<span class="at">height=</span><span class="fl">0.02</span>, <span class="at">width=</span><span class="dv">0</span>, <span class="at">alpha=</span><span class="fl">0.05</span>) <span class="sc">+</span> </span>
+<span id="cb82-450"><a href="#cb82-450"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.1</span>)) <span class="sc">+</span> </span>
+<span id="cb82-451"><a href="#cb82-451"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb82-452"><a href="#cb82-452"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb82-453"><a href="#cb82-453"></a></span>
+<span id="cb82-454"><a href="#cb82-454"></a><span class="fu">grid.arrange</span>(cplot_linear, cplot_nonlinear, <span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb82-455"><a href="#cb82-455"></a><span class="in">```</span></span>
+<span id="cb82-456"><a href="#cb82-456"></a></span>
+<span id="cb82-457"><a href="#cb82-457"></a><span class="fu"># Discussion</span></span>
+<span id="cb82-458"><a href="#cb82-458"></a></span>
+<span id="cb82-459"><a href="#cb82-459"></a><span class="ss">-   </span>Problems, potential improvements?</span>
+<span id="cb82-460"><a href="#cb82-460"></a><span class="ss">-   </span>Conclusion of analysis</span>
+<span id="cb82-461"><a href="#cb82-461"></a></span>
+<span id="cb82-462"><a href="#cb82-462"></a><span class="fu"># Lessons Learned</span></span>
+<span id="cb82-463"><a href="#cb82-463"></a></span>
+<span id="cb82-464"><a href="#cb82-464"></a><span class="fu"># References</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

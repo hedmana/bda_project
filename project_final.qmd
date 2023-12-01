@@ -84,14 +84,14 @@ The dataset consists of four explanatory variables (*sex*, *age*, *cad_dur*, *ch
 
 -   **Three Vessel Disease or Left Main Disease** (*tvdlm*): Denoting the presence (1) or absence (0) of blockage in either all three coronary vessels or in the left main coronary artery.
 
-The univariate distributions of these variables are described in @Univariate-analysis.
+The univariate distributions of these variables are visualized in @Univariate-analysis.
 
 ```{r}
 #| label: Univariate-analysis
 #| echo: false
 #| fig-cap: TBD 1
 
-par(mfrow = c(2,3), oma = c(4,4,0.1,0.1)) # TBD
+par(mfrow = c(2,3), oma = c(2,2,0.1,0.1)) # TBD
 
 variable_names = names(cath)
 colors = c("#F4CAE4", "#E6F5C9")
@@ -135,7 +135,7 @@ cath_dims <- dim(cath)
 n_obs <- cath_dims[1]
 ```
 
-Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are described in @Bivariate-analysis. We can see that sex and age have the most significant bivariate correlation to the responsive variable sigdz.
+Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are visualized in @Bivariate-analysis. We can see that variables *sex* and *age* have the most significant bivariate correlation to the responsive variable *sigdz*.
 
 ```{r}
 #| label: Bivariate-analysis
@@ -150,13 +150,58 @@ corrplot(cor(cath[, c(p,1:(p-1))]), type = "full", method = "number")
 
 # Mathematical Model
 
-To-be-done still: - Check likelihood notation for non-linear model - Prior justification - Check prior notations - Include priors with own values ? - Posteriors ?
+In this analysis, we will construct two models for inferring the binary response variable, *sigdz* based on input explanatory variables*.* The first model is a generalized linear model (GLM), namely Bayesian logistic regression. The other model is a generalized additive mixed model (GAMM), which implements Bayesian logistic regression with nonlinear transformations on input variables. These models will be referred as linear and nonlinear model, respectively.
+
+(((To-be-done still: - Check likelihood notation for nonlinear model - Prior justification - Check prior notations - Include priors with own values ? - **Posteriors** ?)))
 
 ## The generalized linear model and priors
 
-For the binary response variable $y$, the likelihood for the binomial GLM can be written as a conditionally binomial PMF.
+**Elissan ehdottamat muokkaukset Linnean kirjoitukseen:**
 
-$$\binom{n}{y} \pi (1 - \pi)^{n-y},$$
+Let $y$ be the number of times the variable *sigdz* is realized to be 1 for one individual in the dataset, and let $x$ be the explanatory variables for this outcome. Then, this number of successes for one individual follows a Binomial distribution
+
+$$
+y \sim \binom{n}{y}\theta_(1-\theta)^{n-y},
+$$
+
+where n is the number of observations for that specific individual and $\theta = g^{-1}(\eta)$ $(\eta = \alpha + x^{T} \beta)$ is the probability of success (patient presenting with significant coronary disease). The inverse link function $g^{-1}$ maps the output of the linear predictor $\eta$ to a probability interval between 0 and 1.
+
+For this binomial GLM, the project utilizes logit $g(x) = \ln(\frac{x}{1-x})$ as a link function, which makes it a logistic regression model. As each individual is represented only once in the data, $y$ can be directly presented as the binary response variable. Then, the likelihood of the response variable of one individual is reduced to
+
+$$
+y \sim y \text{ logit}^{-1}(\eta)(1-\text{ logit}^{-1}(\eta))^{1-y}
+$$
+
+The complete data likelihood is then a product of $n =$ `r n_obs` likelihoods.
+
+As in Bayesian logistic regression the scope is to infer the distribution of the regression weights, namely the intercept $\alpha$ and coefficients $\beta = [\beta_1, \beta_2, \beta_3, \beta_4]^T$, we define the prior to be Student's $t$-distribution
+
+$$
+\begin{aligned} 
+\alpha &\sim t_v(\mu, \sigma) \\ 
+\beta_k &\sim t_v(\mu, \sigma), \ k=1,..,4 \\ 
+\end{aligned} 
+$$
+
+where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
+
+The selection of prior distribution was done based on the nature of the data. Due to correlations, there is reason to believe that the parameters are not very close to zero, but most are still rather small than large. Therefore, as Student's $t$-distribution has heavy tails and larger scale compared to, for example, Gaussian distribution, $t$-distribution is a suitable choice of prior for this purpose. The parameters of the prior were defined to be
+
+$$
+v = 3, \quad \mu = 0, \quad \sigma = 2.5,
+$$
+
+as the resulting distribution provides reasonable priors for each coefficient of the explanatory variables.
+
+------------------------------------------------------------------------
+
+**Linnean kirjoitus:**
+
+For the binary response variable $y$, the likelihood for the binomial generalized linear model (GLM) can be written as a conditionally binomial PMF.
+
+$$
+\binom{n}{y} \pi (1 - \pi)^{n-y},
+$$
 
 where n is the total amount of trials, $\pi = g^{-1}(\eta)$ is the probability of success (patient presenting with significant coronary disease) and $\eta = \alpha + x^{T} \beta$ is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.
 
@@ -164,7 +209,7 @@ The link function $g$ maps the probability $\pi$ between the unit interval and t
 
 This project utilizes the logit link function for the GLM, which makes it a logistic regression model. The likelihood expressed with the logit link function $g(x) = \text{ln}(\frac{x}{1-x})$ for a single observation can be written as:
 
-$$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1})^{n-y}$$
+$$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1}(\eta))^{n-y}$$
 
 Priors are set for the intercept and vector of regression coefficients $\alpha$ and $\beta$, from the linear predictor $\eta = \alpha + x^{T} \beta$,
 
@@ -173,44 +218,41 @@ $$
 \alpha &\sim t_v(\mu, \sigma^2) \\
 \beta_k &\sim t_v(\mu, \sigma^2) \\
 \end{aligned}
-$$ 
+$$
 
 where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
 
 The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.
 
-## The additive non-linear model
+## The generalized additive nonlinear model
 
-The additive non-linear model on the other hand combines multiple functions in a way that isn't strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the non-linear model uses the same link function, and the logistic regression model can be written as:
-
-$$
-\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),
-$$
-
-where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, all functions are smooth functions except $f_{age}$, which would only be the variable itself. The smooth functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.nThe smooth function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
-
-The likelihood would then become:
+The additive nonlinear model on the other hand combines multiple functions in a way that is not strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the nonlinear model uses the same link function as the linear model, and so the logistic regression model can be written as:
 
 $$
-\prod_{i = 1}^{N}\text{Bernoulli}(y|\text{logit}^{-1}(\pi_i),  \sigma)
+\text{logit} (\pi_i) = \alpha + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),
 $$
+
+VAI:
+
+$$
+\eta = \alpha + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),
+$$
+
+where $f_i$ are nonlinear functions that transform the explanatory features individually. In this report, all functions are smoothing functions except $f_{age}$, which would only be the variable itself. The smoothing functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smoothing functions is estimated from the data and the penalty helps avoid overfitting. The smoothing function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
+
+The likelihood of observation is the same as with the linear model, with the difference that a nonlinear transformation is applied to all input explanatory variables $x$. We utilize the same prior is both models so make them as comparable as possible.
 
 # Model Definitions and Implementation
 
-TO DO:
--   Explain in more detail what stan_glm and stan_gamm4 do
--   check if line 218 is necessary (x <- model.matrix(sigdz ~ . - 1, data=cath))
-    IF NOT: --> remove commented code
+(((TO DO: - Explain in more detail what stan_glm and stan_gamm4 do - check if line 218 is necessary (x \<- model.matrix(sigdz \~ . - 1, data=cath)) IF NOT: --\> remove commented code)))
 
-The linear and non-linear stan models are implemented with the rstanarm package functions as described below. Both models were implemented with identical number of chains, draws and warm-up. The default values (chains = 4, draws = 4000, and warmup = 2000) were used in both cases.
+The linear and nonlinear models are implemented as Stan code with the rstanarm package as described below. Both models were implemented with identical number of chains, draws and warm-up. The default values (chains = 4, draws = 4000, and warmup = 2000) were used in both cases.
 
 ## Linear model
 
-The linear model was implemented with the help of the `stan_glm` function from the rstanarm package and defined to a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`. 
+The linear model was implemented with the help of the `stan_glm` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`.
 
-The linear relationship between the response variable `sigdz` and the explanatory variables are defined with the help of the `formula` function and the prior for the regression coefficients and intercept with the help of the `student_t` function. 
-
-
+The linear relationship between the response variable `sigdz` and the explanatory variables are defined with the help of the `formula` function and the prior for the regression coefficients and intercept with the help of the `student_t` function.
 
 ```{r}
 #| label: Linear-model-definition
@@ -228,12 +270,13 @@ formula_linear <- formula(sigdz ~ sex + age + cad_dur + choleste)
 
 # Prior
 prior_linear <- student_t(df = 3, location = 0, scale = 2.5)
+prior_linear <- normal(0, 50)
 
 # The model
 model_linear <- stan_glm(formula_linear, data = cath,
                  family = binomial(link = "logit"), 
                  prior = prior_linear, prior_intercept = prior_linear,
-                  QR=TRUE, refresh=0)
+                QR=TRUE, refresh=0)
 
 # saveRDS(model_linear, file = "./additional_files/model_linear.rds")
 # model_linear <- readRDS("./additional_files/model_linear.rds")                
@@ -241,9 +284,9 @@ model_linear <- stan_glm(formula_linear, data = cath,
 
 ## Nonlinear model
 
-The non-linear model is simliarly implemented `stan_gamm4` function from the rstanarm package and defined to a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`. 
+The nonlinear model is similarly implemented utilizing `stan_gamm4` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`.
 
-The non-linear relationship between the response variable `sigdz` and the explanatory variables is again defined with the help of the `formula` function. This time, passing the smooth function `s()` for all continuous explanatory variables, to allow for more complexity in the model, while simultaneously penalizing over-fitting of the model with the the thin plate regression splines smoothness.  
+The nonlinear relationship between the response variable `sigdz` and the explanatory variables is again defined with the help of the `formula` function. This time, passing the smoothing function `s()` for all continuous explanatory variables, to allow for more complexity in the model, while simultaneously penalizing over-fitting of the model with the the thin plate regression splines smoothness.
 
 The same priors are used as for the linear model for both the intercept and the regression coefficients.
 
@@ -267,11 +310,9 @@ model_nonlinear <- stan_gamm4(
 # model_nonlinear <- readRDS("./additional_files/model_nonlinear.rds")
 ```
 
-
 # Model Evaluation
 
-After fitting the models, multiple evaluation metrics such as $\hat{R}$, effective sample size (ESS) and number of divergent transitions are used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV). 
-
+After fitting the models, multiple evaluation metrics such as $\hat{R}$, effective sample size (ESS) and number of divergent transitions were used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV).
 
 -   Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
 -   Prior sensitivity analysis
