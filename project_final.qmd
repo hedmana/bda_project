@@ -161,18 +161,18 @@ In this analysis, we will construct two models for inferring the binary response
 Let $y$ be the number of times the variable *sigdz* is realized to be 1 for one individual in the dataset, and let $x$ be the explanatory variables for this outcome. Then, this number of successes for one individual follows a Binomial distribution
 
 $$
-y \sim \binom{n}{y}\theta_(1-\theta)^{n-y},
+y \sim \binom{n}{y}\theta^y(1-\theta)^{n-y},
 $$
 
 where n is the number of observations for that specific individual and $\theta = g^{-1}(\eta)$ $(\eta = \alpha + x^{T} \beta)$ is the probability of success (patient presenting with significant coronary disease). The inverse link function $g^{-1}$ maps the output of the linear predictor $\eta$ to a probability interval between 0 and 1.
 
-For this binomial GLM, the project utilizes logit $g(x) = \ln(\frac{x}{1-x})$ as a link function, which makes it a logistic regression model. As each individual is represented only once in the data, $y$ can be directly presented as the binary response variable. Then, the likelihood of the response variable of one individual is reduced to
+For the binomial GLM, this project utilizes logit $g(x) = \ln(\frac{x}{1-x})$ as a link function, which makes it a logistic regression model. As each individual occurs only once in the data, $y$ can be directly presented as the binary response variable. Then, the likelihood of the response variable of one individual is reduced to Bernoulli distribution
 
 $$
-y \sim y \text{ logit}^{-1}(\eta)(1-\text{ logit}^{-1}(\eta))^{1-y}
+y \sim \text{ logit}^{-1}(\eta)^y(1-\text{ logit}^{-1}(\eta))^{1-y}
 $$
 
-The complete data likelihood is then a product of $n =$ `r n_obs` likelihoods.
+The complete data likelihood is then a product of $n =$ `r n_obs` likelihoods, with unshared probability of success.
 
 As in Bayesian logistic regression the scope is to infer the distribution of the regression weights, namely the intercept $\alpha$ and coefficients $\beta = [\beta_1, \beta_2, \beta_3, \beta_4]^T$, we define the prior to be Student's $t$-distribution
 
@@ -191,7 +191,13 @@ $$
 v = 3, \quad \mu = 0, \quad \sigma = 2.5,
 $$
 
-as the resulting distribution provides reasonable priors for each coefficient of the explanatory variables.
+as the coefficients can be positive or negative.
+
+Finally, the joint posterior distribution that is simulated using Hamiltonian Monte Carlo (HMC) is proportional to the product of likelihood and prior distributions:
+
+$$
+p(\alpha, \beta | \bf{x}, \bf{y} ) \propto t_v(\alpha | \mu, \sigma) \times \prod^4_{k=1} t_v(\beta_k | \mu, \sigma) \times \prod^n_{i=1} \text{ logit}^{-1}(\eta_i)^{y_i}(1-\text{ logit}^{-1}(\eta_i))^{1-y_i}
+$$
 
 ------------------------------------------------------------------------
 
@@ -226,7 +232,7 @@ The intercept and the regression coefficients are believed to be as likely posit
 
 ## The generalized additive nonlinear model
 
-The additive nonlinear model on the other hand combines multiple functions in a way that is not strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the nonlinear model uses the same link function as the linear model, and so the logistic regression model can be written as:
+The additive nonlinear model on the other hand combines multiple functions in a way that is not strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the nonlinear model uses the same link function as the linear model, and so the nonlinear predictor for the logistic regression model can be written as:
 
 $$
 \text{logit} (\pi_i) = \alpha + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),
@@ -235,12 +241,12 @@ $$
 VAI:
 
 $$
-\eta = \alpha + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),
+\eta = \alpha + \sum^4_{k=1} \beta_k f_k(x_k)
 $$
 
-where $f_i$ are nonlinear functions that transform the explanatory features individually. In this report, all functions are smoothing functions except $f_{age}$, which would only be the variable itself. The smoothing functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smoothing functions is estimated from the data and the penalty helps avoid overfitting. The smoothing function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
+where $f_k$ are nonlinear functions that transform the explanatory features individually. In this report, all functions are smoothing functions except $f_{age}$, which would only be the variable itself. The smoothing functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smoothing functions is estimated from the data and the penalty helps avoid overfitting. The smoothing function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
 
-The likelihood of observation is the same as with the linear model, with the difference that a nonlinear transformation is applied to all input explanatory variables $x$. We utilize the same prior is both models so make them as comparable as possible.
+The likelihood of observation is the same as with the linear model, with the difference that a nonlinear transformation is applied to all input explanatory variables $\bf{x}$. Additionally, we utilize the same prior in both models to make them as comparable as possible. The posterior is again similar as with the linear model, but with the difference of nonlinear transformations on the input data.
 
 # Model Definitions and Implementation
 
@@ -270,7 +276,6 @@ formula_linear <- formula(sigdz ~ sex + age + cad_dur + choleste)
 
 # Prior
 prior_linear <- student_t(df = 3, location = 0, scale = 2.5)
-prior_linear <- normal(0, 50)
 
 # The model
 model_linear <- stan_glm(formula_linear, data = cath,
@@ -302,8 +307,8 @@ formula_nonlinear <- formula(sigdz ~ sex + s(age) + s(cad_dur) + s(choleste))
 model_nonlinear <- stan_gamm4(
   formula_nonlinear, data = cath,
   family = binomial(link = "logit"),
-  prior = prior_linear, prior_intercept = prior_linear,
-  iter = 4000, warmup = 2000, refresh = 0
+  # prior = prior_linear, prior_intercept = prior_linear,
+  refresh = 0
 )
 
 # saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")
@@ -312,38 +317,77 @@ model_nonlinear <- stan_gamm4(
 
 # Model Evaluation
 
-After fitting the models, multiple evaluation metrics such as $\hat{R}$, effective sample size (ESS) and number of divergent transitions were used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV).
+After fitting the models, multiple evaluation metrics such as $\hat{R}$, effective sample size (ESS) and number of divergent transitions were used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV). Finally, we perform prior sensitivity analysis.
 
 -   Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
 -   Prior sensitivity analysis
 
 ## Convergence diagnostics & posterior predictive checks
 
-```{r}
-#| label: Linear model - Posterior predictive check
-summary(model_linear)
-model_linear$stan_summary[, "Rhat"] %>% round(3)
+The convergence diagnostics for the linear model are summarized below.
 
-brms::pp_check(model_linear)
+```{r}
+#| label: Linear-model-Convergence-diagnostics
+#| echo: false
+
+Rhat_linear <- model_linear$stan_summary[, "Rhat"] %>% round(3)
+np_linear <- nuts_params(model_linear)
+divergents_linear <- sum(subset(np_linear, Parameter == "divergent__")$Value)
+ess_ratio_linear <- neff_ratio(model_linear)
+
+cat("Linear model: \n")
+cat("Rhat\n")
+print(Rhat_linear)
+cat("Number of divergent transitions: ", divergents_linear, "\n")
+cat("ESS ratio: \n")
+print(ess_ratio_linear)
+
 ```
 
-Nonlinear model:
+The HMC chains have converged, as all $\hat{R}$ values are below 0.01. Additionally, there were no divergent transitions during convergence, and thus the simulation is reliable. The ratio of the ESS to the true sample size is over 1 with all explanatory variables as well as the intercept. This is
+
+-   If ESS \> n -\> Posterior close to Gaussian/Gaussian like
 
 ```{r}
-#| label: Nonlinear model - Posterior predictive check
-summary(model_nonlinear)
-pp_check(model_nonlinear)
-```
+#| label: linear-model-plots
+#| fig-cap: TBD
+#| echo: false
 
-Both:
-
-```{r}
-#| label: Plotting the uncertainty of intercepts
+# posteriors
 pplot_linear<-plot(model_linear, "areas", prob = 0.95, prob_outer = 1)
-pplot_linear + geom_vline(xintercept = 0)
+pplot_linear + geom_vline(xintercept = 0) +
+labs(title="TBD")
+# pp check
+pp_check_linear <- brms::pp_check(model_linear) +
+labs(title="TBD")
+grid.arrange(pplot_linear, pp_check_linear, ncol=2) 
+```
 
-# pplot_nonlinear<-plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1)
-# pplot_nonlinear + geom_vline(xintercept = 0)
+For the nonlinear model...
+
+-   With default prior number of divergent transitions is 1
+
+-   With t-distr. prior we get 1 divergent transition.
+
+```{r}
+#| label: Nonlinear-model-Convergence-diagnostics
+#| echo: true
+
+# summary(model_nonlinear)
+
+Rhat_nonlinear <- model_nonlinear$stan_summary[, "Rhat"] %>% round(3)
+np_nonlinear <- nuts_params(model_nonlinear)
+divergents_nonlinear <- sum(subset(np_nonlinear, Parameter == "divergent__")$Value)
+ess_ratio_nonlinear <- neff_ratio(model_nonlinear)
+
+cat("Nonlinear model: \n")
+cat("Rhat\n")
+print(head(Rhat_nonlinear))
+cat("Number of divergent transitions: ", divergents_nonlinear, "\n")
+cat("ESS ratio: \n")
+print(head(ess_ratio_nonlinear))
+
+# pp_check(model_nonlinear)
 ```
 
 ## Model comparison using LOO-CV
@@ -385,10 +429,10 @@ pred_linear <- colMeans(preds_linear)
 pr_linear <- as.integer(pred_linear >= 0.5)
    
 ## posterior classification accuracy
-round(mean(xor(pr_linear,as.integer(y==0))),2)
+# round(mean(xor(pr_linear,as.integer(y==0))),2)
 
-# posterior balanced classification accuracy
-round((mean(xor(pr_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_linear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
+# # posterior balanced classification accuracy
+# round((mean(xor(pr_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_linear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
 ```
 
 LOO balanced (Better estimate, maybe let's include only these?):
@@ -416,10 +460,10 @@ pred_nonlinear <- colMeans(preds_nonlinear)
 pr_nonlinear <- as.integer(pred_nonlinear >= 0.5)
    
 ## posterior classification accuracy
-round(mean(xor(pr_nonlinear,as.integer(y==0))),2)
+# round(mean(xor(pr_nonlinear,as.integer(y==0))),2)
 
-# posterior balanced classification accuracy
-round((mean(xor(pr_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_nonlinear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
+# # posterior balanced classification accuracy
+# round((mean(xor(pr_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_nonlinear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
 ```
 
 LOO balanced (Better estimate, maybe let's include only these?):
@@ -463,6 +507,8 @@ cplot_nonlinear <- ggplot(data = data.frame(loopred=ploo_nonlinear,
 
 grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 ```
+
+## Prior sensitivity analysis
 
 # Discussion
 
