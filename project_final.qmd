@@ -198,7 +198,6 @@ $$
 
 TO DO:
 -   Explain in more detail what stan_glm and stan_gamm4 do
--   Ndraws, warmup, etc.
 -   check if line 218 is necessary (x <- model.matrix(sigdz ~ . - 1, data=cath))
     IF NOT: --> remove commented code
 
