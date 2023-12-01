@@ -42,7 +42,7 @@ The intercept and the regression coefficients are believed to be as likely posit
 
 The additive non-linear model on the other hand combines multiple functions in a way that isn't strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the non-linear model uses the same link function, and the logistic regression model can be written as:
 
-$$\text{logit} (\pi_i) = \beta_0 + f_1(x_1) + f_2(x_2) ... f_n(x_n),$$
+$$\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),$$
 
 where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, they're smooth functions that utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.
 
