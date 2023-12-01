@@ -158,6 +158,8 @@ Seems that sex and age have the most significant bivariate correlation to the re
 -   Priors
 -   Posteriors
 
+::: {.content-hidden when-format="pdf"}
+::: {.callout-warning collapse="false"}
 Motivation: - Logistic regression gives the estimate of event probability. - Bayesian logistic regression gives also estimate on the *uncertainty* of the predicted probability OR the model itself.
 
 Probability of success: $P(y=1) = Sigmoid(w^Tx+b)$ - Sigmoid maps the output to interval \[0, 1\]
@@ -169,6 +171,51 @@ For M = 'r expl_var' variables and N = 'r n_obs'. Then:
 For each variable ($j = 1,...,M$), the **prior** is $w_j \sim prior(w_j)$ $\rightarrow$ We define the prior to the **weights** of each variable
 
 For each datapoint $x_i$ and outcome $y_i$ ($i=1,...,N$): $\epsilon_i = Sigmoid(w^Tx_i+b)$ $y_i \sim Bernoulli(\epsilon_i)$
+
+
+This report examines the predictive performance of two bayesian models: a generalized linear model (GLM) and a non-linear additive model.
+
+:::
+:::
+
+## The generalized linear model and priors
+
+For the binary response variable $y$, the likelihood for the binomial GLM can be written as a conditionally binomial PMF.
+
+$$\binom{n}{y} \pi (1 - \pi)^{n-y},$$
+
+where n is the total amount of trials, $\pi = g^{-1}(\eta)$ is the probability of success (patient presenting with significant coronary disease) and $\eta = \alpha + x^{T} \beta$ is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.
+
+The link function $g$ maps the probability $\pi$ between the unit interval and the set of real numbers $\mathbb{R}$, and when applying the inverse link function to the linear predictor $\eta H$ the output will be a valid probability between 0 and 1.
+
+This project utilizes the logit link function for the GLM, which makes it a logistic regression model. The likelihood expressed with the logit link function $g(x) = \text{ln}(\frac{x}{1-x})$ for a single observation can be written as:
+
+$$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1})^{n-y}$$
+
+Priors are set for the intercept and vector of regression coefficients $\alpha$ and $\beta$, from the linear predictor $\eta = \alpha + x^{T} \beta$,
+
+$$
+\begin{align}
+\alpha &\sim t_v(\mu, \sigma^2) \\
+\beta_k &\sim t_v(\mu, \sigma^2) \\
+\end{align}
+$$ where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
+
+The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.
+
+## The additive non-linear model
+
+The additive non-linear model on the other hand combines multiple functions in a way that isn't strictly linear. This allows for a more flexible relationship between the explanatory and response variable $y$. In this report, the non-linear model uses the same link function, and the logistic regression model can be written as:
+
+$$\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),$$
+
+where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, all functions are smooth functions except $f_{age}$, which would only be the variable itself. The smooth functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.nThe smooth function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
+
+The likelihood would then become:
+
+$$
+\prod_{i = 1}^{N}\text{Bernoulli}(y|\text{logit}^{-1}(\pi_i),  \sigma)
+$$
 
 # Model Definitions and Implementation
 
