@@ -26,15 +26,14 @@ This project utilizes the logit link function for the GLM, which makes it a logi
 
 $$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1})^{n-y}$$
 
-Priors are set for the intercept and vector of regression coefficients $\alpha$ and $\beta$, from the linear predictor $\eta = \alpha + x^{T} \beta$, 
+Priors are set for the intercept and vector of regression coefficients $\alpha$ and $\beta$, from the linear predictor $\eta = \alpha + x^{T} \beta$,
 
 $$
 \begin{align}
 \alpha &\sim t_v(\mu, \sigma^2) \\
 \beta_k &\sim t_v(\mu, \sigma^2) \\
 \end{align}
-$$
-where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
+$$ where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
 
 The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.
 
@@ -44,7 +43,7 @@ The additive non-linear model on the other hand combines multiple functions in a
 
 $$\text{logit} (\pi_i) = \beta_0 + \beta_1 f_1(x_1) + \beta_2 f_2(x_2) ... \beta_n f_n(x_n),$$
 
-where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, they're smooth functions that utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.
+where $f_i$ are non-linear functions that transform the explanatory features individually. In this report, all functions are smooth functions except $f_{age}$, which would only be the variable itself. The smooth functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smooth functions is estimated from the data and the penalty helps avoid overfitting.nThe smooth function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
 
 The likelihood would then become:
 
@@ -54,12 +53,10 @@ $$
 
 The priors for the regression coefficients and intercept can be defined in the same way as in the previous model.
 
-$$
+$$ 
 \begin{align}
 \beta_0 &\sim t_v(\mu, \sigma^2) \\
 
 \beta_l &\sim t_v(\mu, \sigma^2) \\
-\end{align}
+\end{align} 
 $$
-
-
