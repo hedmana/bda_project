@@ -1,0 +1,73 @@
+---
+title: "BDA PROJECT"
+author: Axel, Linnea, Elissa
+format: 
+  html:
+    toc: true
+    code-tools: true
+    code-line-numbers: true  
+    mainfont: Georgia, serif
+    page-layout: article
+  pdf:  
+    code-annotations: none
+editor: source
+---
+
+# Introduction 
+
+Cardiovascular diseases, particularly coronary artery disease (CAD), remain a leading cause of mortality worldwide. In the 
+pursuit of effective diagnosis and intervention, cardiac catheterization has emerged as a procedure for evaluating and 
+addressing coronary artery health. 
+
+A reduction in artery diameter by at least 75% is considered a significant reduction in blood flow that puts downstream 
+heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease.
+This report explores the complexities surrounding the cardiac catheterization process, with a specific focus on 
+predicting the presence of significant coronary disease through the utilization of 
+Bayesian models.
+
+Duke University Medical Center's Cardiovascular Disease Databank provides a data set containing information about 
+patients that has been diagnosed at Duke University Medical Center. The patients where referred to Duke for chest pain
+and diagnosed accordingly. If the patient was diagnosed with significant coronary disease, the blockade can be of either
+all three of the coronary vessels, or only of the left main coronary artery. Both conditions are associated with a high 
+risk for mortality. 
+
+The scope of this report is to implement two Bayesian models able to predict the probability of significant coronary 
+disease among patients. The two models are based on Bayesian logistic regression, but one is linear and one is non-linear.
+After implementation the models are evaluated and compared to achieve the best possible result.
+
+TO BE EDITED
+!!!
+In section 2 the data used in this report is described. Section 3 explains the choice of mathematical model for 
+the task at hand. In section 4...
+!!!
+
+# Data
+
+The "cath" data set used in this report is obtained from Duke University Cardiovascular Disease Databank. The data set encapsulates a collection of 6 variables closely related to cardiovascular health. Our analysis centers around the 
+following key variables, providing a overview of patient demographics, clinical indicators, and critical outcomes related to coronary artery disease:
+
+## Variables
+
+- **Sex** (_sex_): Categorized as 0 for male and 1 for female, this variable represents the gender distribution within our 
+dataset.
+
+- **Age** (_age_): Representing the age of patients in years, this variable serves as a demographic feature.
+
+- **Chest Pain Duration** (_cad_dur_): The duration of chest pain symptoms in days.
+
+- **Serum Cholesterol Level** (_choleste_): Measured in milligrams per deciliter, serum cholesterol levels are indicative 
+of lipid metabolism and play a crucial role in cardiovascular health.
+
+- **Significant Coronary Disease** (_sigdz_): A binary variable that captures the presence (1) or absence (0) of at least 
+75% blockage in one of the major coronary arteries.
+
+- **Three Vessel Disease or Left Main Disease** (_tvdlm_): Denoting the presence (1) or absence (0) of blockage in either all three coronary vessels or in the left main coronary artery.
+
+The dataset, sourced from real-world cardiac catheterization cases, . While constructing the Bayesian models to predict the
+probaility of significant coronary disease, the report strives to utilize the correlation between the explanatory variables 
+(_sex_, _age_, _cad_dur_, _choleste_) and the desired response variable (_sigdz_). The _tvdlm_ variable is not relevant 
+in this report as the main focus is to predict the probability of significant coronary disease, independent of the type
+of the blockade.
+
+In the subsequent sections the report continues to explore choice of mathematical model, Bayesian model construction, and 
+model evaluation.
