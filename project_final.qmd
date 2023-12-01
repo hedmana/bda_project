@@ -15,9 +15,8 @@ format:
 editor: source
 ---
 
-:::: {.content-hidden when-format="pdf"}
-::: {.callout-warning collapse=false}
- 
+::: {.content-hidden when-format="pdf"}
+::: {.callout-warning collapse="false"}
 ## Setup
 
 Install packages:
@@ -47,45 +46,56 @@ Import the data:
 #| label: Importing data
 cath <- medicaldata::cath
 ```
-
 :::
-::::
+:::
 
+# Introduction
 
-# Introduction 
-
-- Background
-- Problem formulation/scope
-- Main modeling idea
-- Some picture of the data?
+-   Background
+-   Problem formulation/scope
+-   Main modeling idea
+-   Some picture of the data?
 
 # Data Desctription
 
-- Dataset:
+The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.
 
 ```{r}
-#| label: Data description
+#| label: Data-table
 #| echo: false
 #| message: false
 #| warning: false
-
-cath_dims <- dim(cath)
-cat("Number of variables: ", cath_dims[2], "\n")
-cat("Number of observations: ", cath_dims[1])
+#| tbl-cap: TBD
 knitr::kable(head(cath))
 ```
 
-Histograms and barplot of the explanatory variables:
+The dataset consists of four explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and two response variables (*sigdz*, *tvdlm*) that provide an overview on patient demographics, clinical indicators, and critical outcomes related to coronary artery disease:
+
+-   **Sex** (*sex*): Categorized as 0 for male and 1 for female, this variable represents the gender distribution within our dataset.
+
+-   **Age** (*age*): Representing the age of patients in years, this variable serves as a demographic feature.
+
+-   **Chest Pain Duration** (*cad_dur*): The duration of chest pain symptoms in days.
+
+-   **Serum Cholesterol Level** (*choleste*): Measured in milligrams per deciliter, serum cholesterol levels are indicative of lipid metabolism and play a crucial role in cardiovascular health.
+
+-   **Significant Coronary Disease** (*sigdz*): A binary variable that captures the presence (1) or absence (0) of at least 75% blockage in one of the major coronary arteries.
+
+-   **Three Vessel Disease or Left Main Disease** (*tvdlm*): Denoting the presence (1) or absence (0) of blockage in either all three coronary vessels or in the left main coronary artery.
+
+The univariate distributions of these variables are described in @Univariate-analysis.
 
 ```{r}
-#| label: Univariate analysis part 1
+#| label: Univariate-analysis
 #| echo: false
 #| fig-cap: TBD 1
 
-variable_names = names(cath)
+par(mfrow = c(2,3), oma = c(4,4,0.1,0.1)) # TBD
 
+variable_names = names(cath)
 colors = c("#F4CAE4", "#E6F5C9")
-par(mfrow = c(1,4))
+
+# Explanatory variables
 barplot(table(cath[,1]), main = variable_names[1], 
   xlab = variable_names[1], col = colors[1])
 for(i in 2:4){
@@ -93,23 +103,14 @@ for(i in 2:4){
     xlab = variable_names[i], col = colors[1])
 }
 
-```
-
-Barplots of the responsive variables:
-
-```{r}
-#| label: Univariate analysis part 2
-#| echo: false
-#| fig-cap: TBD 2
-
-par(mfrow = c(1,2))
+# Response variables
 for(i in 5:6){
   barplot(table(cath[,i]), main = variable_names[i], 
     xlab = variable_names[i], col = colors[2])
 }
 ```
 
-Explanation on data preprocessing (removing NA rows, scaling variables, removing tvdlm etc.)
+While constructing the Bayesian models to predict the probaility of significant coronary disease, the report strives to utilize the correlation between the explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and the desired response variable (*sigdz*). The *tvdlm* variable is not relevant in this report as the main focus is to predict the probability of significant coronary disease, independent of the type of the blockade.
 
 ```{r}
 #| label: Data preprocessing
@@ -128,20 +129,12 @@ for (i in 1:(ncol(cath)-1)){
     cath[i] <- scale(cath[i])
 }
 
-# Print out dimensions after preprocessing
+# Dimensions after preprocessing
 cath_dims <- dim(cath)
-expl_var <- cath_dims[2]-1
 n_obs <- cath_dims[1]
-cat("After preprocessing we have:\n")
-cat("Number of predictive variables: ", expl_var, "\n")
-cat("Number of observations: ", n_obs)
 ```
 
-- Histograms
-- Correlations
-- Has it been used in previous studies?
-
-Bivariate correlations:
+Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with `r n_obs` observations.
 
 ```{r}
 #| label: Bivariate analysis
@@ -156,35 +149,27 @@ Seems that sex and age have the most significant bivariate correlation to the re
 
 # Mathematical Model
 
-- Bayesian logistic regression
-- Likelihood
-- Priors
-- Posteriors
+-   Bayesian logistic regression
+-   Likelihood
+-   Priors
+-   Posteriors
 
-Motivation: 
-  - Logistic regression gives the estimate of event probability. 
-  - Bayesian logistic regression gives also estimate on the *uncertainty* of the predicted probability OR the model itself.
+Motivation: - Logistic regression gives the estimate of event probability. - Bayesian logistic regression gives also estimate on the *uncertainty* of the predicted probability OR the model itself.
 
-Probability of success: $P(y=1) = Sigmoid(w^Tx+b)$
-  - Sigmoid maps the output to interval [0, 1]
+Probability of success: $P(y=1) = Sigmoid(w^Tx+b)$ - Sigmoid maps the output to interval \[0, 1\]
 
-Bayesian approach: 
-  - Instead of learning the weights, we learn the *distribution of the weights*: $P(y=1|w) = Sigmoid(w^Tx+b)$
+Bayesian approach: - Instead of learning the weights, we learn the *distribution of the weights*: $P(y=1|w) = Sigmoid(w^Tx+b)$
 
 For M = 'r expl_var' variables and N = 'r n_obs'. Then:
 
-  For each variable ($j = 1,...,M$), the **prior** is $w_j \sim prior(w_j)$
-    $\rightarrow$ We define the prior to the **weights** of each variable
-  
-  For each datapoint $x_i$ and outcome $y_i$ ($i=1,...,N$): 
-    $\epsilon_i = Sigmoid(w^Tx_i+b)$
-    $y_i \sim Bernoulli(\epsilon_i)$
+For each variable ($j = 1,...,M$), the **prior** is $w_j \sim prior(w_j)$ $\rightarrow$ We define the prior to the **weights** of each variable
 
+For each datapoint $x_i$ and outcome $y_i$ ($i=1,...,N$): $\epsilon_i = Sigmoid(w^Tx_i+b)$ $y_i \sim Bernoulli(\epsilon_i)$
 
 # Model Definitions and Implementation
 
-- Tie mathematical model to our implementation
-- Ndraws, warmup, etc.
+-   Tie mathematical model to our implementation
+-   Ndraws, warmup, etc.
 
 ## Linear model
 
@@ -228,8 +213,9 @@ formula_nonlinear <- formula(sigdz ~ sex + s(age) + s(cad_dur) + s(choleste))
 # Model definition
 # model_nonlinear <- stan_gamm4(
 #   formula_nonlinear, data = cath,
-#   family = binomial(link = "logit",
-#   refresh = 0)
+#   family = binomial(link = "logit"),
+#   prior = prior_linear, prior_intercept = prior_linear,
+#   refresh = 0
 # )
 
 # saveRDS(model_nonlinear, file = "./additional_files/model_nonlinear.rds")
@@ -237,8 +223,9 @@ model_nonlinear <- readRDS("./additional_files/model_nonlinear.rds")
 ```
 
 # Model Evaluation
-- Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
-- Prior sensitivity analysis
+
+-   Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
+-   Prior sensitivity analysis
 
 ## Convergence diagnostics & posterior predictive checks
 
@@ -263,8 +250,8 @@ Both:
 pplot_linear<-plot(model_linear, "areas", prob = 0.95, prob_outer = 1)
 pplot_linear + geom_vline(xintercept = 0)
 
-pplot_nonlinear<-plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1)
-pplot_nonlinear + geom_vline(xintercept = 0)
+# pplot_nonlinear<-plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1)
+# pplot_nonlinear + geom_vline(xintercept = 0)
 ```
 
 ## Model comparison using LOO-CV
@@ -357,7 +344,7 @@ round(mean(xor(ploo_nonlinear>0.5,as.integer(y==0))),2)
 round((mean(xor(ploo_nonlinear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(ploo_nonlinear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
 ```
 
-### Calibration curves 
+### Calibration curves
 
 ```{r}
 #| label: Calibration plots
@@ -385,13 +372,11 @@ cplot_nonlinear <- ggplot(data = data.frame(loopred=ploo_nonlinear,
 grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 ```
 
-
 # Discussion
-- Problems, potential improvements?
-- Conclusion of analysis
+
+-   Problems, potential improvements?
+-   Conclusion of analysis
 
 # Lessons Learned
 
-
 # References
-
