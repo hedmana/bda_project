@@ -43,7 +43,7 @@ library(grid)
 Import the data:
 
 ```{r}
-#| label: Importing data
+#| label: Importing-data
 cath <- medicaldata::cath
 ```
 :::
@@ -113,7 +113,7 @@ for(i in 5:6){
 While constructing the Bayesian models to predict the probaility of significant coronary disease, the report strives to utilize the correlation between the explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and the desired response variable (*sigdz*). The *tvdlm* variable is not relevant in this report as the main focus is to predict the probability of significant coronary disease, independent of the type of the blockade.
 
 ```{r}
-#| label: Data preprocessing
+#| label: Data-preprocessing
 #| echo: false
 #| warning: false
 #| message: false
@@ -134,22 +134,18 @@ cath_dims <- dim(cath)
 n_obs <- cath_dims[1]
 ```
 
-Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations.
+Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are described in @Bivariate-analysis. We can see that sex and age have the most significant bivariate correlation to the responsive variable sigdz.
 
 ```{r}
-#| label: Bivariate analysis
+#| label: Bivariate-analysis
 #| echo: false
 #| fig-cap: TBD 3
 
-par(mfrow=c(1,2))
+par(mfrow=c(1,1))
 p <- ncol(cath)
 
 corrplot(cor(cath[, c(p,1:(p-1))]), type = "full", method = "number")
-
-pairs(cath[, c(p,1:(p-1))], lower.panel = NULL)
 ```
-
-Seems that sex and age have the most significant bivariate correlation to the responsive variable sigdz.
 
 # Mathematical Model
 
