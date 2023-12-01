@@ -18,7 +18,7 @@ For the binary response variable $y$, the likelihood for the binomial GLM can be
 
 $$\binom{n}{y} \pi (1 - \pi)^{n-y},$$
 
-where n is the number of patients enrolled in the study, $\pi = g^{-1}(\eta)$ is the probability of success (patient presenting with significant coronary disease) and $\eta = \alpha + x^{T} \beta$ is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.
+where n is the total amount of trials, $\pi = g^{-1}(\eta)$ is the probability of success (patient presenting with significant coronary disease) and $\eta = \alpha + x^{T} \beta$ is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.
 
 The link function $g$ maps the probability $\pi$ between the unit interval and the set of real numbers $\mathbb{R}$, and when applying the inverse link function to the linear predictor $\eta H$ the output will be a valid probability between 0 and 1.
 
@@ -26,11 +26,18 @@ This project utilizes the logit link function for the GLM, which makes it a logi
 
 $$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1})^{n-y}$$
 
-Priors are set for the intercept and vector of regression coefficients, $\alpha$ and $\beta$.
+Priors are set for the intercept and vector of regression coefficients $\alpha$ and $\beta$, from the linear predictor $\eta = \alpha + x^{T} \beta$, 
 
 $$
-\alpha \sim 
+\begin{align}
+\alpha &\sim t_v(\mu, \sigma^2) \\
+p(\alpha) &= t_v(\alpha|\mu, \sigma^2)\\
+\\
+\beta_k &\sim t_v(\mu, \sigma^2) \\
+p(\beta_k) &= t_v(\beta_k|\mu, \sigma^2)\\
+\end{align}
 $$
+where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
 
 The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.
 
