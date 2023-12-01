@@ -31,10 +31,7 @@ Priors are set for the intercept and vector of regression coefficients $\alpha$ 
 $$
 \begin{align}
 \alpha &\sim t_v(\mu, \sigma^2) \\
-p(\alpha) &= t_v(\alpha|\mu, \sigma^2)\\
-\\
 \beta_k &\sim t_v(\mu, \sigma^2) \\
-p(\beta_k) &= t_v(\beta_k|\mu, \sigma^2)\\
 \end{align}
 $$
 where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
