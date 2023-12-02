@@ -534,6 +534,13 @@ linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
                 prior = normal_prior_loc, prior_intercept = normal_prior_loc,
                 QR=TRUE, refresh=0)
 
+#flat prior
+flat_prior <- NULL
+linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
+                family = binomial(link = "logit"),
+                prior = flat_prior,
+                QR=TRUE, refresh=0)
+
 
 
 
@@ -557,8 +564,11 @@ pplot_normal_sd <- plot(linear_model_normal_sd, "areas", prob = 0.95, prob_outer
 pplot_normal_loc <- plot(linear_model_normal_loc, "areas", prob = 0.95, prob_outer = 1) + 
   geom_vline(xintercept = 0) + labs(title = "N(100, 0)")
 
+pplot_flat <- plot(linear_model_flat_prior, "areas", prob = 0.95, prob_outer = 1) + 
+  geom_vline(xintercept = 0) + labs(title = "flat prior")
+
 #put desired priors into here
-grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_cauchy, ncol=2, nrow = 2) 
+grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=2, nrow = 2) 
 ```
 
 ```{r}
@@ -600,6 +610,10 @@ pplot_nonlinear <- plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1) +
 geom_vline(xintercept = 0) + labs(title = "Model prior")
 
 grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, nonlinear_pplot_cauchy, ncol=2, nrow = 2) 
+```
+
+```{r}
+?plot
 ```
 # Discussion
 
