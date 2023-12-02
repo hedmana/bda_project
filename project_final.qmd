@@ -228,8 +228,6 @@ The linear relationship between the response variable `sigdz` and the explanator
 
 # Make response variable a factor
 cath$sigdz <- as.factor(cath$sigdz)
-
-#x <- model.matrix(sigdz ~ . - 1, data=cath)
 y <- cath$sigdz
 
 # Formula
