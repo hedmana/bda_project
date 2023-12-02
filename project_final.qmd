@@ -199,7 +199,7 @@ $$
 
 ## The generalized additive nonlinear model
 
-The additive nonlinear model on the other hand combines multiple functions in a way that is not strictly linear. This allows for a more flexible relationship between the explanatory variables and response variable $y$. In this report, the nonlinear model uses the same link function as the linear model, and so the nonlinear predictor for the logistic regression model can be written as:
+The additive nonlinear model on the other hand, is a generalized additive mixed model which combines multiple functions in a way that is not strictly linear. This allows for a more flexible relationship between the explanatory variables and response variable $y$. In this report, the nonlinear model uses the same link function as the linear model, and so the nonlinear predictor for the logistic regression model can be written as:
 
 $$
 \text{logit} (\theta) = \eta = \alpha + \sum^4_{k=1} \beta_k f_k(x_k),
