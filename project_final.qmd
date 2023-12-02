@@ -156,8 +156,6 @@ In this analysis, we will construct two models for inferring the binary response
 
 ## The generalized linear model and priors
 
-**Elissan ehdottamat muokkaukset Linnean kirjoitukseen:**
-
 Let $y$ be the number of times the variable *sigdz* is realized to be 1 for one individual in the dataset, and let $x$ be the explanatory variables for this outcome. Then, this number of successes for one individual follows a Binomial distribution
 
 $$
@@ -221,7 +219,7 @@ The linear and nonlinear models are implemented as Stan code with the rstanarm p
 
 ## Linear model
 
-The linear model was implemented with the help of the `stan_glm` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`.
+The linear model was implemented with the help of the `stan_glm` function from the rstanarm package. `stan_glm` is used to fit generalized linear models and performs a full Bayesian estimation with Markov Chain Monte Carlo (MCMC) estimation instead of maximum likelihood estimation and by adding priors to the GLM coefficients and intercept. By defining the model parameter `family = binomial(link = 'logit')` the model performs logistic regression.  
 
 The linear relationship between the response variable `sigdz` and the explanatory variables are defined with the help of the `formula` function and the prior for the regression coefficients and intercept with the help of the `student_t` function.
 
@@ -254,7 +252,7 @@ model_linear <- stan_glm(formula_linear, data = cath,
 
 ## Nonlinear model
 
-The nonlinear model is similarly implemented utilizing `stan_gamm4` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`.
+The nonlinear model is similarly implemented utilizing `stan_gamm4` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`. `stan_gamm4` fits a generalized additive mixed model, and performs Bayesian MCMC estimation instead of maximum likelihood estimation. In the same way as `stan_glm`, the model adds independent priors to the regression coefficients and intercept.
 
 The nonlinear relationship between the response variable `sigdz` and the explanatory variables is again defined with the help of the `formula` function. This time, passing the smoothing function `s()` for all continuous explanatory variables, to allow for more complexity in the model, while simultaneously penalizing over-fitting of the model with the the thin plate regression splines smoothness.
 
