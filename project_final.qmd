@@ -209,8 +209,6 @@ where $f_k$ are nonlinear functions that transform the explanatory features indi
 
 The likelihood of observation is the same as with the linear model, with the difference that a nonlinear transformation is applied to all input explanatory variables $\bf{x}$. Additionally, we utilize the same prior in both models to make them as comparable as possible. The posterior is again similar as with the linear model, but with the difference of nonlinear transformations on the input data.
 
-((t-distribution prior leads to 1 divergent transition with the nonlinear model -\> With default prior we got 0 divergent transitions -\> Otetaanko sittenkin eri priorit?))
-
 # Model Definitions and Implementation
 
 (((TO DO: - Explain in more detail what stan_glm and stan_gamm4 do - check if line 218 is necessary (x \<- model.matrix(sigdz \~ . - 1, data=cath)) IF NOT: --\> remove commented code)))
@@ -242,8 +240,8 @@ prior_linear <- student_t(df = 3, location = 0, scale = 2.5)
 
 # The model
 model_linear <- stan_glm(formula_linear, data = cath,
-                 family = binomial(link = "logit"), 
-                 prior = prior_linear, prior_intercept = prior_linear,
+                family = binomial(link = "logit"), 
+                prior = prior_linear, prior_intercept = prior_linear,
                 QR=TRUE, refresh=0)
 
 # saveRDS(model_linear, file = "./additional_files/model_linear.rds")
@@ -270,7 +268,7 @@ formula_nonlinear <- formula(sigdz ~ sex + s(age) + s(cad_dur) + s(choleste))
 model_nonlinear <- stan_gamm4(
   formula_nonlinear, data = cath,
   family = binomial(link = "logit"),
-  # prior = prior_linear, prior_intercept = prior_linear,
+  prior = prior_linear, prior_intercept = prior_linear,
   refresh = 0
 )
 
@@ -280,17 +278,17 @@ model_nonlinear <- stan_gamm4(
 
 # Model Evaluation
 
-After fitting the models, multiple evaluation metrics such as $\hat{R}$, effective sample size (ESS) and number of divergent transitions were used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV). Finally, we perform prior sensitivity analysis for both models.
+After fitting the models, multiple evaluation metrics such as split-$\hat{R}$, effective sample size (ESS) and number of divergent transitions were used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV). Finally, we perform prior sensitivity analysis for both models.
 
 -   Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
 -   Prior sensitivity analysis
 
 ## Convergence diagnostics & posterior predictive checks
 
-For the linear model, the posterior predictive check and posterior distributions of the parameters with 95 % credible interval are visualized in @linear-model-plots. AS we can see, the model fits the data relatively well, with a bit of a variation around the probability interval endpoints.
+For the linear model, the posterior predictive check and posterior distributions of the parameters with 95 % credible interval are visualized in @linear-model-plots. As we can see, the model fits the data relatively well, with a bit of a variation around the probability interval endpoints.
 
 ```{r}
-#| label: linear-model-plots
+#| label: linear-model-pp-check
 #| fig-cap: TBD
 #| echo: false
 
@@ -307,51 +305,63 @@ grid.arrange(pplot_linear, pp_check_linear, ncol=2)
 The convergence diagnostics for the linear model are summarized below.
 
 ```{r}
-#| label: Linear-model-Convergence-diagnostics
+#| label: Linear-model-convergence-diagnostics
 #| echo: false
 
 Rhat_linear <- model_linear$stan_summary[, "Rhat"] %>% round(3)
 np_linear <- nuts_params(model_linear)
 divergents_linear <- sum(subset(np_linear, Parameter == "divergent__")$Value)
 ess_ratio_linear <- neff_ratio(model_linear)
+sd_ess_ratio_linear <- sd(ess_ratio_linear) %>% round(3)
 
-cat("Linear model: \n")
-cat("Split-Rhat\n")
+cat("Split-Rhat:\n")
 print(Rhat_linear)
 cat("Number of divergent transitions: ", divergents_linear, "\n")
 cat("ESS ratio: \n")
 print(ess_ratio_linear)
-
+cat("Sd of ESS ratio: ", sd_ess_ratio_linear)
 ```
 
-The HMC chains have converged, as all split-$\hat{R}$ values are below 0.01. Additionally, there were no divergent transitions during convergence, and thus the HMC simulation is reliable. The ratio of the ESS to the true sample size is over 1 with all explanatory variables as well as the intercept. Although high ESS is generally a good thing, this also implies the MCMC samples can have a negative correlation.
+The HMC chains have converged, as all split-$\hat{R}$ values are below 0.01. Additionally, there were no divergent transitions during convergence, and thus the HMC simulation is reliable. The ratio of the ESS to the true sample size is over 1 with all explanatory variables as well as the intercept. Although high ESS is generally a good thing, this also implies the MCMC samples may have a negative correlation.
 
--   If ESS \> n -\> Posterior close to Gaussian/Gaussian like
+For the nonlinear model, the posterior predictive check is visualized in @nonlinear-model-pp-check. Based on visual inspection, the nonlinear model fits the data as well as the linear model. Like with the linear model, the posterior has a bit of a variation around the probability interval endpoints.
 
-For the nonlinear model...
+```{r}
+#| label: nonlinear-model-pp-check
+#| fig-cap: TBD
+#| echo: false
 
--   With default prior number of divergent transitions is 1
+# pp check
+brms::pp_check(model_nonlinear) +
+labs(title="Posterior predictive check for the nonlinear model")
+```
 
--   With t-distr. prior we get 1 divergent transition.
+The convergence diagnostics for the nonlinear model are summarized below.
 
 ```{r}
 #| label: Nonlinear-model-Convergence-diagnostics
 #| echo: true
 
-# summary(model_nonlinear)
-
 Rhat_nonlinear <- model_nonlinear$stan_summary[, "Rhat"] %>% round(3)
 np_nonlinear <- nuts_params(model_nonlinear)
 divergents_nonlinear <- sum(subset(np_nonlinear, Parameter == "divergent__")$Value)
-ess_ratio_nonlinear <- neff_ratio(model_nonlinear)
+ess_ratio_nonlinear <- neff_ratio(model_nonlinear) %>% round(3)
 
-cat("Nonlinear model: \n")
-cat("Rhat\n")
+rhat_satisfied_nonlinear <- all(Rhat_nonlinear <= 1.01)
+mean_ess_ratio <- mean(ess_ratio_nonlinear) %>% round(3)
+sd_ess_ratio_nonlinear <- sd(ess_ratio_nonlinear) %>% round(3)
+
+cat("Split-Rhat of the first coefficients:\n")
 print(head(Rhat_nonlinear))
-cat("Number of divergent transitions: ", divergents_nonlinear, "\n")
-cat("ESS ratio: \n")
+cat("All split-Rhat <= 0.01: ", rhat_satisfied_nonlinear, "\n")
+cat("Number of divergent transitions: ",divergents_nonlinear, "\n")
+cat("ESS ratio of the first coefficients: \n")
 print(head(ess_ratio_nonlinear))
+cat("Median of ESS ratio: ", mean_ess_ratio)
+cat("Sd of ESS ratio: ", sd_ess_ratio_nonlinear)
 ```
+
+Also the MCMC chains for this model have converged, as the split-$\hat{R}$ is less than 0.01 for all coefficients. As with the linear model, there were no divergent transitions during convergence, and thus the HMC simulation is reliable. On the other hand, the ESS ratio is on average less than 1, so a bit lower than with the linear model. However, the standard deviation of the ESS ratios is over twice larger than with the linear model. Low ESS ratio is not good in the model sense, but nevertheless the nonlinear has multiple coefficients to balance out the overall effect.
 
 ## Model comparison using LOO-CV
 
