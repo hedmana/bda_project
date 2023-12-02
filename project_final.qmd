@@ -211,8 +211,6 @@ The likelihood of observation is the same as with the linear model, with the dif
 
 # Model Definitions and Implementation
 
-(((TO DO: - Explain in more detail what stan_glm and stan_gamm4 do - check if line 218 is necessary (x \<- model.matrix(sigdz \~ . - 1, data=cath)) IF NOT: --\> remove commented code)))
-
 The linear and nonlinear models are implemented as Stan code with the rstanarm package as described below. Both models were implemented with identical number of chains, draws and warm-up. The default values (chains = 4, draws = 4000, and warmup = 2000) were used in both cases.
 
 ## Linear model
