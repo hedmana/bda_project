@@ -217,7 +217,6 @@ x1 <- model.matrix(sigdz ~ . - 1, data=cc)
 y1 <- cc$sigdz
 
 
-
 ## Predicted probabilities
 linpred_1 <- posterior_linpred(post1)
 preds_1 <- posterior_epred(post1)
