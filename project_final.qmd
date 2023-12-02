@@ -499,11 +499,6 @@ grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 
 ## Prior sensitivity analysis
 
-# Discussion
-
--   Problems, potential improvements?
--   Conclusion of analysis
-
 
 ```{r}
 #normal prior
@@ -606,7 +601,10 @@ geom_vline(xintercept = 0) + labs(title = "Model prior")
 
 grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, nonlinear_pplot_cauchy, ncol=2, nrow = 2) 
 ```
+# Discussion
 
+-   Problems, potential improvements?
+-   Conclusion of analysis
 
 # Lessons Learned
 
