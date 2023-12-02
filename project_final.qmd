@@ -390,13 +390,23 @@ cat("All split-Rhat <= 0.01: ", rhat_satisfied_nonlinear, "\n")
 cat("Number of divergent transitions: ",divergents_nonlinear, "\n")
 cat("ESS ratio of the first coefficients: \n")
 print(head(ess_ratio_nonlinear))
-cat("Median of ESS ratio: ", mean_ess_ratio)
+cat("Mean of ESS ratio: ", mean_ess_ratio)
 cat("Sd of ESS ratio: ", sd_ess_ratio_nonlinear)
 ```
 
 Also the MCMC chains for this model have converged, as the split-$\hat{R}$ is less than 0.01 for all coefficients. As with the linear model, there were no divergent transitions during convergence, and thus the HMC simulation is reliable. On the other hand, the ESS ratio is on average less than 1, so a bit lower than with the linear model. However, the standard deviation of the ESS ratios is over twice larger than with the linear model. Low ESS ratio is not good in the model sense, but nevertheless the nonlinear has multiple coefficients to balance out the overall effect.
 
 ## Model comparison using LOO-CV
+
+To compare the performance of the linear model and nonlinear model to each other as well as to a baseline model, we will compute the expected log-densities of the predictive distributions by applying Pareto smoothed LOO-CV (PSIS-LOO) to the models. The baseline model is simply a logistic regression model without any explanatory variables and with unit coefficient.
+
+```{r}
+#| label: Baseline-model
+# Baseline model
+model_baseline <- update(model_linear, formula = sigdz ~ 1, QR = FALSE)
+```
+
+
 
 ```{r}
 #| label: Computing LOOs
@@ -406,11 +416,11 @@ loo_nonlinear <- loo(model_nonlinear, save_psis = TRUE)
 print(loo_linear)
 print(loo_nonlinear)
 
-# Baseline model of the linear model
-model_baseline <- update(model_linear, formula = sigdz ~ 1, QR = FALSE)
+
 
 # LOO of the baseline model
 loo_baseline <- loo(model_baseline, save_psis = TRUE)
+print(loo_baseline)
 ```
 
 Comparing the LOOs:
