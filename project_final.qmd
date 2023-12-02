@@ -38,6 +38,7 @@ library(MASS)
 # library(RColorBrewer)
 library(gridExtra)
 library(grid)
+library(knitr)
 seed = 1234
 ```
 
@@ -67,7 +68,7 @@ The "cath" dataset used in this report is obtained from Duke University Cardiova
 #| message: false
 #| warning: false
 #| tbl-cap: TBD
-knitr::kable(head(cath))
+kable(head(cath))
 ```
 
 The dataset consists of four explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and two response variables (*sigdz*, *tvdlm*) that provide an overview on patient demographics, clinical indicators, and critical outcomes related to coronary artery disease:
@@ -407,74 +408,70 @@ It indeed seems that the predictive performances of both linear and nonlinear mo
 
 ## Posterior predictive performance: Classification accuracy
 
-To estimate the generalization error, i.e. the eneralization and performance of models on unseen data, we compute LOO-balanced classification accuracies for the linear and nonlinear models.
-
-### Linear model:
+To estimate the generalization error, i.e. the generalization and performance of models on unseen data, we compute LOO-balanced classification accuracies for the linear and nonlinear models. The results are summarized in @Classification-accuracies. The classification accuracy is simply the fraction of correctly classified observations. The balanced classification accuracy on the other hand takes into account true positive rate (sensitivity) and true negative rate (specificity). The latter accounts for the imbalance in our data and is therefore more accurate estimate on the generalization error. Estimating generalization error is highly important for practical usage of the model, as it would be centered around predicting 
 
 ```{r}
-#| label: Linear model - Predictive probs
+#| label: Linear-model-Classification-accuracy
+#| echo: false
+
 ## Predicted probabilities
-# linpred_linear <- posterior_linpred(model_linear)
 preds_linear <- posterior_epred(model_linear)
-pred_linear <- colMeans(preds_linear)
-# pr_linear <- as.integer(pred_linear >= 0.5)
-   
-## posterior classification accuracy
-# round(mean(xor(pr_linear,as.integer(y==0))),2)
 
-# # posterior balanced classification accuracy
-# round((mean(xor(pr_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_linear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
+# LOO predicted outcome probabilities
+ploo_linear = E_loo(preds_linear, loo_linear$psis_object, 
+  type="mean", log_ratios = -log_lik(model_linear))$value
+
+# Classification accuracy
+accuracy_linear <- xor(ploo_linear>0.5, as.integer(y==0)) %>% mean() %>% round(2)
+
+# Posterior balanced LOO classification accuracy
+FP_linear <- mean(xor(ploo_linear[y==0]>0.5,as.integer(y[y==0])))
+FN_linear <- mean(xor(ploo_linear[y==1]<0.5,as.integer(y[y==1])))
+balanced_accuracy_linear <- round((FP_linear + FN_linear)/2, 2)
 ```
 
 ```{r}
-#| label: Linear model - LOO balanced predictive probs
-# LOO predictive probabilities
-ploo_linear=E_loo(preds_linear, loo_linear$psis_object, type="mean", log_ratios = -log_lik(model_linear))$value
-ploo_linear
-# LOO classification accuracy
-round(mean(xor(ploo_linear>0.5,as.integer(y==0))),2)
+#| label: Noninear-model-Classification-accuracy
+#| echo: false
 
-# LOO balanced classification accuracy
-round((mean(xor(ploo_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(ploo_linear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
-```
-
-### Nonlinear model
-
-```{r}
-#| label: Nonlinear model - Predictive probs
 ## Predicted probabilities
-linpred_nonlinear <- posterior_linpred(model_nonlinear)
 preds_nonlinear <- posterior_epred(model_nonlinear)
-pred_nonlinear <- colMeans(preds_nonlinear)
-pr_nonlinear <- as.integer(pred_nonlinear >= 0.5)
-   
-## posterior classification accuracy
-# round(mean(xor(pr_nonlinear,as.integer(y==0))),2)
 
-# # posterior balanced classification accuracy
-# round((mean(xor(pr_nonlinear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_nonlinear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
+# LOO predicted outcome probabilities
+ploo_nonlinear=E_loo(preds_nonlinear, loo_nonlinear$psis_object, 
+  type="mean", log_ratios = -log_lik(model_nonlinear))$value
+
+# Classification accuracy
+accuracy_nonlinear <- xor(ploo_nonlinear>0.5,as.integer(y==0)) %>% mean() %>% round(2)
+
+# Posterior balanced LOO classification accuracy
+FP_nonlinear <- mean(xor(ploo_nonlinear[y==0]>0.5,as.integer(y[y==0])))
+FN_nonlinear <- mean(xor(ploo_nonlinear[y==1]<0.5,as.integer(y[y==1])))
+balanced_accuracy_nonlinear <- round((FP_nonlinear + FN_nonlinear)/2, 2)
 ```
-
-LOO balanced (Better estimate, maybe let's include only these?):
 
 ```{r}
-#| label: Nonlinear model - LOO balanced predictive probs
-# LOO predictive probabilities
-ploo_nonlinear=E_loo(preds_nonlinear, loo_nonlinear$psis_object, type="mean", log_ratios = -log_lik(model_nonlinear))$value
+#| label: Classification-accuracies
+#| echo: false
+#| tbl-cap: TBD
 
-# LOO classification accuracy
-round(mean(xor(ploo_nonlinear>0.5,as.integer(y==0))),2)
-
-# LOO balanced classification accuracy
-round((mean(xor(ploo_nonlinear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(ploo_nonlinear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
+accuracies <- data.frame(
+  classification_accuracy = c(accuracy_linear, accuracy_nonlinear),
+  balanced_classification_accuracy = c(balanced_accuracy_linear, balanced_accuracy_nonlinear)
+)
+rownames(accuracies) <- c("linear_model", "nonlinear_model")
+kable(accuracies)
 ```
+
+We can see that the performances of both models are nearly equal. The classification accuracy is slightly better for the nonlinear model, but the balanced accuracy is the same for both models. The the balanced classification accuracy is not very high, but nevertheless, both models outperform a random classifier. 
 
 ### Calibration curves
 
 ```{r}
 #| label: Calibration plots
 #| fig-cap: TBD X
-cplot_linear <- ggplot(data = data.frame(pred=pred_linear,loopred=ploo_linear,
+
+cplot_linear <- ggplot(data = data.frame(loopred=ploo_linear,
   y=as.numeric(y)-1), aes(x=loopred, y=y)) +
   stat_smooth(method='glm', formula = y ~ ns(x, 5), fullrange=TRUE, color="deeppink") +
   geom_abline(linetype = 'dashed') +
@@ -527,6 +524,7 @@ linear_model_cauchy_prior <- stan_glm(formula_linear, data = cath,
 
 
 ```
+
 Plotting the posterior distribution for each prior:
 ```{r}
 pplot_normal <- plot(linear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
