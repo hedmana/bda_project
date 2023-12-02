@@ -403,19 +403,21 @@ To assess the model ELPDs with respect to each other, we compute the comparison 
 loo_compare(loo_linear, loo_nonlinear, loo_baseline)
 ```
 
-It indeed seems that 
+It indeed seems that the predictive performances of both linear and nonlinear models are better compared to the baseline model. Additionally, the scale of the difference of standard errors (es_diff) of the baseline model and nonlinear model is smaller than the difference of the ELPDs of the nonlinear and baseline model, which implies the difference in predictive log-densities between these models is not simply explained by the variance. Although the difference in ELPDs of the linear and nonlinear models is small, the nonlinear model slightly outperforms the linear model.
 
 ## Posterior predictive performance: Classification accuracy
+
+To estimate the generalization error, i.e. the eneralization and performance of models on unseen data, we compute LOO-balanced classification accuracies for the linear and nonlinear models.
 
 ### Linear model:
 
 ```{r}
 #| label: Linear model - Predictive probs
 ## Predicted probabilities
-linpred_linear <- posterior_linpred(model_linear)
+# linpred_linear <- posterior_linpred(model_linear)
 preds_linear <- posterior_epred(model_linear)
 pred_linear <- colMeans(preds_linear)
-pr_linear <- as.integer(pred_linear >= 0.5)
+# pr_linear <- as.integer(pred_linear >= 0.5)
    
 ## posterior classification accuracy
 # round(mean(xor(pr_linear,as.integer(y==0))),2)
@@ -424,13 +426,11 @@ pr_linear <- as.integer(pred_linear >= 0.5)
 # round((mean(xor(pr_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_linear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
 ```
 
-LOO balanced (Better estimate, maybe let's include only these?):
-
 ```{r}
 #| label: Linear model - LOO balanced predictive probs
 # LOO predictive probabilities
 ploo_linear=E_loo(preds_linear, loo_linear$psis_object, type="mean", log_ratios = -log_lik(model_linear))$value
-
+ploo_linear
 # LOO classification accuracy
 round(mean(xor(ploo_linear>0.5,as.integer(y==0))),2)
 
@@ -452,7 +452,7 @@ pr_nonlinear <- as.integer(pred_nonlinear >= 0.5)
 # round(mean(xor(pr_nonlinear,as.integer(y==0))),2)
 
 # # posterior balanced classification accuracy
-# round((mean(xor(pr_linear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_nonlinear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
+# round((mean(xor(pr_nonlinear[y==0]>0.5,as.integer(y[y==0])))+mean(xor(pr_nonlinear[y==1]<0.5,as.integer(y[y==1]))))/2,2)
 ```
 
 LOO balanced (Better estimate, maybe let's include only these?):
