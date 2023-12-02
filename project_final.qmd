@@ -365,7 +365,7 @@ Also the MCMC chains for this model have converged, as the split-$\hat{R}$ is le
 
 ## Model comparison using LOO-CV
 
-To compare the performance of the linear model and nonlinear model to each other as well as to a baseline model, we will compute the expected log-densities of the predictive distributions by applying Pareto smoothed LOO-CV (PSIS-LOO) to the models. The baseline model is simply a logistic regression model without any explanatory variables and with unit coefficient.
+To compare the performance of the linear model and nonlinear model to each other as well as to a baseline model, we will compute the expected log-densities of the predictive distributions (ELPD) by applying Pareto smoothed LOO-CV (PSIS-LOO) to the models. The baseline model is simply a logistic regression model without any explanatory variables and with a unit coefficient.
 
 ```{r}
 #| label: Baseline-model
@@ -373,31 +373,41 @@ To compare the performance of the linear model and nonlinear model to each other
 model_baseline <- update(model_linear, formula = sigdz ~ 1, QR = FALSE)
 ```
 
-
+The results of the PSIS-LOO for each model are presented below.
 
 ```{r}
-#| label: Computing LOOs
+#| label: Computing-LOOs
+#| echo: false
+#| warnings: false
 # LOO of our models
 loo_linear <- loo(model_linear, save_psis = TRUE)
 loo_nonlinear <- loo(model_nonlinear, save_psis = TRUE)
-print(loo_linear)
-print(loo_nonlinear)
-
-
-
 # LOO of the baseline model
 loo_baseline <- loo(model_baseline, save_psis = TRUE)
+```
+
+```{r}
+#| label: Printing-LOOs
+#| echo: false
+print("Linear model:")
+print(loo_linear)
+print("Nonlinear model:")
+print(loo_nonlinear)
+print("Baseline model:")
 print(loo_baseline)
 ```
 
-Comparing the LOOs:
+For each model, all Pareto k estimates are < 0.5, which implies the importance sampling gives a reliable estimate on the computed ELPDs. Additionally, for linear and nonlinear model the p_loo is less than the number of parameters in the respective model, and thus the model specifications seem to be reasonable. 
+
+To assess the model ELPDs with respect to each other, we compute the comparison between the results of PSIS-LOO:
 
 ```{r}
 #| label: Comparing LOOs
+#| echo: false
 loo_compare(loo_linear, loo_nonlinear, loo_baseline)
 ```
 
-The nonlinear model seems to be the best!
+It indeed seems that 
 
 ## Posterior predictive performance: Classification accuracy
 
