@@ -501,6 +501,7 @@ grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 
 
 ```{r}
+#| label: Linear model - Prior sensititivy analysis
 #normal prior
 normal_prior <- normal(location = 0, scale = NULL, autoscale = FALSE)
 linear_model_normal_prior <- stan_glm(formula_linear, data = cath,
@@ -536,9 +537,9 @@ linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
 
 #flat prior
 flat_prior <- NULL
-linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
+linear_model_flat_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
-                prior = flat_prior,
+                prior = flat_prior, prior_intercept = flat_prior,
                 QR=TRUE, refresh=0)
 
 
@@ -547,6 +548,7 @@ linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
 ```
 Plotting the posterior distribution for each prior:
 ```{r}
+#| label: Linear model - Plotting prior sensititvy 
 pplot_normal <- plot(linear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Normal prior")
 
@@ -572,6 +574,7 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 ```
 
 ```{r}
+#| label: Noninear model - Prior sensititivy analysis
 #normal prior
 nonlinear_model_normal_prior <- stan_gamm4(
   formula_nonlinear, data = cath,
@@ -597,6 +600,7 @@ nonlinear_model_cauchy_prior <- stan_gamm4(
 ```
 
 ```{r}
+#| label: Nonlinear model - Plotting prior sensititivy
 nonlinear_pplot_normal <- plot(nonlinear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Normal prior")
 
@@ -613,7 +617,7 @@ grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, n
 ```
 
 ```{r}
-?plot
+
 ```
 # Discussion
 
