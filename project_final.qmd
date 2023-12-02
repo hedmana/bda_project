@@ -508,7 +508,7 @@ grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 ```{r}
 #normal prior
 normal_prior <- normal(location = 0, scale = NULL, autoscale = FALSE)
-linea_model_normal_prior <- stan_glm(formula_linear, data = cath,
+linear_model_normal_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 prior = normal_prior, prior_intercept = normal_prior,
                 QR=TRUE, refresh=0)
@@ -545,20 +545,18 @@ grid.arrange(pplot_linear, pplot_normal, pplot_default, pplot_cauchy, ncol=2, nr
 
 ```{r}
 #normal prior
-normal_prior <- normal(location = 0, scale = NULL, autoscale = FALSE)
-linea_model_normal_prior <- stan_glm(formula_linear, data = cath,
+nonlinear_model_normal_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 prior = normal_prior, prior_intercept = normal_prior,
                 QR=TRUE, refresh=0)
 
 #default prior
-linear_model_default_prior <- stan_glm(formula_linear, data = cath,
+nonlinear_model_default_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 QR=TRUE, refresh=0)
 
 #cauchy prior
-cauchy_prior <- cauchy(location = 0, scale = NULL, autoscale = FALSE)
-linear_model_cauchy_prior <- stan_glm(formula_linear, data = cath,
+nonlinear_model_cauchy_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 prior = cauchy_prior, prior_intercept = cauchy_prior,
                 QR=TRUE, refresh=0)
