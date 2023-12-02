@@ -330,10 +330,10 @@ For the linear model, the posterior predictive check and posterior distributions
 # posteriors
 pplot_linear<-plot(model_linear, "areas", prob = 0.95, prob_outer = 1)
 pplot_linear + geom_vline(xintercept = 0) +
-labs(title="TBD")
+labs(title="Posterior distributions of the linear model")
 # pp check
 pp_check_linear <- brms::pp_check(model_linear) +
-labs(title="TBD")
+labs(title="Posterior predictive check for the linear model")
 grid.arrange(pplot_linear, pp_check_linear, ncol=2) 
 ```
 
@@ -349,7 +349,7 @@ divergents_linear <- sum(subset(np_linear, Parameter == "divergent__")$Value)
 ess_ratio_linear <- neff_ratio(model_linear)
 
 cat("Linear model: \n")
-cat("Rhat\n")
+cat("Split-Rhat\n")
 print(Rhat_linear)
 cat("Number of divergent transitions: ", divergents_linear, "\n")
 cat("ESS ratio: \n")
@@ -357,7 +357,7 @@ print(ess_ratio_linear)
 
 ```
 
-The HMC chains have converged, as all $\hat{R}$ values are below 0.01. Additionally, there were no divergent transitions during convergence, and thus the simulation is reliable. The ratio of the ESS to the true sample size is over 1 with all explanatory variables as well as the intercept. This is
+The HMC chains have converged, as all split-$\hat{R}$ values are below 0.01. Additionally, there were no divergent transitions during convergence, and thus the HMC simulation is reliable. The ratio of the ESS to the true sample size is over 1 with all explanatory variables as well as the intercept. Although high ESS is generally a good thing, this also implies the MCMC samples can have a negative correlation.
 
 -   If ESS \> n -\> Posterior close to Gaussian/Gaussian like
 
