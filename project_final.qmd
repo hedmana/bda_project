@@ -195,7 +195,7 @@ as the coefficients can be positive or negative.
 Finally, the joint posterior distribution that is simulated using Hamiltonian Monte Carlo (HMC) is proportional to the product of likelihood and prior distributions:
 
 $$
-p(\alpha, \beta | \bf{x}, \bf{y} ) \propto t_v(\alpha | \mu, \sigma) \times \prod^4_{k=1} t_v(\beta_k | \mu, \sigma) \times \prod^n_{i=1} \text{ logit}^{-1}(\eta_i)^{y_i}(1-\text{ logit}^{-1}(\eta_i))^{1-y_i}
+p(\alpha, \beta | \textbf{x}, \textbf{y} ) \propto t_v(\alpha | \mu, \sigma) \times \prod^4_{k=1} t_v(\beta_k | \mu, \sigma) \times \prod^n_{i=1} \text{ logit}^{-1}(\eta_i)^{y_i}(1-\text{ logit}^{-1}(\eta_i))^{1-y_i}
 $$
 
 ## The generalized additive nonlinear model
@@ -208,7 +208,7 @@ $$
 
 where $f_k$ are nonlinear functions that transform the explanatory features individually. In this report, all functions of the continuous variables are smoothing functions. The $f_{age}$ is simply the variable itself, due to *sex* being binary variable. The smoothing functions utilize penalized splines, allowing the model to create a curved relationship between the features. The shape of the smoothing functions is estimated from the data and the penalty helps avoid overfitting. The smoothing function works by minimizing the sum of the model fit with the smoothness / penalty (here, thin plate regression splines (default)).
 
-The likelihood of observation is the same as with the linear model, with the difference that a nonlinear transformation is applied to all input explanatory variables $\bf{x}$. Additionally, we utilize the same prior in both models to make them as comparable as possible. The posterior is again similar as with the linear model, but with the difference of nonlinear transformations on the input data.
+The likelihood of observation is the same as with the linear model, with the difference that a nonlinear transformation is applied to all input explanatory variables $\textbf{x}$. Additionally, we utilize the same prior in both models to make them as comparable as possible. The posterior is again similar as with the linear model, but with the difference of nonlinear transformations on the input data.
 
 # Model Definitions and Implementation
 
@@ -216,7 +216,7 @@ The linear and nonlinear models are implemented as Stan code with the rstanarm p
 
 ## Linear model
 
-The linear model was implemented with the help of the `stan_glm` function from the rstanarm package. `stan_glm` is used to fit generalized linear models and performs a full Bayesian estimation with Markov Chain Monte Carlo (MCMC) estimation instead of maximum likelihood estimation and by adding priors to the GLM coefficients and intercept. By defining the model parameter `family = binomial(link = 'logit')` the model performs logistic regression.  
+The linear model was implemented with the help of the `stan_glm` function from the rstanarm package. `stan_glm` is used to fit generalized linear models and performs a full Bayesian estimation with Markov Chain Monte Carlo (MCMC) estimation instead of maximum likelihood estimation and by adding priors to the GLM coefficients and intercept. By defining the model parameter `family = binomial(link = 'logit')` the model performs logistic regression.
 
 The linear relationship between the response variable `sigdz` and the explanatory variables are defined with the help of the `formula` function and the prior for the regression coefficients and intercept with the help of the `student_t` function.
 
@@ -394,7 +394,7 @@ print("Baseline model:")
 print(loo_baseline)
 ```
 
-For each model, all Pareto k estimates are < 0.5, which implies the importance sampling gives a reliable estimate on the computed ELPDs. Additionally, for linear and nonlinear model the p_loo is less than the number of parameters in the respective model, and thus the model specifications seem to be reasonable. 
+For each model, all Pareto k estimates are \< 0.5, which implies the importance sampling gives a reliable estimate on the computed ELPDs. Additionally, for linear and nonlinear model the p_loo is less than the number of parameters in the respective model, and thus the model specifications seem to be reasonable.
 
 To assess the model ELPDs with respect to each other, we compute the comparison between the results of PSIS-LOO:
 
@@ -408,7 +408,7 @@ It indeed seems that the predictive performances of both linear and nonlinear mo
 
 ## Posterior predictive performance: Classification accuracy
 
-To estimate the generalization error, i.e. the generalization and performance of models on unseen data, we compute LOO-balanced classification accuracies for the linear and nonlinear models. The results are summarized in @Classification-accuracies. The classification accuracy is simply the fraction of correctly classified observations. The balanced classification accuracy on the other hand takes into account true positive rate (sensitivity) and true negative rate (specificity). The latter accounts for the imbalance in our data and is therefore more accurate estimate on the generalization error. Estimating generalization error is highly important for practical usage of the model, as it would be centered around predicting 
+To estimate the generalization error, i.e. the generalization and performance of models on unseen data, we compute LOO-balanced classification accuracies for the linear and nonlinear models. The results are summarized in @Classification-accuracies. The classification accuracy is simply the fraction of correctly classified observations. The balanced classification accuracy on the other hand takes into account true positive rate (sensitivity) and true negative rate (specificity). The latter accounts for the imbalance in our data and is therefore more accurate estimate on the generalization error. Estimating generalization error is highly important for practical usage of the model, as it would be centered around predicting
 
 ```{r}
 #| label: Linear-model-Classification-accuracy
@@ -463,7 +463,7 @@ rownames(accuracies) <- c("linear_model", "nonlinear_model")
 kable(accuracies)
 ```
 
-We can see that the performances of both models are nearly equal. The classification accuracy is slightly better for the nonlinear model, but the balanced accuracy is the same for both models. The the balanced classification accuracy is not very high, but nevertheless, both models outperform a random classifier. 
+We can see that the performances of both models are nearly equal. The classification accuracy is slightly better for the nonlinear model, but the balanced accuracy is the same for both models. The the balanced classification accuracy is not very high, but nevertheless, both models outperform a random classifier.
 
 ### Calibration curves
 
@@ -495,7 +495,6 @@ grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 ```
 
 ## Prior sensitivity analysis
-
 
 ```{r}
 #normal prior
@@ -544,6 +543,7 @@ linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
 ```
 
 Plotting the posterior distribution for each prior:
+
 ```{r}
 pplot_normal <- plot(linear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Normal prior")
@@ -613,6 +613,7 @@ grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, n
 ```{r}
 ?plot
 ```
+
 # Discussion
 
 -   Problems, potential improvements?
