@@ -156,8 +156,6 @@ In this analysis, we will construct two models for inferring the binary response
 
 ## The generalized linear model and priors
 
-**Elissan ehdottamat muokkaukset Linnean kirjoitukseen:**
-
 Let $y$ be the number of times the variable *sigdz* is realized to be 1 for one individual in the dataset, and let $x$ be the explanatory variables for this outcome. Then, this number of successes for one individual follows a Binomial distribution
 
 $$
@@ -199,37 +197,6 @@ $$
 p(\alpha, \beta | \bf{x}, \bf{y} ) \propto t_v(\alpha | \mu, \sigma) \times \prod^4_{k=1} t_v(\beta_k | \mu, \sigma) \times \prod^n_{i=1} \text{ logit}^{-1}(\eta_i)^{y_i}(1-\text{ logit}^{-1}(\eta_i))^{1-y_i}
 $$
 
-------------------------------------------------------------------------
-
-**Linnean kirjoitus:**
-
-For the binary response variable $y$, the likelihood for the binomial generalized linear model (GLM) can be written as a conditionally binomial PMF.
-
-$$
-\binom{n}{y} \pi (1 - \pi)^{n-y},
-$$
-
-where n is the total amount of trials, $\pi = g^{-1}(\eta)$ is the probability of success (patient presenting with significant coronary disease) and $\eta = \alpha + x^{T} \beta$ is a linear predictor. For a sample of size N, the likelihood is the product of the N individual likelihoods.
-
-The link function $g$ maps the probability $\pi$ between the unit interval and the set of real numbers $\mathbb{R}$, and when applying the inverse link function to the linear predictor $\eta H$ the output will be a valid probability between 0 and 1.
-
-This project utilizes the logit link function for the GLM, which makes it a logistic regression model. The likelihood expressed with the logit link function $g(x) = \text{ln}(\frac{x}{1-x})$ for a single observation can be written as:
-
-$$\binom{n}{y} (\text{logit}^{-1} (\eta))^y (1 - \text{logit}^{-1}(\eta))^{n-y}$$
-
-Priors are set for the intercept and vector of regression coefficients $\alpha$ and $\beta$, from the linear predictor $\eta = \alpha + x^{T} \beta$,
-
-$$
-\begin{aligned}
-\alpha &\sim t_v(\mu, \sigma^2) \\
-\beta_k &\sim t_v(\mu, \sigma^2) \\
-\end{aligned}
-$$
-
-where $v$ is the degrees of freedom, $\mu$ is the location and $\sigma$ is the scale.
-
-The intercept and the regression coefficients are believed to be as likely positive as they would be negative, but likely relatively close to zero. This can be represented with normal distribution with a mean of zero and a small standard deviation. For example, $\mathcal{N}(0, 1)$. The priors can also be represented with the Students t-distribution if there is less priori confidence that the parameters will be close to zero. The Students t-distribution includes a larger standard deviation and has heavier tails than the normal distribution and would therefore be suitable for this purpose.
-
 ## The generalized additive nonlinear model
 
 The additive nonlinear model on the other hand combines multiple functions in a way that is not strictly linear. This allows for a more flexible relationship between the explanatory variables and response variable $y$. In this report, the nonlinear model uses the same link function as the linear model, and so the nonlinear predictor for the logistic regression model can be written as:
@@ -250,7 +217,7 @@ The linear and nonlinear models are implemented as Stan code with the rstanarm p
 
 ## Linear model
 
-The linear model was implemented with the help of the `stan_glm` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`.
+The linear model was implemented with the help of the `stan_glm` function from the rstanarm package. `stan_glm` is used to fit generalized linear models and performs a full Bayesian estimation with Markov Chain Monte Carlo (MCMC) estimation instead of maximum likelihood estimation and by adding priors to the GLM coefficients and intercept. By defining the model parameter `family = binomial(link = 'logit')` the model performs logistic regression.  
 
 The linear relationship between the response variable `sigdz` and the explanatory variables are defined with the help of the `formula` function and the prior for the regression coefficients and intercept with the help of the `student_t` function.
 
@@ -283,7 +250,7 @@ model_linear <- stan_glm(formula_linear, data = cath,
 
 ## Nonlinear model
 
-The nonlinear model is similarly implemented utilizing `stan_gamm4` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`.
+The nonlinear model is similarly implemented utilizing `stan_gamm4` function from the rstanarm package and defined to be a logistic regression model with the help of the model parameter `family = binomial(link = 'logit')`. `stan_gamm4` fits a generalized additive mixed model, and performs Bayesian MCMC estimation instead of maximum likelihood estimation. In the same way as `stan_glm`, the model adds independent priors to the regression coefficients and intercept.
 
 The nonlinear relationship between the response variable `sigdz` and the explanatory variables is again defined with the help of the `formula` function. This time, passing the smoothing function `s()` for all continuous explanatory variables, to allow for more complexity in the model, while simultaneously penalizing over-fitting of the model with the the thin plate regression splines smoothness.
 
