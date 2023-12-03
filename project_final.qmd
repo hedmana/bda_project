@@ -702,7 +702,7 @@ data.frame(diversions = c(div_default, div_flat, div_normal_loc, div_normal_sd))
 
 # Discussion
 
-The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The models were implemented Bayesian logistic regression with both a linear and a nonlinear approach. The results were two Stan models of equal classification accuracy.
+The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The models were implemented Bayesian logistic regression with both a linear and a nonlinear approach. The results were two Stan models of equal balanced classification accuracy.
 
 With classification accuracies of `r accuracy_linear` (linear) and `r accuracy_nonlinear` (nonlinear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance. However, when considering the balanced classification accuracy, the performance of both models dropped slightly.
 
