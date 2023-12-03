@@ -73,7 +73,7 @@ The "cath" dataset used in this report is obtained from Duke University Cardiova
 #| echo: false
 #| message: false
 #| warning: false
-#| tbl-cap: The cath dataset.
+#| tbl-cap: A peek to the cath dataset.
 kable(head(cath))
 ```
 
@@ -654,7 +654,7 @@ nonlinear_normal_loc_pplot <- plot(nonlinear_normal_loc_prior, "areas", prob = 0
 ::: 
 ::: 
 
-The posteriors of the linear model with the new sets of priors are plotted in @fig-prior-sensitivity-plots.
+The posteriors of the linear model with the new sets of priors are plotted in @fig-prior-sensitivity-plots-linear.
 
 ```{r}
 #| label: fig-prior-sensitivity-plots-linear
@@ -666,7 +666,7 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 
 The posterior distributions look fairly similar despite the different priors. This indicates that the model isn't too sensitive to the prior selection.
 
-Due to the nature of the nonlinear model, and the large number of parameters, the sensitivity analysis is summarized with the help of a posterior predicitve check.
+Due to the nature of the nonlinear model, and the large number of parameters, the sensitivity analysis is summarized with the help of a posterior predictive check (@fig-prior-sensitivity-plots-nonlinear).
 
 ```{r}
 #| label: fig-prior-sensitivity-plots-nonlinear
@@ -681,9 +681,11 @@ grid.arrange(pp_check(nonlinear_normal_sd_prior) + labs(title = "N(0, 100) prior
 
 The posterior predicitive plots look fairly similar, which indicate a robust model.
 
-Further, the divergent transitions were studied:
+Further, the divergent transitions were studied and are summarized in @tbl-prior-sens-table.
 
 ```{r}
+#| label: tbl-prior-sens-table
+#| echo: false
 div_default <- sum(subset(nuts_params(nonlinear_model_default_prior), Parameter == "divergent__")$Value)
 
 div_flat <- sum(subset(nuts_params(nonlinear_flat_prior), Parameter == "divergent__")$Value)
@@ -695,10 +697,12 @@ div_normal_sd <- sum(subset(nuts_params(nonlinear_normal_sd_prior), Parameter ==
 prior_sens_divergents <- data.frame(diversions = c(div_default, div_flat, div_normal_loc, div_normal_sd))
 
 rownames(prior_sens_divergents) <- c("Default prior", "Flat prior", "N(100, 0) prior", "N(0, 100) prior")
+
 kable(prior_sens_divergents)
 
 ```
-When performing the prior sensitivity analysis of the nonlinear model, they presented with zero to a few divergent transitions. Furhter indicating good fits to the data.
+
+When performing the prior sensitivity analysis of the nonlinear model, they presented with zero to a few divergent transitions. This further indicates succesful HMC simulation and thus, model fits are realiable.
 
 
 # Discussion
