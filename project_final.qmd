@@ -678,7 +678,11 @@ Due to the nature of the nonlinear model, the posterior distribution are quite m
 grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
 ```
 ```{r}
-grid.arrange(pp_check(nonlinear_normal_loc_prior), pp_check(nonlinear_flat_prior), pp_check(nonlinear_normal_sd_prior), pp_check(nonlinear_model_default_prior), ncol=2, nrow = 2) 
+grid.arrange(pp_check(nonlinear_normal_loc_prior) + labs(title = "N(100, 0) prior"),
+             pp_check(nonlinear_flat_prior) + labs(title = "Flat prior"),
+             pp_check(nonlinear_normal_sd_prior) + labs(title = "N(0, 100) prior"),
+             pp_check(nonlinear_model_default_prior) + labs(title = "Default prior"),
+             ncol=2, nrow = 2) 
 ```
 
 # Discussion
