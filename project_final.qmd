@@ -698,6 +698,7 @@ rownames(prior_sens_divergents) <- c("Default prior", "Flat prior", "N(100, 0) p
 kable(prior_sens_divergents)
 
 ```
+When performing the prior sensitivity analysis of the nonlinear model, they presented with zero to a few divergent transitions. Furhter indicating good fits to the data.
 
 
 # Discussion
