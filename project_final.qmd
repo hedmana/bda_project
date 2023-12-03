@@ -601,7 +601,7 @@ pplot_flat <- plot(linear_model_flat_prior, "areas", prob = 0.95, prob_outer = 1
   geom_vline(xintercept = 0) + labs(title = "Flat prior")
 ```
 
-Running the non linear model with the new set of priors:
+Running the nonlinear model with the new set of priors:
 ```{r}
 #| label: Noninear model - Prior sensititivy analysis
 
@@ -669,9 +669,8 @@ The posterior distributions look fairly similar despite the different priors. Th
 
 Due to the nature of the nonlinear model, it makes more sense to inspect the Rhat and ESS values:
 
-```{r}
-#linear prior sensitivity analysis plots
-nonlinear_model_default_prior$stan_summary[, "Rhat"] %>% round(3)
+```{r, fig.height=10}
+grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
 ```
 
 # Discussion
