@@ -164,12 +164,7 @@ corrplot(cor(cath[, c(p,1:(p-1))]), type = "full", method = "number")
 
 # Mathematical Model
 
-<<<<<<< HEAD
 In this analysis, we will construct two models for inferring the binary response variable, *sigdz* based on input explanatory variables. The first model is a generalized linear model (GLM), namely Bayesian logistic regression. The other model is a generalized additive mixed model (GAMM), which implements Bayesian logistic regression with nonlinear transformations on the input variables. These models will be referred to as linear and nonlinear model, respectively.
-=======
-In this analysis, we will construct two models for inferring the binary response variable, *sigdz* based on input explanatory variables*.* The first model is a generalized linear model (GLM), namely Bayesian logistic regression. The other model is a generalized additive mixed model (GAMM), which implements Bayesian logistic regression with nonlinear transformations on the input variables. These models will be referred as linear and nonlinear model, respectively.
-
->>>>>>> ee769f817f3078808860cb53550643782faa5942
 
 ## The generalized linear model and priors
 
@@ -607,6 +602,7 @@ pplot_flat <- plot(linear_model_flat_prior, "areas", prob = 0.95, prob_outer = 1
 ```
 
 Running the nonlinear model with the new set of priors:
+
 ```{r}
 #| label: Noninear model - Prior sensititivy analysis
 
