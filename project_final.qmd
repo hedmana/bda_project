@@ -470,7 +470,7 @@ kable(accuracies)
 
 We can see that the performances of both models are nearly equal. The classification accuracy is slightly better for the nonlinear model, but the balanced accuracy is the same for both models. The the balanced classification accuracy is not very high, but nevertheless, both models outperform a random classifier.
 
-To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @fig-Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of \[0.25, 0.5\] of predicted probabilities. For the top 10% there are more predictions than observations, and for the bottom 20% there are more observations than predictions.
+To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @fig-Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of [0.25, 0.85] of predicted probabilities. For the top 15 % there are more predictions than observations, and for the bottom 25 % there are more observations than predictions.
 
 ```{r}
 #| label: fig-Calibration-plots
