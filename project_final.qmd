@@ -298,13 +298,11 @@ For the linear model, the posterior predictive check and posterior distributions
 #| fig-width: 8
 
 # posteriors
-# pplot_linear <-
-plot(model_linear, "areas", prob = 0.95, prob_outer = 1) + 
+pplot_linear <- plot(model_linear, "areas", prob = 0.95, prob_outer = 1) + 
     geom_vline(xintercept = 0) +
     labs(title="Posterior distributions of the linear model")
 # pp check
-# pp_check_linear <- 
-brms::pp_check(model_linear) +
+pp_check_linear <- brms::pp_check(model_linear) +
     labs(title="Posterior predictive check for the linear model")
 grid.arrange(pplot_linear, pp_check_linear, ncol=2) 
 ```
