@@ -645,13 +645,13 @@ nonlinear_default_pplot <- plot(nonlinear_model_default_prior, "areas", prob = 0
   geom_vline(xintercept = 0) + labs(title = "Default prior")
 
 nonlinear_flat_pplot <- plot(nonlinear_flat_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Model prior")
+  geom_vline(xintercept = 0) + labs(title = "flat prior")
 
 nonlinear_normal_sd_pplot <- plot(nonlinear_normal_sd_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Model prior")
+  geom_vline(xintercept = 0) + labs(title = "N(0, 100) prior")
 
 nonlinear_normal_loc_pplot <- plot(nonlinear_normal_loc_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Model prior")
+  geom_vline(xintercept = 0) + labs(title = "N(100, 0) prior")
 
 #grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
 ```
@@ -667,10 +667,13 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 
 The posterior distributions look fairly similar despite the different priors. This indicates that the model isn't too sensitive to the prior selection.
 
-Due to the nature of the nonlinear model, it makes more sense to inspect the Rhat and ESS values:
+Due to the nature of the nonlinear model, the posterior distribution are quite many.
 
 ```{r, fig.height=10}
 grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
+```
+```{r}
+grid.arrange(pp_check(nonlinear_normal_loc_prior), pp_check(nonlinear_flat_prior), pp_check(nonlinear_normal_sd_prior), pp_check(nonlinear_model_default_prior), ncol=2, nrow = 2) 
 ```
 
 # Discussion
