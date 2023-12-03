@@ -415,7 +415,7 @@ To assess the model ELPDs with respect to each other, we compute the comparison 
 loo_compare(loo_linear, loo_nonlinear, loo_baseline)
 ```
 
-It indeed seems that the predictive performances of both linear and nonlinear models are better compared to the baseline model. Additionally, the scale of the difference of standard errors (es_diff) of the baseline model and nonlinear model is smaller than the difference of the ELPDs of the nonlinear and baseline model, which implies the difference in predictive log-densities between these models is not simply explained by the variance. Although the difference in ELPDs of the linear and nonlinear models is small, the nonlinear model slightly outperforms the linear model.
+It indeed seems that the predictive performances of both linear and nonlinear models are better compared to the baseline model. Additionally, the scale of the difference of standard errors (se_diff) of the baseline model and nonlinear model is smaller than the difference of the ELPDs of the nonlinear and baseline model, which implies the difference in predictive log-densities between these models is not simply explained by the variance. Although the difference in ELPDs of the linear and nonlinear models is small, the nonlinear model slightly outperforms the linear model.
 
 ## Posterior predictive performance: Classification accuracy
 
