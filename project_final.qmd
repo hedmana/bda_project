@@ -538,19 +538,19 @@ $$
 
 where $sd(x)$ is the standard deviation of x, and C is a constant value.
 
-The linear and nonlinear model were run again with the new sets of priors and the outputs compared to each other.
+The linear and nonlinear model were run again with the new sets of priors and the outputs were compared to each other.
 
 The priors were set up and the models run again (with otherwise same parameters as in the sections descriping the models). The default priors were not separately defined, rather the defaults were passed inside the model function. 
 
 ```{r}
 #| label: Prior set up for sensitivity analysis
-#normal prior, large scale N(0, 100)
+# normal prior, large scale N(0, 100)
 normal_prior_sd <- normal(0, scale = 100, autoscale = FALSE)
 
-#normal prior, large location N(100, 0)
+# normal prior, large location N(100, 0)
 normal_prior_loc <- normal(100, scale = 2.5, autoscale = FALSE)
 
-#flat prior
+# flat prior
 flat_prior <- NULL
 ```
 
@@ -658,15 +658,18 @@ nonlinear_normal_sd_pplot <- plot(nonlinear_normal_sd_prior, "areas", prob = 0.9
 nonlinear_normal_loc_pplot <- plot(nonlinear_normal_loc_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "N(100, 0) prior")
 
-#grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
+# grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
 ```
 ::: 
 ::: 
 
-Plotting the posteriors of the linear model with the new sets of priors:
+The posteriors of the linear model with the new sets of priors are plotted in @fig-prior-sensitivity-plots.
 
 ```{r}
-#linear prior sensitivity analysis plots
+#| label: fig-prior-sensitivity-plots-linear
+#| echo: false
+#| fig-cap: Prior sensitivity analysis on the linear model: Posterior distributions.
+# linear prior sensitivity analysis plots
 grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=2, nrow = 2) 
 ```
 
