@@ -1,10 +1,8 @@
 ---
 title: "BDA PROJECT"
 author: Axel, Linnea, Elissa
-citation_package: natbib
 bibliography: ref.bib
-natbib:
-  numbers: true
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl
 format: 
   html:
     toc: true
@@ -19,12 +17,12 @@ editor: source
 
 # Introduction 
 
-Cardiovascular diseases, particularly coronary artery disease (CAD) \cite{HBIoStatData}, remain a leading cause of mortality worldwide. In the 
+Cardiovascular diseases, particularly coronary artery disease (CAD) [@HBIoStatData], remain a leading cause of mortality worldwide. In the 
 pursuit of effective diagnosis and intervention, cardiac catheterizaion has emerged as a procedure for evaluating and 
 addressing coronary artery health. [@CAD]
 
 A reduction in artery diameter by at least 75% is considered a significant reduction in blood flow that puts downstream 
-heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease.
+heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease. [@AKI]
 This report explores the complexities surrounding the cardiac catheterization process, with a specific focus on 
 predicting the presence of significant coronary disease through the utilization of 
 Bayesian models.
