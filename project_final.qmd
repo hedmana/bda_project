@@ -66,11 +66,7 @@ In section 2 the data used in this report is described. Section 3 explains the c
 
 # Data Desctription
 
-<<<<<<< HEAD
-The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank. It encapsulates a collection of 6 variables (@tbl-Data-table) that are closely related to cardiovascular health.
-=======
-The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank [@HBIoStatData]. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.
->>>>>>> ee769f817f3078808860cb53550643782faa5942
+The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank [@HBIoStatData]. It encapsulates a collection of 6 variables (@tbl-Data-table) that are closely related to cardiovascular health.
 
 ```{r}
 #| label: tbl-Data-table
