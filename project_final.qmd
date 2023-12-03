@@ -535,42 +535,51 @@ where $sd(x)$ is the standard deviation of x, and C is a constant value.
 
 The linear and nonlinear model were run again with the new sets of priors and the outputs compared to each other.
 
+The priors were set up and the models run again (with otherwise same parameters as in the sections descriping the models). The default priors were not separately defined, rather the defaults were passed inside the model function. 
+
+```{r}
+#| label: Prior set up for sensitivity analysis
+#normal prior, large scale N(0, 100)
+normal_prior_sd <- normal(0, scale = 100, autoscale = FALSE)
+
+#normal prior, large location N(100, 0)
+normal_prior_loc <- normal(100, scale = 2.5, autoscale = FALSE)
+
+#flat prior
+flat_prior <- NULL
+```
+
+::: {.content-hidden when-format="pdf"}
+::: {.callout-warning collapse="false"}
+
+Running the linear model with the new set of priors:
 ```{r}
 #| label: Linear model - Prior sensititivy analysis
-
 #default prior
 linear_model_default_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 QR=TRUE, refresh=0)
 
-
 #normal prior, large scale N(0, 100)
-normal_prior_sd <- normal(0, scale = 100, autoscale = FALSE)
 linear_model_normal_sd <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 prior = normal_prior_sd, prior_intercept = normal_prior_sd,
                 QR=TRUE, refresh=0)
 
 #normal prior, large location N(100, 0)
-normal_prior_loc <- normal(100, scale = 2.5, autoscale = FALSE)
 linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 prior = normal_prior_loc, prior_intercept = normal_prior_loc,
                 QR=TRUE, refresh=0)
 
 #flat prior
-flat_prior <- NULL
 linear_model_flat_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 prior = flat_prior, prior_intercept = flat_prior,
                 QR=TRUE, refresh=0)
-
-
-
-
 ```
 
-Plotting the posterior distribution for each prior:
+Making plots for all sets of priors for linear model:
 
 ```{r}
 #| label: Linear model - Plotting prior sensititvy 
@@ -590,9 +599,6 @@ pplot_normal_loc <- plot(linear_model_normal_loc, "areas", prob = 0.95, prob_out
 # Flat prior
 pplot_flat <- plot(linear_model_flat_prior, "areas", prob = 0.95, prob_outer = 1) + 
   geom_vline(xintercept = 0) + labs(title = "Flat prior")
-
-#put desired priors into here
-grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=2, nrow = 2) 
 ```
 
 ```{r}
@@ -629,6 +635,7 @@ nonlinear_flat_prior <- stan_gamm4(
 )
 ```
 
+Running the nonlinear model with the new set of priors:
 ```{r, fig.height=10}
 #| label: Nonlinear model - Plotting prior sensititivy
 
@@ -645,12 +652,14 @@ nonlinear_normal_sd_pplot <- plot(nonlinear_normal_sd_prior, "areas", prob = 0.9
 nonlinear_normal_loc_pplot <- plot(nonlinear_normal_loc_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Model prior")
 
-
-grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
+#grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
 ```
+::: 
+::: 
 
 ```{r}
-
+# Plotting the linear prior sensitivity analysis
+grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=2, nrow = 2) 
 ```
 
 # Discussion
