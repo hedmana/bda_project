@@ -671,18 +671,34 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 
 The posterior distributions look fairly similar despite the different priors. This indicates that the model isn't too sensitive to the prior selection.
 
-Due to the nature of the nonlinear model, the posterior distribution are quite many.
+Due to the nature of the nonlinear model, and the large number of parameters, the sensitivity analysis is summarized with the help of a posterior predicitve check.
 
-```{r, fig.height=10}
-grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
-```
 ```{r}
-grid.arrange(pp_check(nonlinear_normal_loc_prior) + labs(title = "N(100, 0) prior"),
-             pp_check(nonlinear_flat_prior) + labs(title = "Flat prior"),
-             pp_check(nonlinear_normal_sd_prior) + labs(title = "N(0, 100) prior"),
+grid.arrange(pp_check(nonlinear_normal_sd_prior) + labs(title = "N(0, 100) prior"),
+             pp_check(nonlinear_normal_loc_prior) + labs(title = "N(100, 0) prior"),
              pp_check(nonlinear_model_default_prior) + labs(title = "Default prior"),
+             pp_check(nonlinear_flat_prior) + labs(title = "Flat prior"),
              ncol=2, nrow = 2) 
 ```
+
+The posterior predicitive plots look fairly similar, which indicate a robust model.
+
+Further, the divergent transitions were studied:
+
+```{r}
+div_default <- sum(subset(nuts_params(nonlinear_model_default_prior), Parameter == "divergent__")$Value)
+
+div_flat <- sum(subset(nuts_params(nonlinear_flat_prior), Parameter == "divergent__")$Value)
+
+div_normal_loc <- sum(subset(nuts_params(nonlinear_normal_loc_prior), Parameter == "divergent__")$Value)
+
+div_normal_sd <- sum(subset(nuts_params(nonlinear_normal_sd_prior), Parameter == "divergent__")$Value)
+
+
+data.frame(diversions = c(div_default, div_flat, div_normal_loc, div_normal_sd))
+
+```
+
 
 # Discussion
 
