@@ -1,7 +1,7 @@
 ---
 title: "Predicting Significant Coronary Disease"
 subtitle: "Unraveling the Complexity of Coronary Health through Bayesian Logistic Regression"
-author: anonymous
+author: Anonymous
 bibliography: ref.bib
 format:
   html:
@@ -144,8 +144,6 @@ cath_dims <- dim(cath)
 n_obs <- cath_dims[1]
 ```
 
-Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are visualized in @fig-Bivariate-analysis. We can see that variables *sex* and *age* have the most significant bivariate correlation to the responsive variable *sigdz*.
-
 ```{r}
 #| label: fig-Bivariate-analysis
 #| echo: false
@@ -157,6 +155,8 @@ p <- ncol(cath)
 
 corrplot(cor(cath[, c(p,1:(p-1))]), type = "full", method = "number")
 ```
+
+Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are visualized in @fig-Bivariate-analysis. We can see that variables *sex* and *age* have the most significant bivariate correlation to the responsive variable *sigdz*.
 
 # Mathematical Model
 
