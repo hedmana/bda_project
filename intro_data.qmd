@@ -1,6 +1,10 @@
 ---
 title: "BDA PROJECT"
 author: Axel, Linnea, Elissa
+citation_package: natbib
+bibliography: ref.bib
+natbib:
+  numbers: true
 format: 
   html:
     toc: true
@@ -15,9 +19,9 @@ editor: source
 
 # Introduction 
 
-Cardiovascular diseases, particularly coronary artery disease (CAD), remain a leading cause of mortality worldwide. In the 
-pursuit of effective diagnosis and intervention, cardiac catheterization has emerged as a procedure for evaluating and 
-addressing coronary artery health. 
+Cardiovascular diseases, particularly coronary artery disease (CAD) \cite{HBIoStatData}, remain a leading cause of mortality worldwide. In the 
+pursuit of effective diagnosis and intervention, cardiac catheterizaion has emerged as a procedure for evaluating and 
+addressing coronary artery health. [@CAD]
 
 A reduction in artery diameter by at least 75% is considered a significant reduction in blood flow that puts downstream 
 heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease.
@@ -71,3 +75,9 @@ of the blockade.
 
 In the subsequent sections the report continues to explore choice of mathematical model, Bayesian model construction, and 
 model evaluation.
+
+
+# References
+
+::: {#refs}
+:::
