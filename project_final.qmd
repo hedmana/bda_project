@@ -518,7 +518,7 @@ For the prior sentitivity analysis, four different prior distributions were test
 
 $$
 \begin{aligned}
-\text{The default priors}
+\text{The default priors} \\
 \alpha &\sim \mathcal{N}(0, 2.5 / sd(x)) \\
 \beta &\sim \mathcal{N}(0, 2.5) \\
 \\
@@ -526,7 +526,7 @@ $$
 \theta &\sim \mathcal{N}(0, 100) \\
 \theta &\sim \mathcal{N}(100, 0) \\
 \\ 
-\text{The flat prior}
+\text{The flat prior} \\ 
 \theta &\sim C \\
 \end{aligned}
 $$
@@ -667,9 +667,11 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 
 The posterior distributions look fairly similar despite the different priors. This indicates that the model isn't too sensitive to the prior selection.
 
+Due to the nature of the nonlinear model, it makes more sense to inspect the Rhat and ESS values:
+
 ```{r}
 #linear prior sensitivity analysis plots
-summary(nonlinear_model_default_prior)
+nonlinear_model_default_prior$stan_summary[, "Rhat"] %>% round(3)
 ```
 
 # Discussion
