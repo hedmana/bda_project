@@ -421,6 +421,8 @@ To estimate the generalization error, i.e. the generalization and performance of
 #| label: Linear-model-Classification-accuracy
 #| echo: false
 
+y <- cath$sigdz
+
 ## Predicted probabilities
 preds_linear <- posterior_epred(model_linear)
 
@@ -481,9 +483,6 @@ To further compare the predictive performances of the models, calibration plots 
 #| fig-width: 8
 #| fig-height: 3
 #| echo: false
-#| fig-show: asis
-
-y <- cath$sigdz
 
 cplot_linear <- ggplot(data = data.frame(loopred=ploo_linear,
   y=as.numeric(y)-1), aes(x=loopred, y=y)) +
@@ -660,7 +659,7 @@ The posteriors of the linear model with the new sets of priors are plotted in @f
 ```{r}
 #| label: fig-prior-sensitivity-plots-linear
 #| echo: false
-#| fig-cap: Prior sensitivity analysis on the linear model: Posterior distributions.
+#| fig-cap: Prior sensitivity analysis on the linear model - Posterior distributions.
 # linear prior sensitivity analysis plots
 grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=2, nrow = 2) 
 ```
