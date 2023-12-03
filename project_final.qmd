@@ -60,20 +60,24 @@ A reduction in artery diameter by at least 75% is considered a significant reduc
 
 Duke University Medical Center's Cardiovascular Disease Databank provides a data set containing information about patients that has been diagnosed at Duke University Medical Center. The patients where referred to Duke for chest pain and diagnosed accordingly. If the patient was diagnosed with significant coronary disease, the blockade can be of either all three of the coronary vessels, or only of the left main coronary artery. Both conditions are associated with a high risk for mortality.
 
-The scope of this report is to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The two models are based on Bayesian logistic regression, but one is linear and one is non-linear. After implementation the models are evaluated and compared to achieve the best possible result.
+The scope of this report is to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The two models are based on Bayesian logistic regression, but one is linear and one is nonlinear. After implementation the models are evaluated and compared to achieve the best possible result.
 
-In section 2 the data used in this report is described. Section 3 explains the choice of mathematical model used in this report. In section 4 the two Stan models are implemented. Section 5 evaluates and compares the implemented models. Section 6 & 7 includes a final discussion and a reflection on the lessons learned during the project.
+In section 2 the data used in this report is described. Section 3 explains the choice of mathematical model used in this report. In section 4 the two Stan models are implemented, and section 5 evaluates and compares the implemented models. Finally, section 6 & 7 includes a final discussion and a reflection on the lessons learned during the project.
 
 # Data Desctription
 
+<<<<<<< HEAD
+The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank. It encapsulates a collection of 6 variables (@tbl-Data-table) that are closely related to cardiovascular health.
+=======
 The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank [@HBIoStatData]. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.
+>>>>>>> ee769f817f3078808860cb53550643782faa5942
 
 ```{r}
-#| label: Data-table
+#| label: tbl-Data-table
 #| echo: false
 #| message: false
 #| warning: false
-#| tbl-cap: TBD
+#| tbl-cap: The cath dataset.
 kable(head(cath))
 ```
 
@@ -91,12 +95,12 @@ The dataset consists of four explanatory variables (*sex*, *age*, *cad_dur*, *ch
 
 -   **Three Vessel Disease or Left Main Disease** (*tvdlm*): Denoting the presence (1) or absence (0) of blockage in either all three coronary vessels or in the left main coronary artery.
 
-The univariate distributions of these variables are visualized in @Univariate-analysis.
+The univariate distributions of these variables are visualized in @fig-Univariate-analysis.
 
 ```{r}
-#| label: Univariate-analysis
+#| label: fig-Univariate-analysis
 #| echo: false
-#| fig-cap: TBD 1
+#| fig-cap: Distributions of the variables in the cath dataset.
 #| fig-show: asis
 
 par(mfrow = c(2,3), mgp = c(1.8,0.8,0), 
@@ -120,7 +124,7 @@ for(i in 5:6){
 }
 ```
 
-While constructing the Bayesian models to predict the probaility of significant coronary disease, the report strives to utilize the correlation between the explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and the desired response variable (*sigdz*). The *tvdlm* variable is not relevant in this report as the main focus is to predict the probability of significant coronary disease, independent of the type of the blockade.
+While constructing the Bayesian models to predict the probability of significant coronary disease, the report strives to utilize the correlation between the explanatory variables (*sex*, *age*, *cad_dur*, *choleste*) and the desired response variable (*sigdz*). The *tvdlm* variable is not relevant in this report as the main focus is to predict the probability of significant coronary disease, independent of the type of the blockade.
 
 ```{r}
 #| label: Data-preprocessing
@@ -144,15 +148,13 @@ cath_dims <- dim(cath)
 n_obs <- cath_dims[1]
 ```
 
-Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are visualized in @Bivariate-analysis. We can see that variables *sex* and *age* have the most significant bivariate correlation to the responsive variable *sigdz*.
+Before the analysis, the data is preprocessed by removing *tvdlm* column and all rows that contain missing values, as well as by scaling the continuous variables to zero mean and unit variance. After this, we are left with $n =$ `r n_obs` observations. The pairwise correlations of variables are visualized in @fig-Bivariate-analysis. We can see that variables *sex* and *age* have the most significant bivariate correlation to the responsive variable *sigdz*.
 
 ```{r}
-#| label: Bivariate-analysis
+#| label: fig-Bivariate-analysis
 #| echo: false
-#| fig-cap: TBD 3
+#| fig-cap: Correlation plot of 4 explanatory variables and the response variable sigdz.
 #| fig-show: asis
-#| fig-width: 3
-#| fig-height: 3
 
 par(mfrow=c(1,1))
 p <- ncol(cath)
@@ -162,8 +164,12 @@ corrplot(cor(cath[, c(p,1:(p-1))]), type = "full", method = "number")
 
 # Mathematical Model
 
+<<<<<<< HEAD
+In this analysis, we will construct two models for inferring the binary response variable, *sigdz* based on input explanatory variables. The first model is a generalized linear model (GLM), namely Bayesian logistic regression. The other model is a generalized additive mixed model (GAMM), which implements Bayesian logistic regression with nonlinear transformations on the input variables. These models will be referred to as linear and nonlinear model, respectively.
+=======
 In this analysis, we will construct two models for inferring the binary response variable, *sigdz* based on input explanatory variables*.* The first model is a generalized linear model (GLM), namely Bayesian logistic regression. The other model is a generalized additive mixed model (GAMM), which implements Bayesian logistic regression with nonlinear transformations on the input variables. These models will be referred as linear and nonlinear model, respectively.
 
+>>>>>>> ee769f817f3078808860cb53550643782faa5942
 
 ## The generalized linear model and priors
 
@@ -237,7 +243,6 @@ The linear relationship between the response variable `sigdz` and the explanator
 
 # Make response variable a factor
 cath$sigdz <- as.factor(cath$sigdz)
-y <- cath$sigdz
 
 # Formula
 formula_linear <- formula(sigdz ~ sex + age + cad_dur + choleste)
@@ -287,20 +292,17 @@ model_nonlinear <- stan_gamm4(
 
 After fitting the models, multiple evaluation metrics such as split-$\hat{R}$, effective sample size (ESS) and number of divergent transitions were used to assess the convergence of MCMC chains separately for each model. Additionally, we perform posterior predictive checks, assess the model performances as well as compare the models utilizing leave-one-out cross validation (LOO-CV). Finally, we perform prior sensitivity analysis for both models.
 
--   Rhat, ESS, HMC divergences, pp_check(), loo_compare(), classification accuracy
--   Prior sensitivity analysis
-
 ## Convergence diagnostics & posterior predictive checks
 
-For the linear model, the posterior predictive check and posterior distributions of the parameters with 95 % credible interval are visualized in @linear-model-pp-check. As we can see, the model fits the data relatively well, with a bit of a variation around the probability interval endpoints.
+For the linear model, the posterior predictive check and posterior distributions of the parameters with 95 % credible interval are visualized in @fig-linear-model-pp-check. As we can see, the model fits the data relatively well, with a bit of a variation around the probability interval endpoints.
 
 ```{r}
-#| label: linear-model-pp-check
-#| fig-cap: TBD
-#| fig-show: asis
+#| label: fig-linear-model-pp-check
+#| fig-cap: Posterior distributions and posterior predictive check for the linear model.
 #| echo: false
 #| fig-height: 3
 #| fig-width: 8
+#| fig-show: asis
 
 # posteriors
 pplot_linear <- plot(model_linear, "areas", prob = 0.95, prob_outer = 1) + 
@@ -324,23 +326,23 @@ divergents_linear <- sum(subset(np_linear, Parameter == "divergent__")$Value)
 ess_ratio_linear <- neff_ratio(model_linear)
 sd_ess_ratio_linear <- sd(ess_ratio_linear) %>% round(3)
 
-cat("Split-Rhat:\n")
+cat("Split-Rhat:")
 print(Rhat_linear)
 cat("Number of divergent transitions: ", divergents_linear, "\n")
-cat("ESS ratio: \n")
+cat("ESS ratio: ")
 print(ess_ratio_linear)
 cat("Sd of ESS ratio: ", sd_ess_ratio_linear)
 ```
 
 The HMC chains have converged, as all split-$\hat{R}$ values are below 0.01. Additionally, there were no divergent transitions during convergence, and thus the HMC simulation is reliable. The ratio of the ESS to the true sample size is over 1 with all explanatory variables as well as the intercept. Although high ESS is generally a good thing, this also implies the MCMC samples may have a negative correlation.
 
-For the nonlinear model, the posterior predictive check is visualized in @nonlinear-model-pp-check. Based on visual inspection, the nonlinear model fits the data as well as the linear model. Like with the linear model, the posterior has a bit of a variation around the probability interval endpoints.
+For the nonlinear model, the posterior predictive check is visualized in @fig-nonlinear-model-pp-check. Based on visual inspection, the nonlinear model fits the data as well as the linear model. Like with the linear model, the posterior has a bit of a variation around the probability interval endpoints.
 
 ```{r}
-#| label: nonlinear-model-pp-check
-#| fig-cap: TBD
-#| fig-show: asis
+#| label: fig-nonlinear-model-pp-check
+#| fig-cap: Posterior predictive check of the nonlinear model.
 #| echo: false
+#| fig-show: asis
 
 # pp check
 brms::pp_check(model_nonlinear) +
@@ -362,11 +364,11 @@ rhat_satisfied_nonlinear <- all(Rhat_nonlinear <= 1.01)
 mean_ess_ratio <- mean(ess_ratio_nonlinear) %>% round(3)
 sd_ess_ratio_nonlinear <- sd(ess_ratio_nonlinear) %>% round(3)
 
-cat("Split-Rhat of the first coefficients:\n")
+cat("Split-Rhat of the first coefficients:")
 print(head(Rhat_nonlinear))
 cat("All split-Rhat <= 0.01: ", rhat_satisfied_nonlinear, "\n")
 cat("Number of divergent transitions: ",divergents_nonlinear, "\n")
-cat("ESS ratio of the first coefficients: \n")
+cat("ESS ratio of the first coefficients:")
 print(head(ess_ratio_nonlinear))
 cat("Mean of ESS ratio: ", mean_ess_ratio)
 cat("Sd of ESS ratio: ", sd_ess_ratio_nonlinear)
@@ -408,7 +410,7 @@ cat("Baseline model:")
 print(loo_baseline)
 ```
 
-For each model, all Pareto k estimates are \< 0.5, which implies the importance sampling gives a reliable estimate on the computed ELPDs. Additionally, for linear and nonlinear model the p_loo is less than the number of parameters in the respective model, and thus the model specifications seem to be reasonable.
+For each model, all Pareto k estimates are $\le 0.5$, which implies the importance sampling gives a reliable estimate on the computed ELPDs. Additionally, for linear and nonlinear model the p_loo is less than the number of parameters in the respective model, and thus the model specifications seem to be reasonable.
 
 To assess the model ELPDs with respect to each other, we compute the comparison between the results of PSIS-LOO:
 
@@ -422,7 +424,7 @@ It indeed seems that the predictive performances of both linear and nonlinear mo
 
 ## Posterior predictive performance: Classification accuracy
 
-To estimate the generalization error, i.e. the generalization and performance of models on unseen data, we compute LOO-balanced classification accuracies for the linear and nonlinear models. The results are summarized in @Classification-accuracies. The classification accuracy is simply the fraction of correctly classified observations. The balanced classification accuracy on the other hand takes into account true positive rate (sensitivity) and true negative rate (specificity). The latter accounts for the imbalance in our data and is therefore more accurate estimate on the generalization error. Estimating generalization error is highly important for practical usage of the model, as it would be centered around predicting
+To estimate the generalization error, i.e. the generalization and performance of models on unseen data, we compute LOO-balanced classification accuracies for the linear and nonlinear models. The results are summarized in @tbl-Classification-accuracies. The classification accuracy is simply the fraction of correctly classified observations. The balanced classification accuracy on the other hand takes into account true positive rate (sensitivity) and true negative rate (specificity). The latter accounts for the imbalance in our data and is therefore more accurate estimate on the generalization error. Estimating generalization error is highly important for practical usage of the model, as it would be centered around predicting
 
 ```{r}
 #| label: Linear-model-Classification-accuracy
@@ -465,9 +467,9 @@ balanced_accuracy_nonlinear <- round((FP_nonlinear + FN_nonlinear)/2, 2)
 ```
 
 ```{r}
-#| label: Classification-accuracies
+#| label: tbl-Classification-accuracies
 #| echo: false
-#| tbl-cap: TBD
+#| tbl-cap: Imbalanced and balanced classification accuracies of the linear and nonlinear models.
 
 accuracies <- data.frame(
   classification_accuracy = c(accuracy_linear, accuracy_nonlinear),
@@ -479,15 +481,18 @@ kable(accuracies)
 
 We can see that the performances of both models are nearly equal. The classification accuracy is slightly better for the nonlinear model, but the balanced accuracy is the same for both models. The the balanced classification accuracy is not very high, but nevertheless, both models outperform a random classifier.
 
-To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of \[0.25, 0.5\] of predicted probabilities. For the top 10% there are more predictions than observations, and for the bottom 20% there are more observations than predictions.
+To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @fig-Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of \[0.25, 0.5\] of predicted probabilities. For the top 10% there are more predictions than observations, and for the bottom 20% there are more observations than predictions.
 
 ```{r}
-#| label: Calibration-plots
-#| fig-cap: TBD X
+#| label: fig-Calibration-plots
+#| fig-cap: Calibration plots of the linear and nonlinear models.
 #| fig-show: asis
 #| fig-width: 8
 #| fig-height: 3
 #| echo: false
+#| fig-show: asis
+
+y <- cath$sigdz
 
 cplot_linear <- ggplot(data = data.frame(loopred=ploo_linear,
   y=as.numeric(y)-1), aes(x=loopred, y=y)) +
@@ -678,9 +683,9 @@ grid.arrange(pp_check(nonlinear_normal_loc_prior), pp_check(nonlinear_flat_prior
 
 # Discussion
 
-The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The models were implemented Bayesian logistic regression with both a linear and a non-linear approach. The results were two Stan models of equal classification accuracy.
+The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The models were implemented Bayesian logistic regression with both a linear and a nonlinear approach. The results were two Stan models of equal classification accuracy.
 
-With classification accuracies of 0.75 (linear) and 0.76 (non-linear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance.
+With classification accuracies of 0.75 (linear) and 0.76 (nonlinear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance.
 
 There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the
 explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance
