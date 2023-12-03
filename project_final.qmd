@@ -53,10 +53,15 @@ cath <- medicaldata::cath
 
 # Introduction
 
--   Background
--   Problem formulation/scope
--   Main modeling idea
--   Some picture of the data?
+Cardiovascular diseases, particularly coronary artery disease (CAD), remain a leading cause of mortality worldwide. In the pursuit of effective diagnosis and intervention, cardiac catheterization has emerged as a procedure for evaluating and addressing coronary artery health.
+
+A reduction in artery diameter by at least 75% is considered a significant reduction in blood flow that puts downstream heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease. This report explores the complexities surrounding the cardiac catheterization process, with a specific focus on predicting the presence of significant coronary disease through the utilization of Bayesian models.
+
+Duke University Medical Center's Cardiovascular Disease Databank provides a data set containing information about patients that has been diagnosed at Duke University Medical Center. The patients where referred to Duke for chest pain and diagnosed accordingly. If the patient was diagnosed with significant coronary disease, the blockade can be of either all three of the coronary vessels, or only of the left main coronary artery. Both conditions are associated with a high risk for mortality.
+
+The scope of this report is to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The two models are based on Bayesian logistic regression, but one is linear and one is non-linear. After implementation the models are evaluated and compared to achieve the best possible result.
+
+In section 2 the data used in this report is described. Section 3 explains the choice of mathematical model used in this report. In section 4 the two Stan models are implemented. Section 5 evaluates and compares the implemented models. Section 6 & 7 includes a final discussion and a reflection on the lessons learned during the project.
 
 # Data Desctription
 
@@ -474,7 +479,7 @@ kable(accuracies)
 
 We can see that the performances of both models are nearly equal. The classification accuracy is slightly better for the nonlinear model, but the balanced accuracy is the same for both models. The the balanced classification accuracy is not very high, but nevertheless, both models outperform a random classifier.
 
-To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of [0.25, 0.5] of predicted probabilities. For the top 10% there are more predictions than observations, and for the bottom 20% there are more observations than predictions.
+To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of \[0.25, 0.5\] of predicted probabilities. For the top 10% there are more predictions than observations, and for the bottom 20% there are more observations than predictions.
 
 ```{r}
 #| label: Calibration-plots
@@ -509,26 +514,35 @@ grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 
 ## Prior sensitivity analysis
 
+For the prior sentitivity analysis, four different prior distributions were tested, namely a flat prior, a normal distribution with an excessively large location, a normal distribution with an excessively large scale and the default priors of the `stan_glm` and `stan_gamm4` functions.
+
+$$
+\begin{aligned}
+\text{The default priors}
+\alpha &\sim \mathcal{N}(0, 2.5 / sd(x)) \\
+\beta &\sim \mathcal{N}(0, 2.5) \\
+\\
+\text{The large location and large scale normal priors}
+\theta &\sim \mathcal{N}(0, 100) \\
+\theta &\sim \mathcal{N}(100, 0) \\
+\\ 
+\text{The flat prior}
+\theta &\sim C \\
+\end{aligned}
+$$
+
+where $sd(x)$ is the standard deviation of x, and C is a constant value.
+
+The linear and nonlinear model were run again with the new sets of priors and the outputs compared to each other.
+
 ```{r}
 #| label: Linear model - Prior sensititivy analysis
-#normal prior
-normal_prior <- normal(location = 0, scale = NULL, autoscale = FALSE)
-linear_model_normal_prior <- stan_glm(formula_linear, data = cath,
-                family = binomial(link = "logit"),
-                prior = normal_prior, prior_intercept = normal_prior,
-                QR=TRUE, refresh=0)
 
 #default prior
 linear_model_default_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 QR=TRUE, refresh=0)
 
-#cauchy prior
-cauchy_prior <- cauchy(location = 0, scale = NULL, autoscale = FALSE)
-linear_model_cauchy_prior <- stan_glm(formula_linear, data = cath,
-                family = binomial(link = "logit"),
-                prior = cauchy_prior, prior_intercept = cauchy_prior,
-                QR=TRUE, refresh=0)
 
 #normal prior, large scale N(0, 100)
 normal_prior_sd <- normal(0, scale = 100, autoscale = FALSE)
@@ -537,7 +551,7 @@ linear_model_normal_sd <- stan_glm(formula_linear, data = cath,
                 prior = normal_prior_sd, prior_intercept = normal_prior_sd,
                 QR=TRUE, refresh=0)
 
-#normal prior, large location
+#normal prior, large location N(100, 0)
 normal_prior_loc <- normal(100, scale = 2.5, autoscale = FALSE)
 linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
@@ -560,25 +574,22 @@ Plotting the posterior distribution for each prior:
 
 ```{r}
 #| label: Linear model - Plotting prior sensititvy 
-pplot_normal <- plot(linear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Normal prior")
 
+# Default priors
 pplot_default <- plot(linear_model_default_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Default prior")
 
-pplot_cauchy <- plot(linear_model_cauchy_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Cauchy prior")
-
-# pplot_linear <- pplot_linear + geom_vline(xintercept = 0) + labs(title = "Model prior")
-
+# N(0, 100) prior
 pplot_normal_sd <- plot(linear_model_normal_sd, "areas", prob = 0.95, prob_outer = 1) + 
   geom_vline(xintercept = 0) + labs(title = "N(0, 100)")
 
+# N(100, 0) prior
 pplot_normal_loc <- plot(linear_model_normal_loc, "areas", prob = 0.95, prob_outer = 1) + 
   geom_vline(xintercept = 0) + labs(title = "N(100, 0)")
 
+# Flat prior
 pplot_flat <- plot(linear_model_flat_prior, "areas", prob = 0.95, prob_outer = 1) + 
-  geom_vline(xintercept = 0) + labs(title = "flat prior")
+  geom_vline(xintercept = 0) + labs(title = "Flat prior")
 
 #put desired priors into here
 grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=2, nrow = 2) 
@@ -586,45 +597,56 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 
 ```{r}
 #| label: Noninear model - Prior sensititivy analysis
-#normal prior
-nonlinear_model_normal_prior <- stan_gamm4(
-  formula_nonlinear, data = cath,
-  family = binomial(link = "logit"),
-  prior = normal_prior, prior_intercept = normal_prior,
-  refresh = 0
-)
 
-#default prior
+# Default prior
 nonlinear_model_default_prior <- stan_gamm4(
   formula_nonlinear, data = cath,
   family = binomial(link = "logit"),
   refresh = 0
 )
 
-#cauchy prior
-nonlinear_model_cauchy_prior <- stan_gamm4(
+# N(0, 100) prior
+nonlinear_normal_sd_prior <- stan_gamm4(
   formula_nonlinear, data = cath,
   family = binomial(link = "logit"),
-  prior = cauchy_prior, prior_intercept = cauchy_prior,
+  prior = normal_prior_sd, prior_intercept = normal_prior_sd,
+  refresh = 0
+)
+
+# N(100, 0) prior
+nonlinear_normal_loc_prior <- stan_gamm4(
+  formula_nonlinear, data = cath,
+  family = binomial(link = "logit"),
+  prior = normal_prior_loc, prior_intercept = normal_prior_loc,
+  refresh = 0
+)
+
+nonlinear_flat_prior <- stan_gamm4(
+  formula_nonlinear, data = cath,
+  family = binomial(link = "logit"),
+  prior = flat_prior, prior_intercept = flat_prior,
   refresh = 0
 )
 ```
 
-```{r}
+```{r, fig.height=10}
 #| label: Nonlinear model - Plotting prior sensititivy
-nonlinear_pplot_normal <- plot(nonlinear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Normal prior")
 
-nonlinear_pplot_default <- plot(nonlinear_model_default_prior, "areas", prob = 0.95, prob_outer = 1) +
+# Default prior
+nonlinear_default_pplot <- plot(nonlinear_model_default_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Default prior")
 
-nonlinear_pplot_cauchy <- plot(nonlinear_model_cauchy_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Cauchy prior")
+nonlinear_flat_pplot <- plot(nonlinear_flat_prior, "areas", prob = 0.95, prob_outer = 1) +
+  geom_vline(xintercept = 0) + labs(title = "Model prior")
 
-pplot_nonlinear <- plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1) +
-geom_vline(xintercept = 0) + labs(title = "Model prior")
+nonlinear_normal_sd_pplot <- plot(nonlinear_normal_sd_prior, "areas", prob = 0.95, prob_outer = 1) +
+  geom_vline(xintercept = 0) + labs(title = "Model prior")
 
-grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, nonlinear_pplot_cauchy, ncol=2, nrow = 2) 
+nonlinear_normal_loc_pplot <- plot(nonlinear_normal_loc_prior, "areas", prob = 0.95, prob_outer = 1) +
+  geom_vline(xintercept = 0) + labs(title = "Model prior")
+
+
+grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
 ```
 
 ```{r}
@@ -633,8 +655,13 @@ grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, n
 
 # Discussion
 
--   Problems, potential improvements?
--   Conclusion of analysis
+The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The models were implemented Bayesian logistic regression with both a linear and a non-linear approach. The results were two Stan models of equal classification accuracy.
+
+With classification accuracies of 0.75 (linear) and 0.76 (non-linear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance.
+
+There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance of the model, new explanatory variables may have to be introduced. Family history, blood pressure, and smoking status are all possible explanatory variables closely related to cardiovascular health that could help improve model performance.
+
+In conclusion,
 
 # Lessons Learned
 
