@@ -666,7 +666,7 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 
 The posterior distributions look fairly similar despite the different priors. This indicates that the model isn't too sensitive to the prior selection.
 
-Due to the nature of the nonlinear model, and the large number of parameters, the sensitivity analysis is summarized with the help of a posterior predicitve check (@fig-prior-sensitivity-plots-nonlinear).
+Due to the nature of the nonlinear model, and the large number of parameters, the sensitivity analysis is summarized with the help of a posterior predictive check (@fig-prior-sensitivity-plots-nonlinear).
 
 ```{r}
 #| label: fig-prior-sensitivity-plots-nonlinear
@@ -701,7 +701,8 @@ rownames(prior_sens_divergents) <- c("Default prior", "Flat prior", "N(100, 0) p
 kable(prior_sens_divergents)
 
 ```
-When performing the prior sensitivity analysis of the nonlinear model, they presented with zero to a few divergent transitions. Furhter indicating good fits to the data.
+
+When performing the prior sensitivity analysis of the nonlinear model, they presented with zero to a few divergent transitions. This further indicates succesful HMC simulation and thus, model fits are realiable.
 
 
 # Discussion
