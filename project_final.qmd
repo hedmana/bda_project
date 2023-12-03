@@ -669,6 +669,9 @@ The posterior distributions look fairly similar despite the different priors. Th
 Due to the nature of the nonlinear model, and the large number of parameters, the sensitivity analysis is summarized with the help of a posterior predicitve check.
 
 ```{r}
+#| label: fig-prior-sensitivity-plots-nonlinear
+#| echo: false
+#| fig-cap: Prior sensitivity analysis on the nonlinear model - Posterior predictive checks.
 grid.arrange(pp_check(nonlinear_normal_sd_prior) + labs(title = "N(0, 100) prior"),
              pp_check(nonlinear_normal_loc_prior) + labs(title = "N(100, 0) prior"),
              pp_check(nonlinear_model_default_prior) + labs(title = "Default prior"),
@@ -689,8 +692,10 @@ div_normal_loc <- sum(subset(nuts_params(nonlinear_normal_loc_prior), Parameter 
 
 div_normal_sd <- sum(subset(nuts_params(nonlinear_normal_sd_prior), Parameter == "divergent__")$Value)
 
+prior_sens_divergents <- data.frame(diversions = c(div_default, div_flat, div_normal_loc, div_normal_sd))
 
-data.frame(diversions = c(div_default, div_flat, div_normal_loc, div_normal_sd))
+rownames(prior_sens_divergents) <- c("Default prior", "Flat prior", "N(100, 0) prior", "N(0, 100) prior")
+kable(prior_sens_divergents)
 
 ```
 
@@ -704,8 +709,7 @@ With classification accuracies of `r accuracy_linear` (linear) and `r accuracy_n
 There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the explanatory variables being too general when it comes to predicting certain diseases. To further improve the predictive performance of the model, new explanatory variables may have to be introduced. Family history, fasting glucose levels, and smoking status are all possible 
 explanatory variables closely related to cardiovascular health that could help improve model performance [@CAD]. 
 
-In conclusion, this analysis indicates that when it comes the "cath" data set, the linear and the non-linear model performs equally. As seen in the prior sensitivity analysis, the choice of priors does not have a significant impact on the 
-posterior predictive performance of the models. The training stage includes large quantities of data, resulting in robust models that are
+In conclusion, this analysis indicates that when it comes the "cath" data set, the linear and the non-linear model performs equally. As seen in the prior sensitivity analysis, the choice of priors does not have a significant impact on the posterior predictive performance of the models. The training stage includes large quantities of data, resulting in robust models that are
 not sensitive when it comes to choice of priors.
 
 # Lessons Learned
