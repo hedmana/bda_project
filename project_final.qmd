@@ -529,24 +529,12 @@ grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 
 ```{r}
 #| label: Linear model - Prior sensititivy analysis
-#normal prior
-normal_prior <- normal(location = 0, scale = NULL, autoscale = FALSE)
-linear_model_normal_prior <- stan_glm(formula_linear, data = cath,
-                family = binomial(link = "logit"),
-                prior = normal_prior, prior_intercept = normal_prior,
-                QR=TRUE, refresh=0)
 
 #default prior
 linear_model_default_prior <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
                 QR=TRUE, refresh=0)
 
-#cauchy prior
-cauchy_prior <- cauchy(location = 0, scale = NULL, autoscale = FALSE)
-linear_model_cauchy_prior <- stan_glm(formula_linear, data = cath,
-                family = binomial(link = "logit"),
-                prior = cauchy_prior, prior_intercept = cauchy_prior,
-                QR=TRUE, refresh=0)
 
 #normal prior, large scale N(0, 100)
 normal_prior_sd <- normal(0, scale = 100, autoscale = FALSE)
@@ -555,7 +543,7 @@ linear_model_normal_sd <- stan_glm(formula_linear, data = cath,
                 prior = normal_prior_sd, prior_intercept = normal_prior_sd,
                 QR=TRUE, refresh=0)
 
-#normal prior, large location
+#normal prior, large location N(100, 0)
 normal_prior_loc <- normal(100, scale = 2.5, autoscale = FALSE)
 linear_model_normal_loc <- stan_glm(formula_linear, data = cath,
                 family = binomial(link = "logit"),
@@ -578,25 +566,22 @@ Plotting the posterior distribution for each prior:
 
 ```{r}
 #| label: Linear model - Plotting prior sensititvy 
-pplot_normal <- plot(linear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Normal prior")
 
+# Default priors
 pplot_default <- plot(linear_model_default_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Default prior")
 
-pplot_cauchy <- plot(linear_model_cauchy_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Cauchy prior")
-
-# pplot_linear <- pplot_linear + geom_vline(xintercept = 0) + labs(title = "Model prior")
-
+# N(0, 100) prior
 pplot_normal_sd <- plot(linear_model_normal_sd, "areas", prob = 0.95, prob_outer = 1) + 
   geom_vline(xintercept = 0) + labs(title = "N(0, 100)")
 
+# N(100, 0) prior
 pplot_normal_loc <- plot(linear_model_normal_loc, "areas", prob = 0.95, prob_outer = 1) + 
   geom_vline(xintercept = 0) + labs(title = "N(100, 0)")
 
+# Flat prior
 pplot_flat <- plot(linear_model_flat_prior, "areas", prob = 0.95, prob_outer = 1) + 
-  geom_vline(xintercept = 0) + labs(title = "flat prior")
+  geom_vline(xintercept = 0) + labs(title = "Flat prior")
 
 #put desired priors into here
 grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=2, nrow = 2) 
@@ -604,45 +589,56 @@ grid.arrange(pplot_normal_sd, pplot_normal_loc, pplot_default, pplot_flat, ncol=
 
 ```{r}
 #| label: Noninear model - Prior sensititivy analysis
-#normal prior
-nonlinear_model_normal_prior <- stan_gamm4(
-  formula_nonlinear, data = cath,
-  family = binomial(link = "logit"),
-  prior = normal_prior, prior_intercept = normal_prior,
-  refresh = 0
-)
 
-#default prior
+# Default prior
 nonlinear_model_default_prior <- stan_gamm4(
   formula_nonlinear, data = cath,
   family = binomial(link = "logit"),
   refresh = 0
 )
 
-#cauchy prior
-nonlinear_model_cauchy_prior <- stan_gamm4(
+# N(0, 100) prior
+nonlinear_normal_sd_prior <- stan_gamm4(
   formula_nonlinear, data = cath,
   family = binomial(link = "logit"),
-  prior = cauchy_prior, prior_intercept = cauchy_prior,
+  prior = normal_prior_sd, prior_intercept = normal_prior_sd,
+  refresh = 0
+)
+
+# N(100, 0) prior
+nonlinear_normal_loc_prior <- stan_gamm4(
+  formula_nonlinear, data = cath,
+  family = binomial(link = "logit"),
+  prior = normal_prior_loc, prior_intercept = normal_prior_loc,
+  refresh = 0
+)
+
+nonlinear_flat_prior <- stan_gamm4(
+  formula_nonlinear, data = cath,
+  family = binomial(link = "logit"),
+  prior = flat_prior, prior_intercept = flat_prior,
   refresh = 0
 )
 ```
 
 ```{r, fig.height=10}
 #| label: Nonlinear model - Plotting prior sensititivy
-nonlinear_pplot_normal <- plot(nonlinear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Normal prior")
 
-nonlinear_pplot_default <- plot(nonlinear_model_default_prior, "areas", prob = 0.95, prob_outer = 1) +
+# Default prior
+nonlinear_default_pplot <- plot(nonlinear_model_default_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Default prior")
 
-nonlinear_pplot_cauchy <- plot(nonlinear_model_cauchy_prior, "areas", prob = 0.95, prob_outer = 1) +
-  geom_vline(xintercept = 0) + labs(title = "Cauchy prior")
-
-pplot_nonlinear <- plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1) +
+nonlinear_flat_pplot <- plot(nonlinear_flat_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Model prior")
 
-grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, nonlinear_pplot_cauchy, ncol=2, nrow = 2) 
+nonlinear_normal_sd_pplot <- plot(nonlinear_normal_sd_prior, "areas", prob = 0.95, prob_outer = 1) +
+  geom_vline(xintercept = 0) + labs(title = "Model prior")
+
+nonlinear_normal_loc_pplot <- plot(nonlinear_normal_loc_prior, "areas", prob = 0.95, prob_outer = 1) +
+  geom_vline(xintercept = 0) + labs(title = "Model prior")
+
+
+grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_pplot, nonlinear_normal_loc_pplot, ncol=2, nrow = 2) 
 ```
 
 ```{r}
