@@ -2,6 +2,7 @@
 title: "Predicting Significant Coronary Disease"
 subtitle: "Unraveling the Complexity of Coronary Health through Bayesian Logistic Regression"
 author: anonymous
+bibliography: ref.bib
 format:
   html:
     toc: true
@@ -79,7 +80,7 @@ Section 6 & 7 includes a final discussion and a reflection on the lessons learne
 
 # Data Desctription
 
-The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.
+The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank [@HBIoStatData]. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.
 
 ```{r}
 #| label: Data-table
@@ -657,10 +658,13 @@ with the nonlinear model slightly surpassing the linear model in terms of predic
 
 There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the
 explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance
-of the model, new explanatory variables may have to be introduced. Family history, blood pressure, and smoking status are all possible 
-explanatory variables closely related to cardiovascular health that could help improve model performance.
+of the model, new explanatory variables may have to be introduced. Family history, fasting glucose levels, and smoking status are all possible 
+explanatory variables closely related to cardiovascular health that could help improve model performance [@CAD]. 
 
-In conclusion, the analysis th
+In conclusion, this analysis indicates that when it comes the "cath" data set, the linear 
+and the non-linear model performs equally. As seen in the prior sensitivity analysis, the choice of priors does not have a significant impact on the 
+posterior predictive performance of the models. The training stage includes large quantities of data, resulting in robust models that are
+not sensitive when it comes to choice of priors.
 
 # Lessons Learned
 
@@ -673,3 +677,6 @@ process that the group agreed boosted the learning outcome of the course. We now
 on during the lectures and assignments.
 
 # References
+
+::: {#refs}
+:::
