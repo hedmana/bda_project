@@ -54,29 +54,15 @@ cath <- medicaldata::cath
 
 # Introduction
 
-Cardiovascular diseases, particularly coronary artery disease (CAD), remain a leading cause of mortality worldwide. In the 
-pursuit of effective diagnosis and intervention, cardiac catheterization has emerged as a procedure for evaluating and 
-addressing coronary artery health. 
+Cardiovascular diseases, particularly coronary artery disease (CAD), remain a leading cause of mortality worldwide. In the pursuit of effective diagnosis and intervention, cardiac catheterization has emerged as a procedure for evaluating and addressing coronary artery health.
 
-A reduction in artery diameter by at least 75% is considered a significant reduction in blood flow that puts downstream 
-heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease.
-This report explores the complexities surrounding the cardiac catheterization process, with a specific focus on 
-predicting the presence of significant coronary disease through the utilization of 
-Bayesian models.
+A reduction in artery diameter by at least 75% is considered a significant reduction in blood flow that puts downstream heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease. This report explores the complexities surrounding the cardiac catheterization process, with a specific focus on predicting the presence of significant coronary disease through the utilization of Bayesian models.
 
-Duke University Medical Center's Cardiovascular Disease Databank provides a data set containing information about 
-patients that has been diagnosed at Duke University Medical Center. The patients where referred to Duke for chest pain
-and diagnosed accordingly. If the patient was diagnosed with significant coronary disease, the blockade can be of either
-all three of the coronary vessels, or only of the left main coronary artery. Both conditions are associated with a high 
-risk for mortality. 
+Duke University Medical Center's Cardiovascular Disease Databank provides a data set containing information about patients that has been diagnosed at Duke University Medical Center. The patients where referred to Duke for chest pain and diagnosed accordingly. If the patient was diagnosed with significant coronary disease, the blockade can be of either all three of the coronary vessels, or only of the left main coronary artery. Both conditions are associated with a high risk for mortality.
 
-The scope of this report is to implement two Bayesian models able to predict the probability of significant coronary 
-disease among patients. The two models are based on Bayesian logistic regression, but one is linear and one is non-linear.
-After implementation the models are evaluated and compared to achieve the best possible result.
+The scope of this report is to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The two models are based on Bayesian logistic regression, but one is linear and one is non-linear. After implementation the models are evaluated and compared to achieve the best possible result.
 
-In section 2 the data used in this report is described. Section 3 explains the choice of mathematical model used in this 
-report. In section 4 the two Stan models are implemented. Section 5 evaluates and compares the implemented models. 
-Section 6 & 7 includes a final discussion and a reflection on the lessons learned during the project.
+In section 2 the data used in this report is described. Section 3 explains the choice of mathematical model used in this report. In section 4 the two Stan models are implemented. Section 5 evaluates and compares the implemented models. Section 6 & 7 includes a final discussion and a reflection on the lessons learned during the project.
 
 # Data Desctription
 
@@ -493,7 +479,7 @@ kable(accuracies)
 
 We can see that the performances of both models are nearly equal. The classification accuracy is slightly better for the nonlinear model, but the balanced accuracy is the same for both models. The the balanced classification accuracy is not very high, but nevertheless, both models outperform a random classifier.
 
-To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of [0.25, 0.5] of predicted probabilities. For the top 10% there are more predictions than observations, and for the bottom 20% there are more observations than predictions.
+To further compare the predictive performances of the models, calibration plots of both linear and nonlinear models are visualized in @Calibration-plots. From these plots we can see that both models are calibrated on approximately the interval of \[0.25, 0.5\] of predicted probabilities. For the top 10% there are more predictions than observations, and for the bottom 20% there are more observations than predictions.
 
 ```{r}
 #| label: Calibration-plots
@@ -527,6 +513,27 @@ grid.arrange(cplot_linear, cplot_nonlinear, ncol=2)
 ```
 
 ## Prior sensitivity analysis
+
+For the prior sentitivity analysis, four different prior distributions were tested, namely a flat prior, a normal distribution with an excessively large location, a normal distribution with an excessively large scale and the default priors of the `stan_glm` and `stan_gamm4` functions.
+
+$$
+\begin{aligned}
+\text{The default priors}
+\alpha &\sim \mathcal{N}(0, 2.5 / sd(x)) \\
+\beta &\sim \mathcal{N}(0, 2.5) \\
+\\
+\text{The large location and large scale normal priors}
+\theta &\sim \mathcal{N}(0, 100) \\
+\theta &\sim \mathcal{N}(100, 0) \\
+\\ 
+\text{The flat prior}
+\theta &\sim C \\
+\end{aligned}
+$$
+
+where $sd(x)$ is the standard deviation of x, and C is a constant value.
+
+The linear and nonlinear model were run again with the new sets of priors and the outputs compared to each other.
 
 ```{r}
 #| label: Linear model - Prior sensititivy analysis
@@ -648,13 +655,9 @@ grid.arrange(nonlinear_default_pplot, nonlinear_flat_pplot, nonlinear_normal_sd_
 
 # Discussion
 
-The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary 
-disease among patients. The models were implemented Bayesian logistic regression with both a linear and a non-linear 
-approach. The results were two Stan models of equal classification accuracy. 
+The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The models were implemented Bayesian logistic regression with both a linear and a non-linear approach. The results were two Stan models of equal classification accuracy.
 
-With classification accuracies of 0.75 (linear) and 0.76 (non-linear), both models performed adequately when it came 
-to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, 
-with the nonlinear model slightly surpassing the linear model in terms of predictive performance. 
+With classification accuracies of 0.75 (linear) and 0.76 (non-linear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance.
 
 There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the
 explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance
