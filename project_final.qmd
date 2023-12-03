@@ -53,10 +53,29 @@ cath <- medicaldata::cath
 
 # Introduction
 
--   Background
--   Problem formulation/scope
--   Main modeling idea
--   Some picture of the data?
+Cardiovascular diseases, particularly coronary artery disease (CAD), remain a leading cause of mortality worldwide. In the 
+pursuit of effective diagnosis and intervention, cardiac catheterization has emerged as a procedure for evaluating and 
+addressing coronary artery health. 
+
+A reduction in artery diameter by at least 75% is considered a significant reduction in blood flow that puts downstream 
+heart muscle at risk of ischemia. Such a reduction is defined as significant coronary disease.
+This report explores the complexities surrounding the cardiac catheterization process, with a specific focus on 
+predicting the presence of significant coronary disease through the utilization of 
+Bayesian models.
+
+Duke University Medical Center's Cardiovascular Disease Databank provides a data set containing information about 
+patients that has been diagnosed at Duke University Medical Center. The patients where referred to Duke for chest pain
+and diagnosed accordingly. If the patient was diagnosed with significant coronary disease, the blockade can be of either
+all three of the coronary vessels, or only of the left main coronary artery. Both conditions are associated with a high 
+risk for mortality. 
+
+The scope of this report is to implement two Bayesian models able to predict the probability of significant coronary 
+disease among patients. The two models are based on Bayesian logistic regression, but one is linear and one is non-linear.
+After implementation the models are evaluated and compared to achieve the best possible result.
+
+In section 2 the data used in this report is described. Section 3 explains the choice of mathematical model used in this 
+report. In section 4 the two Stan models are implemented. Section 5 evaluates and compares the implemented models. 
+Section 6 & 7 includes a final discussion and a reflection on the lessons learned during the project.
 
 # Data Desctription
 
@@ -610,7 +629,7 @@ nonlinear_model_cauchy_prior <- stan_gamm4(
 )
 ```
 
-```{r}
+```{r, fig.height=10}
 #| label: Nonlinear model - Plotting prior sensititivy
 nonlinear_pplot_normal <- plot(nonlinear_model_normal_prior, "areas", prob = 0.95, prob_outer = 1) +
   geom_vline(xintercept = 0) + labs(title = "Normal prior")
@@ -622,7 +641,7 @@ nonlinear_pplot_cauchy <- plot(nonlinear_model_cauchy_prior, "areas", prob = 0.9
   geom_vline(xintercept = 0) + labs(title = "Cauchy prior")
 
 pplot_nonlinear <- plot(model_nonlinear, "areas", prob = 0.95, prob_outer = 1) +
-geom_vline(xintercept = 0) + labs(title = "Model prior")
+  geom_vline(xintercept = 0) + labs(title = "Model prior")
 
 grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, nonlinear_pplot_cauchy, ncol=2, nrow = 2) 
 ```
@@ -633,9 +652,23 @@ grid.arrange(pplot_nonlinear, nonlinear_pplot_normal, nonlinear_pplot_default, n
 
 # Discussion
 
--   Problems, potential improvements?
--   Conclusion of analysis
+The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary 
+disease among patients. The models were implemented Bayesian logistic regression with both a linear and a non-linear 
+approach. The results were two Stan models of equal classification accuracy. 
+
+With classification accuracies of 0.75 (linear) and 0.76 (non-linear), both models performed adequately when it came 
+to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, 
+with the nonlinear model slightly surpassing the linear model in terms of predictive performance. 
+
+There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the
+explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance
+of the model, new explanatory variables may have to be introduced. Family history, blood pressure, and smoking status are all possible 
+explanatory variables closely related to cardiovascular health that could help improve model performance.
+
+In conclusion, 
 
 # Lessons Learned
+
+
 
 # References
