@@ -1,7 +1,8 @@
 ---
-title: "PROJECT"
-subtitle: "BLAL BLA BLA"
+title: "Predicting Significant Coronary Disease"
+subtitle: "Unraveling the Complexity of Coronary Health through Bayesian Logistic Regression"
 author: anonymous
+bibliography: ref.bib
 format:
   html:
     toc: true
@@ -65,7 +66,7 @@ In section 2 the data used in this report is described. Section 3 explains the c
 
 # Data Desctription
 
-The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.
+The "cath" dataset used in this report is obtained from Duke University Cardiovascular Disease Databank [@HBIoStatData]. It encapsulates a collection of 6 variables (@Data-table) that are closely related to cardiovascular health.
 
 ```{r}
 #| label: Data-table
@@ -163,7 +164,6 @@ corrplot(cor(cath[, c(p,1:(p-1))]), type = "full", method = "number")
 
 In this analysis, we will construct two models for inferring the binary response variable, *sigdz* based on input explanatory variables*.* The first model is a generalized linear model (GLM), namely Bayesian logistic regression. The other model is a generalized additive mixed model (GAMM), which implements Bayesian logistic regression with nonlinear transformations on the input variables. These models will be referred as linear and nonlinear model, respectively.
 
-(((To-be-done still: - Check likelihood notation for nonlinear model - Prior justification - Check prior notations - Include priors with own values ? - **Posteriors** ?)))
 
 ## The generalized linear model and priors
 
@@ -678,10 +678,27 @@ The scope of this report was to implement two Bayesian models able to predict th
 
 With classification accuracies of 0.75 (linear) and 0.76 (non-linear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance.
 
-There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance of the model, new explanatory variables may have to be introduced. Family history, blood pressure, and smoking status are all possible explanatory variables closely related to cardiovascular health that could help improve model performance.
+There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the
+explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance
+of the model, new explanatory variables may have to be introduced. Family history, fasting glucose levels, and smoking status are all possible 
+explanatory variables closely related to cardiovascular health that could help improve model performance [@CAD]. 
 
-In conclusion,
+In conclusion, this analysis indicates that when it comes the "cath" data set, the linear 
+and the non-linear model performs equally. As seen in the prior sensitivity analysis, the choice of priors does not have a significant impact on the 
+posterior predictive performance of the models. The training stage includes large quantities of data, resulting in robust models that are
+not sensitive when it comes to choice of priors.
 
 # Lessons Learned
 
+In retrospect, the biggest challenge that our group faced was finding suitable data to implement a Bayesian model on. Before finding 
+the "cath" data set, we tried with multiple other data sets without success. We definitely learned not to underestimate the importance
+of data selection and preprocessing. Without qualitative data it is impossible to make qualitative predictions. 
+
+As a group we also got to dive deeper into the implementation of Bayesian logistic regression models, both linear and non-linear. A 
+process that the group agreed boosted the learning outcome of the course. We now got to implement from scratch what we had touched 
+on during the lectures and assignments.
+
 # References
+
+::: {#refs}
+:::
