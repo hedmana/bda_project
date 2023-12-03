@@ -688,15 +688,12 @@ grid.arrange(pp_check(nonlinear_normal_loc_prior) + labs(title = "N(100, 0) prio
 
 The scope of this report was to implement two Bayesian models able to predict the probability of significant coronary disease among patients. The models were implemented Bayesian logistic regression with both a linear and a nonlinear approach. The results were two Stan models of equal classification accuracy.
 
-With classification accuracies of 0.75 (linear) and 0.76 (nonlinear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance.
+With classification accuracies of `r accuracy_linear` (linear) and `r accuracy_nonlinear` (nonlinear), both models performed adequately when it came to predicting the pervalance of significant coronary disease. The results indicate that both models outperform the baseline model, with the nonlinear model slightly surpassing the linear model in terms of predictive performance. However, when considering the balanced classification accuracy, the performance of both models dropped slightly.
 
-There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the
-explanatory variables being to general when it comes to predicting a certain diseases. To further improve the predictive performance
-of the model, new explanatory variables may have to be introduced. Family history, fasting glucose levels, and smoking status are all possible 
+There is still room for improvement when it comes to the predictive performance of the models. The problem here may lie in the explanatory variables being too general when it comes to predicting certain diseases. To further improve the predictive performance of the model, new explanatory variables may have to be introduced. Family history, fasting glucose levels, and smoking status are all possible 
 explanatory variables closely related to cardiovascular health that could help improve model performance [@CAD]. 
 
-In conclusion, this analysis indicates that when it comes the "cath" data set, the linear 
-and the non-linear model performs equally. As seen in the prior sensitivity analysis, the choice of priors does not have a significant impact on the 
+In conclusion, this analysis indicates that when it comes the "cath" data set, the linear and the non-linear model performs equally. As seen in the prior sensitivity analysis, the choice of priors does not have a significant impact on the 
 posterior predictive performance of the models. The training stage includes large quantities of data, resulting in robust models that are
 not sensitive when it comes to choice of priors.
 
